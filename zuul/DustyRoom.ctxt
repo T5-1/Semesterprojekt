@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=description
+comment0.target=DustyRoom(java.lang.String)
+comment0.text=\n\ Constructor\ for\ objects\ of\ class\ DustyRoom\n
+comment1.params=c\ inventory
+comment1.target=Room\ respond(Command,\ java.util.ArrayList)
+comment1.text=\n
+numComments=2

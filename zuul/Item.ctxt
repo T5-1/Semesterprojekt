@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.params=d
+comment0.target=Item(String)
+comment0.text=\nConstructor\ for\ objects\ of\ class\ Item\n\n
+comment1.params=d\ w
+comment1.target=Item(String,\ int)
+comment2.target=String\ getDesc()
+comment2.text=\ngetDesc\:\ accessor\ for\ description\n\n\n
+comment3.target=int\ getWeight()
+comment3.text=\ngetWeight\:\ accessor\ for\ weight\n\n\n
+comment4.params=s\ L
+comment4.target=Item\ findByName(String,\ ArrayList<Item>)
+comment4.text=\nfindByName\:\ given\ a\ string\ and\ an\ ArrayList\ of\ Items,\ \nfind\ the\ Item\ with\ the\ matching\ name,\ or\ else\ return\ null\n\n
+comment5.params=L
+comment5.target=int\ totalWeight(ArrayList<Item>)
+comment5.text=\ntotalWeight\:\ given\ an\ ArrayList\ of\ Items,\ returns\ total\ of\ weights\n\n
+numComments=6
