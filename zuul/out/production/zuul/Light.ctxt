@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.params=desc\ weight
+comment0.target=Light(String,\ int)
+comment0.text=\nConstructor\ for\ objects\ of\ class\ Light\n\n
+comment1.params=desc
+comment1.target=Light(String)
+comment2.target=boolean\ isOn()
+comment3.target=void\ light()
+comment4.params=inv
+comment4.target=Light\ getLight(ArrayList<Item>)
+comment4.text=\ngetLight\ looks\ on\ the\ given\ list\ of\ Items\ (usually\ the\ inventory)\nto\ see\ if\ there's\ a\ Light\ object\ that\ is\ lit().\nIf\ so,\ the\ first\ such\ is\ returned.\nIf\ not,\ null\ is\ returned.\nNote\ that\ getLight\ **must\ do\ run-time\ type\ checking**\n(Well,\ the\ alternative\ is\ to\ add\ to\ Item\ an\ isLight\ method,\nbut\ that\ seems\ to\ be\ an\ AWKWARD\ use\ of\ the\ inheritance\ model)\n\n
+comment5.params=inv
+comment5.target=boolean\ haslight(ArrayList<Item>)
+numComments=6

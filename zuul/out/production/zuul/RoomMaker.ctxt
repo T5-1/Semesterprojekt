@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.params=
+comment0.target=RoomMaker()
+comment0.text=\n\ Constructor\ for\ objects\ of\ class\ RoomMaker\n
+comment1.params=inventory
+comment1.target=Room\ createRooms(java.util.ArrayList)
+comment1.text=\n\ createRooms()\ creates\ all\ the\ rooms,\ links\ them,\ and\ populates\ them\ with\ Items.\n\ It\ is\ static\n
+comment2.params=r1\ dir1\ r2\ dir2
+comment2.target=void\ link(Room,\ java.lang.String,\ Room,\ java.lang.String)
+comment2.text=\n\ link\:\ creates\ a\ link\ between\ rooms\ r1\ and\ r2\:\n\ From\ r1,\ going\ dir1,\ we\ get\ to\ r2,\ and\ from\ r2,\ going\ dir2,\ we\ get\ to\ r1\n
+numComments=3
