@@ -1,28 +1,27 @@
-package worldofzuul;
+package com.t5.worldofzuul;
 
-public class Game 
+public class Game
 {
     private Parser parser;
     private Room currentRoom;
-        
 
-    public Game() 
+
+    public Game()
     {
         createRooms();
         parser = new Parser();
     }
 
-
     private void createRooms()
     {
         Room outside, theatre, pub, lab, office;
-      
+
         outside = new Room("outside the main entrance of the university");
         theatre = new Room("in a lecture theatre");
         pub = new Room("in the campus pub");
         lab = new Room("in a computing lab");
         office = new Room("in the computing admin office");
-        
+
         outside.setExit("east", theatre);
         outside.setExit("south", lab);
         outside.setExit("west", pub);
@@ -39,11 +38,11 @@ public class Game
         currentRoom = outside;
     }
 
-    public void play() 
-    {            
+    public void play()
+    {
         printWelcome();
 
-                
+
         boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand();
@@ -62,7 +61,7 @@ public class Game
         System.out.println(currentRoom.getLongDescription());
     }
 
-    private boolean processCommand(Command command) 
+    private boolean processCommand(Command command)
     {
         boolean wantToQuit = false;
 
@@ -85,7 +84,7 @@ public class Game
         return wantToQuit;
     }
 
-    private void printHelp() 
+    private void printHelp()
     {
         System.out.println("You are lost. You are alone. You wander");
         System.out.println("around at the university.");
@@ -94,7 +93,7 @@ public class Game
         parser.showCommands();
     }
 
-    private void goRoom(Command command) 
+    private void goRoom(Command command)
     {
         if(!command.hasSecondWord()) {
             System.out.println("Go where?");
@@ -114,7 +113,7 @@ public class Game
         }
     }
 
-    private boolean quit(Command command) 
+    private boolean quit(Command command)
     {
         if(command.hasSecondWord()) {
             System.out.println("Quit what?");
@@ -123,5 +122,10 @@ public class Game
         else {
             return true;
         }
+    }
+
+    public static void main(String[] args) {
+        Game game = new Game();
+        game.play();
     }
 }

@@ -1,4 +1,4 @@
-package worldofzuul;
+package com.t5.worldofzuul;
 import java.util.HashMap;
 
 
@@ -26,13 +26,13 @@ public class CommandWords
             return CommandWord.UNKNOWN;
         }
     }
-    
+
     public boolean isCommand(String aString)
     {
         return validCommands.containsKey(aString);
     }
 
-    public void showAll() 
+    public void showAll()
     {
         for(String command : validCommands.keySet()) {
             System.out.print(command + "  ");
