@@ -22,6 +22,7 @@ package com.t5.worldofzuul;
 import com.t5.worldofzuul.player.Player;
 
 public class Command
+    //Test
 {
     private CommandWord commandWord;
     private String secondWord;
