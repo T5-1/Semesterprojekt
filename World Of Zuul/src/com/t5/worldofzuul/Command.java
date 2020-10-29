@@ -20,6 +20,7 @@
 package com.t5.worldofzuul;
 
 public class Command
+    //Test
 {
     private CommandWord commandWord;
     private String secondWord;
