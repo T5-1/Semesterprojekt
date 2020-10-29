@@ -3,8 +3,6 @@ package com.t5.worldofzuul;
 import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
-//test - Camilla
-//Test
 
 public class Room
 {
