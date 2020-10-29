@@ -3,7 +3,7 @@ package com.t5.worldofzuul.Rooms;
 import java.util.Set;
 import java.util.HashMap;
 
-public class OriginalRoom
+/*public class OriginalRoom
 {
     private String description;
     private HashMap<String, OriginalRoom> exits;
@@ -44,4 +44,6 @@ public class OriginalRoom
         return exits.get(direction);
     }
 }
+
+ */
 
