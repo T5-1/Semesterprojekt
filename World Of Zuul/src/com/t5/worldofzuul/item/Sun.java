@@ -4,6 +4,5 @@ public class Sun extends Item {
 
     public Sun() {
         super("Sun");
-
     }
 }
