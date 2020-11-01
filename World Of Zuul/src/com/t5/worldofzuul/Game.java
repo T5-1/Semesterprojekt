@@ -1,6 +1,6 @@
 package com.t5.worldofzuul;
 
-import com.t5.worldofzuul.Rooms.*;
+import com.t5.worldofzuul.room.*;
 import com.t5.worldofzuul.player.Player;
 
 public class Game

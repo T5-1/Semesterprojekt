@@ -19,6 +19,7 @@
 
 package com.t5.worldofzuul;
 
+import com.t5.worldofzuul.room.Room;
 import com.t5.worldofzuul.player.Player;
 
 public class Command

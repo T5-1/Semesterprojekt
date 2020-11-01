@@ -1,4 +1,4 @@
-package com.t5.worldofzuul.Rooms;
+package com.t5.worldofzuul.room;
 
 public class Shore extends Room {
     public Shore(String description) {

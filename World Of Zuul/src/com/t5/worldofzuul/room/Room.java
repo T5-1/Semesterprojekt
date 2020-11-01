@@ -1,4 +1,4 @@
-package com.t5.worldofzuul.Rooms;
+package com.t5.worldofzuul.room;
 
 import java.util.Set;
 import java.util.HashMap;
