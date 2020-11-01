@@ -1,5 +1,6 @@
 package com.t5.worldofzuul;
 
+import com.t5.worldofzuul.Rooms.*;
 import com.t5.worldofzuul.player.Player;
 
 public class Game
@@ -16,28 +17,64 @@ public class Game
 
     private void createRooms()
     {
-        Room outside, theatre, pub, lab, office;
+        player = new Player(spawn);
 
-        outside = new Room("outside the main entrance of the university");
-        theatre = new Room("in a lecture theatre");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        Room camp, cave, desert, flowerField, lake, mountain, river, savanna, shore, spawn, northernEntrance, southernEntrance;
 
-        outside.setExit("east", theatre);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
+        camp = new Camp("This is the Camp");
+        cave = new Cave("This is the Cave");
+        desert = new Desert("This is the desert");
+        flowerField = new FlowerField("This is the FlowerField");
+        lake = new Lake("This is the lake");
+        mountain = new Mountain("This is the Mountain");
+        river = new River("This is the River");
+        savanna = new Savanna("This is the Savanna");
+        shore = new Shore("This is the Shore");
+        spawn = new Spawn("This is the Spawn");
+        northernEntrance = new NorthernEntrance("This is the Northern Entrance");
+        southernEntrance = new SouthernEntrance("This is the Southern Entrance");
 
-        theatre.setExit("west", outside);
+        camp.setExit("west", savanna);
+        camp.setExit("north",spawn);
+        camp.setExit("east",desert);
+        camp.setExit("south",southernEntrance);
 
-        pub.setExit("east", outside);
+        cave.setExit("west",river);
+        cave.setExit("south", mountain);
 
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
+        desert.setExit("west", camp);
+        desert.setExit("north", mountain);
 
-        office.setExit("west", lab);
+        flowerField.setExit("east", river);
+        flowerField.setExit("south", shore);
 
-        player = new Player(outside);
+        lake.setExit("east", shore);
+
+        mountain.setExit("north", cave);
+        mountain.setExit("west",spawn);
+        mountain.setExit("south", desert);
+
+        river.setExit("north", northernEntrance);
+        river.setExit("west", flowerField);
+        river.setExit("east", cave);
+        river.setExit("south", spawn);
+
+        savanna.setExit("north", shore);
+        savanna.setExit("east", camp);
+
+        shore.setExit("north", flowerField);
+        shore.setExit("west", lake);
+        shore.setExit("east", spawn);
+        shore.setExit("south", savanna);
+
+        spawn.setExit("north", river);
+        spawn.setExit("west", shore);
+        spawn.setExit("east", mountain);
+        spawn.setExit("south",camp);
+
+        northernEntrance.setExit("south", river);
+
+        southernEntrance.setExit("north", camp);
     }
 
     public void play()
