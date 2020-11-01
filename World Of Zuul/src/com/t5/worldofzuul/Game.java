@@ -17,8 +17,6 @@ public class Game
 
     private void createRooms()
     {
-        player = new Player(spawn);
-
         Room camp, cave, desert, flowerField, lake, mountain, river, savanna, shore, spawn, northernEntrance, southernEntrance;
 
         camp = new Camp("This is the Camp");
@@ -75,6 +73,8 @@ public class Game
         northernEntrance.setExit("south", river);
 
         southernEntrance.setExit("north", camp);
+
+        player = new Player(spawn);
     }
 
     public void play()

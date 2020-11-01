@@ -3,6 +3,7 @@ package com.t5.worldofzuul.player;
 import com.t5.worldofzuul.Command;
 import com.t5.worldofzuul.Parser;
 import com.t5.worldofzuul.Room;
+import com.t5.worldofzuul.Rooms.Room;
 
 public class Player {
 

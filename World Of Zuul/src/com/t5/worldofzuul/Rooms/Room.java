@@ -8,19 +8,6 @@ public abstract class Room
     private String description;
     private HashMap<String, Room> exits;
 
-    private Room savanna = new Savanna("This is the Savanna");
-    private Room camp = new Camp("This is the Camp");
-    private Room cave = new Cave("This is the Cave");
-    private Room desert = new Desert("This is the desert");
-    private Room flowerField = new FlowerField("This is the FlowerField");
-    private Room mountain = new Mountain("This is the Mountain");
-    private Room river = new River("This is the River");
-    private Room shore = new Shore("This is the Shore");
-    private Room spawn = new Spawn("This is the Spawn");
-    private Room lake = new Lake("This is the lake");
-    private Room northernEntrance = new NorthernEntrance("This is the Northern Entrance");
-    private Room southernEntrance = new SouthernEntrance("This is the Southern Entrance");
-
     public Room(String description)
     {
         this.description = description;
