@@ -2,7 +2,6 @@ package com.t5.worldofzuul.room;
 
 import com.t5.worldofzuul.item.Item;
 import com.t5.worldofzuul.item.NullItem;
-
 import java.util.Set;
 import java.util.HashMap;
 
@@ -57,7 +56,7 @@ public abstract class Room
     }
 
     public Item getItem(){
-        return Item.getItems().getItem();
+        return item.getItems().getItem();
     }
 
 }

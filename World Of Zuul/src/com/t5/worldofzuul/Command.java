@@ -21,13 +21,11 @@ package com.t5.worldofzuul;
 
 import com.t5.worldofzuul.room.Room;
 import com.t5.worldofzuul.player.Player;
-
 public class Command
-    //Test
+
 {
     private CommandWord commandWord;
     private String secondWord;
-
     private Parser parser;
 
     public Command(CommandWord commandWord, String secondWord)
@@ -74,6 +72,18 @@ public class Command
         else if (commandWord == CommandWord.GO) {
             goRoom(command, player);
         }
+
+        else if (commandWord == CommandWord.GATHER){
+            player.gather();
+        }
+
+        else if (commandWord == CommandWord.INVENTORY){
+            player.getInventory().printInventory();
+        }
+        else if (commandWord == CommandWord.CONSUME){
+
+        }
+
         else if (commandWord == CommandWord.QUIT) {
             wantToQuit = quit(command);
         }
