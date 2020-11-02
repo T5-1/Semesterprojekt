@@ -1,17 +1,29 @@
 package com.t5.worldofzuul.room;
 
+import com.t5.worldofzuul.item.Item;
+import com.t5.worldofzuul.item.NullItem;
+
 import java.util.Set;
 import java.util.HashMap;
 
 public abstract class Room
 {
+    private Item item;
     private String description;
     private HashMap<String, Room> exits;
+
+    public Room(String description, Item item)
+    {
+        this.description = description;
+        exits = new HashMap<String, Room>();
+        this.item=item;
+    }
 
     public Room(String description)
     {
         this.description = description;
         exits = new HashMap<String, Room>();
+        item = new NullItem();
     }
 
     public void setExit(String direction, Room neighbor)
@@ -43,6 +55,11 @@ public abstract class Room
     {
         return exits.get(direction);
     }
+
+    public Item getItem(){
+        return Item.getItems().getItem();
+    }
+
 }
 
 

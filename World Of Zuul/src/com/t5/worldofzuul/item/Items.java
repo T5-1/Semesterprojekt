@@ -1,0 +1,31 @@
+package com.t5.worldofzuul.item;
+
+public enum Items {
+    SUN{
+        public Item getItem(){
+            return new Sun();
+        }
+    },
+
+    WATER{
+        public Item getItem(){
+            return new Water();
+        }
+    },
+
+    SEED{
+        public Item getItem(){
+            return new Seed();
+        }
+    },
+
+    NULLITEM{
+        public Item getItem(){
+            return new NullItem();
+        }
+    };
+
+    public Item getItem(){
+        return null;
+    }
+}

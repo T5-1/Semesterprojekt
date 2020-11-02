@@ -31,4 +31,8 @@ public class Player {
         return command;
     }
 
+    public void pickUp(){
+        //if (currentRoom.getItem)
+    }
+
 }
