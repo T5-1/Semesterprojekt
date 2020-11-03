@@ -82,11 +82,21 @@ public class Game
         printWelcome();
 
         boolean finished = false;
-        while (! finished) {
-            player.update();
-            finished = player.getCommand().processCommand(player.getCommand(), player);
+        while (!finished) {
+            if (player.isAlive()) {
+                player.update();
+                finished = player.getCommand().processCommand(player.getCommand(), player);
+            }
+            else {
+                if (player.isRestartGame()) {
+                    createRooms();
+                    printWelcome();
+                }
+                else {
+                    finished = true;
+                }
+            }
         }
-        System.out.println("Thank you for playing.  Good bye.");
     }
 
     private void printWelcome()
@@ -100,7 +110,7 @@ public class Game
     }
 
     public static void main(String[] args) {
-        Game game = new Game();
-        game.play();
+            Game game = new Game();
+            game.play();
     }
 }

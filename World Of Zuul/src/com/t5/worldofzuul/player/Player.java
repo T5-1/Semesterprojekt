@@ -7,19 +7,47 @@ import com.t5.worldofzuul.room.Room;
 
 public class Player {
 
+    private int xp, xpNeededForNextLvl, currentLevel;
+    private final int MAX_LEVEL = 4;
+    private boolean alive, restartGame;
+
     private Room currentRoom;
     private Command command;
     private Parser parser;
     private Inventory inventory;
 
     public Player(Room spawn) {
+        xp = 0;
+        xpNeededForNextLvl = 1;
+        currentLevel = 0;
+
+        alive = true;
+        restartGame = false;
+
         currentRoom = spawn;
         parser = new Parser();
         inventory = new Inventory();
     }
 
-    public void update() {
+    public void start() {
         command = parser.getCommand();
+    }
+
+    public void update() {
+        if (alive) {
+            if (inventory.getWaterCount() > xpNeededForNextLvl || inventory.getSunCount() > xpNeededForNextLvl) {
+                die();
+            }
+
+            command = parser.getCommand();
+            if (xp >= xpNeededForNextLvl) {
+                levelUp();
+            }
+
+        }
+        else {
+
+        }
     }
 
     public Room getCurrentRoom() {
@@ -34,7 +62,28 @@ public class Player {
         return command;
     }
 
-    public void gather(){
+    public Inventory getInventory(){
+        return inventory;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public boolean isRestartGame() {
+        return restartGame;
+    }
+
+    public void setRestartGame(boolean restartGame) {
+        this.restartGame = restartGame;
+    }
+
+    public void die() {
+        alive = false;
+        command.restartGame(this);
+    }
+
+    public void gather() {
         if (currentRoom.getItem().getItemType() != ItemType.NULLITEM){
             inventory.add(currentRoom.getItem());
             System.out.println("You picked up: "+ currentRoom.getItem().getName());
@@ -44,8 +93,28 @@ public class Player {
         }
     }
 
-    public Inventory getInventory(){
-        return inventory;
+    public void consume() {
+        int minVal;
+        if (inventory.getSunCount() >= inventory.getWaterCount()) {
+            minVal = inventory.getWaterCount();
+        }
+        else {
+            minVal = inventory.getSunCount();
+        }
+
+        for (int i = 0; i < minVal; i++) {
+            inventory.remove(ItemType.WATER);
+            inventory.remove(ItemType.SUN);
+            xp++;
+        }
+    }
+
+    public void levelUp() {
+        xp = 0;
+        xpNeededForNextLvl++;
+        if (currentLevel > MAX_LEVEL) {
+            currentLevel++;
+        }
     }
 
 }
