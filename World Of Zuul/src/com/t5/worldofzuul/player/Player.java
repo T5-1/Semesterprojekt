@@ -1,7 +1,7 @@
 package com.t5.worldofzuul.player;
 
-import com.t5.worldofzuul.Command;
-import com.t5.worldofzuul.Parser;
+import com.t5.worldofzuul.command.Command;
+import com.t5.worldofzuul.command.Parser;
 import com.t5.worldofzuul.item.ItemType;
 import com.t5.worldofzuul.room.Room;
 
@@ -34,20 +34,19 @@ public class Player {
     }
 
     public void update() {
-        if (alive) {
-            if (inventory.getWaterCount() > xpNeededForNextLvl || inventory.getSunCount() > xpNeededForNextLvl) {
-                die();
-            }
-
-            command = parser.getCommand();
-            if (xp >= xpNeededForNextLvl) {
-                levelUp();
-            }
-
+        //Check if you've collected too much of either water or sun
+        if (inventory.getWaterCount() > xpNeededForNextLvl) {
+            die("water");
         }
-        else {
-
+        else if (inventory.getSunCount() > xpNeededForNextLvl) {
+            die("sun");
         }
+
+        command = parser.getCommand();
+        if (xp >= xpNeededForNextLvl) {
+            levelUp();
+        }
+
     }
 
     public Room getCurrentRoom() {
@@ -66,7 +65,7 @@ public class Player {
         return parser;
     }
 
-    public Inventory getInventory(){
+    public Inventory getInventory() {
         return inventory;
     }
 
@@ -82,18 +81,30 @@ public class Player {
         this.restartGame = restartGame;
     }
 
-    public void die() {
+    public void die(String deathMessage) {
         alive = false;
-        command.restartGame(this);
+        if (deathMessage == "sun") {
+            System.out.println("You gathered too much sun, and dried out. You are dead, do you want to restart the game? (yes/no)");
+        }
+        else if (deathMessage == "water") {
+            System.out.println("You gathered too much water, and drowned yourself. You are dead, do you want to restart the game? (yes/no)");
+        }
+        else {
+            System.out.println("You are dead, do you want to restart the game? (yes/no)");
+        }
     }
 
     public void gather() {
-        if (currentRoom.getItem().getItemType() != ItemType.NULLITEM){
-            inventory.add(currentRoom.getItem());
-            System.out.println("You picked up: "+ currentRoom.getItem().getName());
+        if (command.hasSecondWord()) {
+            System.out.println("Gather what?");
         }
         else {
-            System.out.println("There is nothing to pick up in this room");
+            if (currentRoom.getItem().getItemType() != ItemType.NULLITEM) {
+                inventory.add(currentRoom.getItem());
+                System.out.println("You picked up: " + currentRoom.getItem().getName());
+            } else {
+                System.out.println("There is nothing to pick up in this room");
+            }
         }
     }
 
@@ -101,8 +112,7 @@ public class Player {
         int minVal;
         if (inventory.getSunCount() >= inventory.getWaterCount()) {
             minVal = inventory.getWaterCount();
-        }
-        else {
+        } else {
             minVal = inventory.getSunCount();
         }
 

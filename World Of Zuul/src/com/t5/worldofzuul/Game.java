@@ -1,5 +1,7 @@
 package com.t5.worldofzuul;
 
+import com.t5.worldofzuul.command.CommandWord;
+import com.t5.worldofzuul.command.Parser;
 import com.t5.worldofzuul.room.*;
 import com.t5.worldofzuul.player.Player;
 
