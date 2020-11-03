@@ -5,11 +5,4 @@ public class Bat extends NPC {
         super("Bat", "?");
     }
 
-    public String getName(){
-        return name;
-    }
-
-    public String getInfo(){
-        return info;
-    }
 }

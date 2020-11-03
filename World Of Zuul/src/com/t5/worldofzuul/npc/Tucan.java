@@ -5,5 +5,5 @@ public class Tucan extends NPC {
     public Tucan() {
         super("Lion", "?");
     }
-    
+
 }

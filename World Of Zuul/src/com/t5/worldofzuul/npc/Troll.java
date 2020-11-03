@@ -6,11 +6,5 @@ public class Troll extends NPC {
         super("Troll", "?");
     }
 
-    public String getName(){
-        return name;
-    }
 
-    public String getInfo(){
-        return info;
-    }
 }

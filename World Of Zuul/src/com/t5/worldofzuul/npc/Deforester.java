@@ -5,12 +5,6 @@ public class Deforester extends NPC {
         super("Deforester", "?");
     }
 
-    public String getName(){
-        return name;
-    }
 
-    public String getInfo(){
-        return info;
-    }
 }
 

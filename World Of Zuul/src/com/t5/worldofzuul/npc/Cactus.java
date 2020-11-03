@@ -6,12 +6,5 @@ public class Cactus extends NPC {
         super("Cactus", "?");
     }
 
-    public String getName(){
-        return name;
-    }
-
-    public String getInfo(){
-        return info;
-    }
 
 }

@@ -6,11 +6,4 @@ public class Treehugger extends NPC {
         super("Treehugger", "?");
     }
 
-    public String getName(){
-        return name;
-    }
-
-    public String getInfo(){
-        return info;
-    }
 }
