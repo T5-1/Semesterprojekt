@@ -6,11 +6,4 @@ public class Tucan extends NPC {
         super("Lion", "?");
     }
 
-    public String getName(){
-        return name;
-    }
-
-    public String getInfo(){
-        return info;
-    }
 }

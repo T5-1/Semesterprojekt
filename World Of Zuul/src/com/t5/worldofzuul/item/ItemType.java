@@ -6,19 +6,16 @@ public enum ItemType {
             return new Sun();
         }
     },
-
     WATER{
         public Item getItem(){
             return new Water();
         }
     },
-
     SEED{
         public Item getItem(){
             return new Seed();
         }
     },
-
     NULLITEM{
         public Item getItem(){
             return new NullItem();

@@ -69,6 +69,3 @@ public abstract class Room
     }
 
 }
-
-
-

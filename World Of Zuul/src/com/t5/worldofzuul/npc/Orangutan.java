@@ -5,11 +5,4 @@ public class Orangutan extends NPC {
         super("Orangutan", "?");
     }
 
-    public String getName(){
-        return name;
-    }
-
-    public String getInfo(){
-        return info;
-    }
 }

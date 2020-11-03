@@ -6,11 +6,4 @@ public class Fish extends NPC {
         super("Fish", "?");
     }
 
-    public String getName(){
-        return name;
-    }
-
-    public String getInfo(){
-        return info;
-    }
 }
