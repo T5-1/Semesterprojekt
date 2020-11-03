@@ -5,7 +5,7 @@ import com.t5.worldofzuul.room.Cave;
 
 public class Flower extends NPC {
     public Flower() {
-        super("Flower", "?", "Flowerfield");
+        super("Flower", "?");
     }
     while(getCurrentRoom =Cave)
 

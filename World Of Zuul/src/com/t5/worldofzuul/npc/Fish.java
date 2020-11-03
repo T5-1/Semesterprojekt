@@ -5,7 +5,7 @@ import com.t5.worldofzuul.room.Cave;
 
 public class Fish extends NPC {
     public Fish() {
-        super("Fish", "?", "Lake");
+        super("Fish", "?");
     }
         while(getCurrentRoom =Cave)
 

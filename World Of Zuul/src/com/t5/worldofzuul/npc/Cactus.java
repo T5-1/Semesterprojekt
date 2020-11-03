@@ -5,7 +5,7 @@ import com.t5.worldofzuul.room.Cave;
 
 public class Cactus extends NPC {
     public Cactus() {
-        super("Cactus", "?", "Desert");
+        super("Cactus", "?");
     }
 
         while(getCurrentRoom =Cave)

@@ -6,7 +6,7 @@ import com.t5.worldofzuul.room.Cave;
 
 public class Bat extends NPC {
     public Bat() {
-        super("Bat", "?", "Cave");
+        super("Bat", "?");
     }
 
 while(getCurrentRoom = Cave)
