@@ -62,6 +62,10 @@ public class Player {
         return command;
     }
 
+    public Parser getParser() {
+        return parser;
+    }
+
     public Inventory getInventory(){
         return inventory;
     }

@@ -78,7 +78,7 @@ public class Command {
         }
 
         if (commandWord == CommandWord.HELP) {
-            printHelp();
+            printHelp(player);
         } else if (commandWord == CommandWord.GO) {
             goRoom(command, player);
         } else if (commandWord == CommandWord.GATHER) {
@@ -102,12 +102,12 @@ public class Command {
         System.out.println("Thank you for playing.  Good bye.");
     }
 
-    private void printHelp() {
+    private void printHelp(Player player) {
         System.out.println("You are lost. You are alone. You wander");
         System.out.println("around at the university.");
         System.out.println();
         System.out.println("Your command words are:");
-        parser.showCommands();
+        player.getParser().showCommands();
     }
 
     private void goRoom(Command command, Player player) {
