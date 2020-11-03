@@ -6,4 +6,12 @@ public class Flower extends NPC {
         super("Flower", "?");
     }
 
+    public String getName(){
+        return name;
+    }
+
+    public String getInfo(){
+        return info;
+    }
+
 }
