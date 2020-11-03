@@ -111,6 +111,7 @@ public class Player {
             inventory.remove(ItemType.SUN);
             xp++;
         }
+        System.out.println("you consume " + xp + " water & sun");
     }
 
     public void levelUp() {

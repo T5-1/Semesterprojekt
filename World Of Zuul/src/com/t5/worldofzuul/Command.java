@@ -86,7 +86,7 @@ public class Command {
         } else if (commandWord == CommandWord.INVENTORY) {
             player.getInventory().printInventory();
         } else if (commandWord == CommandWord.CONSUME) {
-
+            player.consume();
         } else if (commandWord == CommandWord.QUIT) {
             wantToQuit = quit(command);
         }
