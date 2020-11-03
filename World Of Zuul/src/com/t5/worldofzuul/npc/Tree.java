@@ -6,11 +6,4 @@ public class Tree extends NPC{
         super("Tree", "?");
     }
 
-    public String getName(){
-        return name;
-    }
-
-    public String getInfo() {
-        return info;
-    }
 }
