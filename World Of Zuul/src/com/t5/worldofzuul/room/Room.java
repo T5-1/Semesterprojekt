@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public abstract class Room
 {
-    private Item item;
+    private Item item = new NullItem();
     private NPC npc;
     private String description;
     private HashMap<String, Room> exits;
