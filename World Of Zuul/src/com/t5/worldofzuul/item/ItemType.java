@@ -1,6 +1,6 @@
 package com.t5.worldofzuul.item;
 
-public enum Items {
+public enum ItemType {
     SUN{
         public Item getItem(){
             return new Sun();

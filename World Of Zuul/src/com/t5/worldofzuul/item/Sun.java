@@ -3,6 +3,6 @@ package com.t5.worldofzuul.item;
 public class Sun extends Item {
 
     public Sun() {
-        super("Sun",Items.SUN);
+        super("Sun", ItemType.SUN);
     }
 }

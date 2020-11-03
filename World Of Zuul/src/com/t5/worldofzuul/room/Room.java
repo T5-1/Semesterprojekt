@@ -56,7 +56,7 @@ public abstract class Room
     }
 
     public Item getItem(){
-        return item.getItems().getItem();
+        return item.getItemType().getItem();
     }
 
 }

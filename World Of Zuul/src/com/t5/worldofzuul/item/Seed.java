@@ -2,6 +2,6 @@ package com.t5.worldofzuul.item;
 
 public class Seed extends Item {
     public Seed() {
-        super("Seed",Items.SEED);
+        super("Seed", ItemType.SEED);
     }
 }

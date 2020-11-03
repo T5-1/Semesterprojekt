@@ -1,9 +1,7 @@
 package com.t5.worldofzuul.player;
 
 import com.t5.worldofzuul.item.Item;
-import com.t5.worldofzuul.item.Items;
-import com.t5.worldofzuul.item.Sun;
-import com.t5.worldofzuul.item.Water;
+import com.t5.worldofzuul.item.ItemType;
 
 import java.util.ArrayList;
 
@@ -19,10 +17,10 @@ public class Inventory {
         inventory.add(item);
     }
 
-    public void remove(Items item) {
+    public void remove(ItemType item) {
         int removeIndex = -1;
         for (int i = 0; i < inventory.size(); i++) {
-            if (inventory.get(i).getItems() == item) {
+            if (inventory.get(i).getItemType() == item) {
                 removeIndex = i;
             }
         }

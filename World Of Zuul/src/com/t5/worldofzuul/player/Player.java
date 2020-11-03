@@ -2,8 +2,7 @@ package com.t5.worldofzuul.player;
 
 import com.t5.worldofzuul.Command;
 import com.t5.worldofzuul.Parser;
-import com.t5.worldofzuul.item.Items;
-import com.t5.worldofzuul.item.NullItem;
+import com.t5.worldofzuul.item.ItemType;
 import com.t5.worldofzuul.room.Room;
 
 public class Player {
@@ -36,7 +35,7 @@ public class Player {
     }
 
     public void gather(){
-        if (currentRoom.getItem().getItems() != Items.NULLITEM){
+        if (currentRoom.getItem().getItemType() != ItemType.NULLITEM){
             inventory.add(currentRoom.getItem());
             System.out.println("You picked up: "+ currentRoom.getItem().getName());
         }
