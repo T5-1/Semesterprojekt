@@ -89,6 +89,8 @@ public class Command {
             player.consume();
         } else if (commandWord == CommandWord.QUIT) {
             wantToQuit = quit(command);
+        } else if (commandWord == CommandWord.MAP) {
+            getMap();
         }
 
         return wantToQuit;
@@ -108,6 +110,20 @@ public class Command {
         System.out.println();
         System.out.println("Your command words are:");
         player.getParser().showCommands();
+    }
+
+    private void getMap(){
+        System.out.println(" ------------------------------------------------------------------- ");
+        System.out.println("|                                 |NorthernEntrance|                |");
+        System.out.println("|-------------------------------------------------------------------|");
+        System.out.println("|                |  FlowerField   |     River      |      Cave      |");
+        System.out.println("|-------------------------------------------------------------------|");
+        System.out.println("|      Lake      |     Shore      |     Spawn      |    Mountain    |");
+        System.out.println("| ------------------------------------------------------------------|");
+        System.out.println("|                |    Savanna     |      Camp      |     Desert     |");
+        System.out.println("|-------------------------------------------------------------------|");
+        System.out.println("|                                 |SouthernEntrance|                |");
+        System.out.println(" ------------------------------------------------------------------- ");
     }
 
     private void goRoom(Command command, Player player) {
