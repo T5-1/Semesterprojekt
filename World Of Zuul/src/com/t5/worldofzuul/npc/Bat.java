@@ -1,22 +1,15 @@
 package com.t5.worldofzuul.npc;
 
-
-import com.t5.worldofzuul.CommandWord;
-import com.t5.worldofzuul.room.Cave;
-
 public class Bat extends NPC {
     public Bat() {
-        super("Bat", "?", "Cave");
+        super("Bat", "?");
     }
 
-while(getCurrentRoom = Cave)
+    public String getName(){
+        return name;
+    }
 
-    {
-        if (command = CommandWord.Interract)
-            System.out.println("?");
-
-        //Get choices for the answer
-
-
+    public String getInfo(){
+        return info;
     }
 }

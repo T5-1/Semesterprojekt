@@ -1,9 +1,8 @@
 package com.t5.worldofzuul.npc;
 
-
-public class Fish extends NPC {
-    public Fish() {
-        super("Fish", "?");
+public class Deforester extends NPC {
+    public Deforester() {
+        super("Deforester", "?");
     }
 
     public String getName(){
@@ -14,3 +13,4 @@ public class Fish extends NPC {
         return info;
     }
 }
+

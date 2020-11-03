@@ -1,9 +1,9 @@
 package com.t5.worldofzuul.npc;
 
 
-public class Fish extends NPC {
-    public Fish() {
-        super("Fish", "?");
+public class Treehugger extends NPC {
+    public Treehugger() {
+        super("Treehugger", "?");
     }
 
     public String getName(){

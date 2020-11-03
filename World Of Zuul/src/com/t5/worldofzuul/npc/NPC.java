@@ -1,14 +1,12 @@
 package com.t5.worldofzuul.npc;
 
 public abstract class NPC {
-    private String name;
-    private String question;
-    private String room;
+    public String name;
+    public String info;
 
-    public NPC(String name, String question, String room) {
+    public NPC(String name, String info) {
         this.name = name;
-        this.question = question;
-        this.room = room;
+        this.info = info;
     }
 
 
