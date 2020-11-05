@@ -54,7 +54,7 @@ public class Player {
     }
 
     public void plant(){
-        if (inventory.getSeedCount() >= 2){
+        if (inventory.getSeedCount() >= 8){
             //if (currentLevel == MAX_LEVEL){
                 // plant all of the seeds except yourself.
                 System.out.println("you have now planted all of the seeds, go to spawn and plant " +

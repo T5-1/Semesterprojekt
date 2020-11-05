@@ -3,7 +3,7 @@ package com.t5.worldofzuul.npc;
 
 public class Fish extends NPC {
     public Fish() {
-        super("Fish", "blob. blob. blob. \n" +
+        super("Uncle Bob the Fish", "blob. blob. blob. \n" +
                 "my name is uncle bob\n" +
                 "the forest you must save\n" +
                 "it requires you be brave\n" +
