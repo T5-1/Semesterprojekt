@@ -80,4 +80,5 @@ public class Inventory {
         return waterCount;
     }
 
+    public int getSeedCount(){ return seedCount;}
 }

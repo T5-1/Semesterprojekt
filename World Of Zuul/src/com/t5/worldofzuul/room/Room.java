@@ -4,6 +4,7 @@ import com.t5.worldofzuul.item.Item;
 import com.t5.worldofzuul.item.ItemType;
 import com.t5.worldofzuul.item.NullItem;
 import com.t5.worldofzuul.npc.NPC;
+import com.t5.worldofzuul.player.Player;
 
 import java.util.Set;
 import java.util.HashMap;
@@ -46,25 +47,26 @@ public abstract class Room
         return description;
     }
 
-    public String getLongDescription()
+    public String getLongDescription(Player player)
     {
-        return "You are " + description + ".\n" + getExitString();
+        return "You are " + description + ".\n" + getExitString(player);
     }
 
-    private String getExitString()
+    private String getExitString(Player player)
     {
         String returnString = "Exits:";
         Set<String> keys = exits.keySet();
         for(String exit : keys) {
             returnString += " " + exit;
         }
-        if (item.getItemType() != ItemType.NULLITEM) {
-            returnString += "\nItems in the room: "+item.getName();
+        if (player.isCommandAvailable()) {
+            if (item.getItemType() != ItemType.NULLITEM) {
+                returnString += "\nItems in the room: " + item.getName();
+            } else {
+                returnString += "\nThere is no item in this room";
+            }
+            returnString += "\nYou can interact with: " + npc.getName();
         }
-        else {
-            returnString += "\nThere is no item in this room";
-        }
-        returnString += "\nYou can interact with: "+npc.getName();
         return returnString;
     }
 

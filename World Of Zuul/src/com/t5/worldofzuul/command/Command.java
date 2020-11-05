@@ -93,6 +93,8 @@ public class Command {
             getMap();
         } else if (commandWord == CommandWord.INTERACT) {
             player.interact();
+        }else if (commandWord == CommandWord.PLANT) {
+            player.plant();
         }
 
         return wantToQuit;
@@ -138,7 +140,7 @@ public class Command {
             System.out.println("There is no door!");
         } else {
             player.setCurrentRoom(nextRoom);
-            System.out.println(player.getCurrentRoom().getLongDescription());
+            System.out.println(player.getCurrentRoom().getLongDescription(player));
         }
     }
 

@@ -10,7 +10,7 @@ public class Player {
 
     private int xp, xpNeededForNextLvl, currentLevel;
     private final int MAX_LEVEL = 4;
-    private boolean alive, restartGame, readyForFinalLevel;
+    private boolean alive, restartGame, readyForFinalLevel, commandAvailable;
 
     private Room currentRoom;
     private Command command;
@@ -22,7 +22,7 @@ public class Player {
         xpNeededForNextLvl = 1;
         currentLevel = 0;
 
-        alive = true;
+        alive = commandAvailable = true;
         restartGame = readyForFinalLevel =false;
 
         currentRoom = spawn;
@@ -51,6 +51,27 @@ public class Player {
             readyForFinalLevel = true;
         }
 
+    }
+
+    public void plant(){
+        if (inventory.getSeedCount() >= 2){
+            //if (currentLevel == MAX_LEVEL){
+                // plant all of the seeds except yourself.
+                System.out.println("you have now planted all of the seeds, go to spawn and plant " +
+                        "yourself to complete the forest");
+                // we need to "disable" the other Rooms. You can enter the rooms, but you can't interact or gather.
+                //boolean in player "command availabe", when everything is ready CommandAvailabe=false.
+                commandAvailable = false;
+            //} else {
+                //System.out.println("You aren't big enough");
+            //}
+        } else {
+            System.out.println("You need 8 seeds to plant, and you need to be a mature tree.");
+        }
+    }
+
+    public boolean isCommandAvailable(){
+        return commandAvailable;
     }
 
     public boolean isReadyForFinalLevel() {
@@ -99,39 +120,52 @@ public class Player {
     }
 
     public void gather() {
-        if (command.hasSecondWord()) {
-            System.out.println("Gather what?");
-        }
-        else {
-            if (currentRoom.getItem().getItemType() == ItemType.SEED) {
-                inventory.add(currentRoom.getItem());
-                System.out.println("You picked up: " + currentRoom.getItem().getName());
-                currentRoom.setItem(new NullItem());
+        if (commandAvailable) {
+            if (command.hasSecondWord()) {
+                System.out.println("Gather what?");
+            } else {
+                if (currentRoom.getItem().getItemType() == ItemType.SEED) {
+                    inventory.add(currentRoom.getItem());
+                    System.out.println("You picked up: " + currentRoom.getItem().getName());
+                    currentRoom.setItem(new NullItem());
+                } else if (currentRoom.getItem().getItemType() != ItemType.NULLITEM) {
+                    inventory.add(currentRoom.getItem());
+                    System.out.println("You picked up: " + currentRoom.getItem().getName());
+                } else {
+                    System.out.println("There is nothing to pick up in this room");
+                }
             }
-            else if (currentRoom.getItem().getItemType() != ItemType.NULLITEM) {
-                inventory.add(currentRoom.getItem());
-                System.out.println("You picked up: " + currentRoom.getItem().getName());
-            }
-            else {
-                System.out.println("There is nothing to pick up in this room");
-            }
+        } else {
+            System.out.println("This action isn't available anymore");
         }
     }
 
     public void consume() {
-        int minVal;
-        if (inventory.getSunCount() >= inventory.getWaterCount()) {
-            minVal = inventory.getWaterCount();
-        } else {
-            minVal = inventory.getSunCount();
-        }
+        if (commandAvailable) {
+            int minVal;
+            if (inventory.getSunCount() >= inventory.getWaterCount()) {
+                minVal = inventory.getWaterCount();
+            } else {
+                minVal = inventory.getSunCount();
+            }
 
-        for (int i = 0; i < minVal; i++) {
-            inventory.remove(ItemType.WATER);
-            inventory.remove(ItemType.SUN);
-            xp++;
+            for (int i = 0; i < minVal; i++) {
+                inventory.remove(ItemType.WATER);
+                inventory.remove(ItemType.SUN);
+                xp++;
+            }
+            System.out.println("you consume " + xp + " water & sun");
+        }else {
+            System.out.println("This action isn't available anymore");
         }
-        System.out.println("you consume " + xp + " water & sun");
+    }
+
+    public void interact() {
+        if (commandAvailable) {
+            System.out.println(currentRoom.getNpc().getInfo());
+        }else {
+            System.out.println("This action isn't available anymore");
+        }
     }
 
     public void levelUp() {
@@ -142,10 +176,4 @@ public class Player {
             currentLevel++;
         }
     }
-    public void interact() {
-        System.out.println(currentRoom.getNpc().getInfo());
-
-
-    }
-
 }
