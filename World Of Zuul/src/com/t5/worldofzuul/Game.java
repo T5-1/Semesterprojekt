@@ -2,25 +2,27 @@ package com.t5.worldofzuul;
 
 import com.t5.worldofzuul.command.CommandWord;
 import com.t5.worldofzuul.command.Parser;
+import com.t5.worldofzuul.event.EventManager;
 import com.t5.worldofzuul.room.*;
 import com.t5.worldofzuul.player.Player;
 
 public class Game
 {
     private Parser parser;
-
     private Player player;
+    private EventManager eventManager;
+    private Room camp, cave, desert, flowerField, lake, mountain, river, savanna, shore, spawn, northernEntrance, southernEntrance;
 
     public Game()
     {
         createRooms();
         parser = new Parser();
+        player = new Player(spawn);
+        eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
     }
 
     private void createRooms()
     {
-        Room camp, cave, desert, flowerField, lake, mountain, river, savanna, shore, spawn, northernEntrance, southernEntrance;
-
         camp = new Camp("at the Camp");
         cave = new Cave("at the Cave");
         desert = new Desert("at the desert");
@@ -75,8 +77,6 @@ public class Game
         northernEntrance.setExit("south", river);
 
         southernEntrance.setExit("north", camp);
-
-        player = new Player(spawn);
     }
 
     public void play()
@@ -87,6 +87,7 @@ public class Game
         while (!finished) {
             if (player.isAlive()) {
                 player.update();
+                eventManager.update(player);
                 finished = player.getCommand().processCommand(player.getCommand(), player);
             }
             else {

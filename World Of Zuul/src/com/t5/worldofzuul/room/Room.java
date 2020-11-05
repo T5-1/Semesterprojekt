@@ -1,6 +1,7 @@
 package com.t5.worldofzuul.room;
 
 import com.t5.worldofzuul.item.Item;
+import com.t5.worldofzuul.item.ItemType;
 import com.t5.worldofzuul.item.NullItem;
 import com.t5.worldofzuul.npc.NPC;
 
@@ -56,7 +57,12 @@ public abstract class Room
         for(String exit : keys) {
             returnString += " " + exit;
         }
-        returnString += "\nItems in the room: "+item.getName();
+        if (item.getItemType() != ItemType.NULLITEM) {
+            returnString += "\nItems in the room: "+item.getName();
+        }
+        else {
+            returnString += "\nThere is no item in this room";
+        }
         returnString += "\nYou can interact with: "+npc.getName();
         return returnString;
     }

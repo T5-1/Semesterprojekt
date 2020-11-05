@@ -9,7 +9,7 @@ public class Player {
 
     private int xp, xpNeededForNextLvl, currentLevel;
     private final int MAX_LEVEL = 4;
-    private boolean alive, restartGame;
+    private boolean alive, restartGame, readyForFinalLevel;
 
     private Room currentRoom;
     private Command command;
@@ -22,7 +22,7 @@ public class Player {
         currentLevel = 0;
 
         alive = true;
-        restartGame = false;
+        restartGame = readyForFinalLevel =false;
 
         currentRoom = spawn;
         parser = new Parser();
@@ -47,6 +47,14 @@ public class Player {
             levelUp();
         }
 
+    }
+
+    public boolean isReadyForFinalLevel() {
+        return readyForFinalLevel;
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
     }
 
     public Room getCurrentRoom() {
