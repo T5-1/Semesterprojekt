@@ -4,8 +4,8 @@ import com.t5.worldofzuul.npc.Tree;
 
 public class Spawn extends Room {
 
-    public Spawn(String description) {
+    public Spawn(String description, String name) {
 
-        super(description, new Tree());
+        super(description, name, new Tree());
     }
 }

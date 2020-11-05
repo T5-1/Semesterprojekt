@@ -5,7 +5,7 @@ import com.t5.worldofzuul.npc.Cactus;
 
 public class Desert extends Room{
 
-    public Desert(String description) {
-        super(description,new Sun(), new Cactus());
+    public Desert(String description, String name) {
+        super(description, name, new Sun(), new Cactus());
     }
 }

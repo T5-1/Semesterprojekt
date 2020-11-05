@@ -4,7 +4,7 @@ import com.t5.worldofzuul.item.Water;
 import com.t5.worldofzuul.npc.Troll;
 
 public class River extends Room{
-    public River(String description) {
-        super(description, new Water(), new Troll());
+    public River(String description, String name) {
+        super(description, name, new Water(), new Troll());
     }
 }

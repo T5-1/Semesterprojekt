@@ -13,16 +13,16 @@ public abstract class Room
     private Item item = new NullItem();
     private NPC npc;
     private String description;
+    private String name;
     private HashMap<String, Room> exits;
 
-    public Room(String description, Item item, NPC npc)
+    public Room(String description, String name, Item item, NPC npc)
     {
-        this.description = description;
+        this(description, name, npc);
         exits = new HashMap<String, Room>();
         this.item=item;
-        this.npc = npc;
     }
-    public Room(String description, NPC npc){
+    public Room(String description, String name, NPC npc){
         this.description = description;
         exits = new HashMap<String, Room>();
         this.npc = npc;
@@ -79,6 +79,10 @@ public abstract class Room
 
     public NPC getNpc() {
         return npc;
+    }
+
+    public String getName() {
+        return name;
     }
 
 }

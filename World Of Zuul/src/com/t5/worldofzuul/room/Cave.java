@@ -5,8 +5,8 @@ import com.t5.worldofzuul.npc.Bat;
 
 public class Cave extends Room {
 
-    public Cave(String description) {
-        super(description, new Seed(), new Bat());
+    public Cave(String description, String name) {
+        super(description, name, new Seed(), new Bat());
 
     }
 }

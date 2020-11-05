@@ -32,7 +32,7 @@ public class EventManager {
             }
             //check if the player has anymore actions left
             else if (event.getActionsLeft() < 1 && event.getActionsLeft() > -1) {
-                player.die("You didn't get to the " + event.getRoom().getClass().getName() + " in time, and the forrest is now dead");
+                player.die("You didn't get to the " + event.getRoom().getName() + " in time, and the forrest is now dead");
             }
         }
         else {

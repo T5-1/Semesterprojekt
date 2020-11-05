@@ -19,7 +19,7 @@ public class Player {
     public Player(Room spawn) {
         xp = 0;
         xpNeededForNextLvl = 1;
-        currentLevel = 0;
+        currentLevel = 3;
 
         alive = true;
         restartGame = readyForFinalLevel =false;
@@ -36,15 +36,18 @@ public class Player {
     public void update() {
         //Check if you've collected too much of either water or sun
         if (inventory.getWaterCount() > xpNeededForNextLvl) {
-            die("water");
+            die("You gathered too much water, and drowned yourself.");
         }
         else if (inventory.getSunCount() > xpNeededForNextLvl) {
-            die("sun");
+            die("You gathered too much sun, and dried out.");
         }
 
         command = parser.getCommand();
-        if (xp >= xpNeededForNextLvl) {
+        if (xp >= xpNeededForNextLvl && currentLevel < 3) {
             levelUp();
+        }
+        else if (xp >= xpNeededForNextLvl) {
+            readyForFinalLevel = true;
         }
 
     }
@@ -91,15 +94,7 @@ public class Player {
 
     public void die(String deathMessage) {
         alive = false;
-        if (deathMessage == "sun") {
-            System.out.println("You gathered too much sun, and dried out. You are dead, do you want to restart the game? (yes/no)");
-        }
-        else if (deathMessage == "water") {
-            System.out.println("You gathered too much water, and drowned yourself. You are dead, do you want to restart the game? (yes/no)");
-        }
-        else {
-            System.out.println("You are dead, do you want to restart the game? (yes/no)");
-        }
+        System.out.println(deathMessage + " You are dead, do you want to restart the game? (yes/no)");
     }
 
     public void gather() {

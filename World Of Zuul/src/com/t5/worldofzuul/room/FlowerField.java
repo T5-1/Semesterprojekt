@@ -4,7 +4,7 @@ import com.t5.worldofzuul.item.Seed;
 import com.t5.worldofzuul.npc.Flower;
 
 public class FlowerField extends Room{
-    public FlowerField(String description) {
-        super(description, new Seed(), new Flower());
+    public FlowerField(String description, String name) {
+        super(description, name, new Seed(), new Flower());
     }
 }

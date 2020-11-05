@@ -23,18 +23,18 @@ public class Game
 
     private void createRooms()
     {
-        camp = new Camp("at the Camp");
-        cave = new Cave("at the Cave");
-        desert = new Desert("at the desert");
-        flowerField = new FlowerField("at the FlowerField");
-        lake = new Lake("at the lake");
-        mountain = new Mountain("on the Mountain");
-        river = new River("at the River");
-        savanna = new Savanna("at the Savanna");
-        shore = new Shore("at the Shore");
-        spawn = new Spawn("at the Spawn");
-        northernEntrance = new NorthernEntrance("at the Northern Entrance");
-        southernEntrance = new SouthernEntrance("at the Southern Entrance");
+        camp = new Camp("at the Camp", "Camp");
+        cave = new Cave("at the Cave", "Cave");
+        desert = new Desert("at the desert", "Desert");
+        flowerField = new FlowerField("at the FlowerField", "Flower Field");
+        lake = new Lake("at the lake", "Lake");
+        mountain = new Mountain("on the Mountain", "Mountain");
+        river = new River("at the River", "River");
+        savanna = new Savanna("at the Savanna", "Savanna");
+        shore = new Shore("at the Shore", "Shore");
+        spawn = new Spawn("at the Spawn", "Spawn");
+        northernEntrance = new NorthernEntrance("at the Northern Entrance", "Northern Entrance");
+        southernEntrance = new SouthernEntrance("at the Southern Entrance", "Southern Entrance");
 
         camp.setExit("west", savanna);
         camp.setExit("north",spawn);
@@ -82,6 +82,8 @@ public class Game
     public void play()
     {
         printWelcome();
+
+        System.out.println(southernEntrance.getName());
 
         boolean finished = false;
         while (!finished) {
