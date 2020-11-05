@@ -131,5 +131,8 @@ public class Player {
             currentLevel++;
         }
     }
+    public void interract() {
+
+    }
 
 }
