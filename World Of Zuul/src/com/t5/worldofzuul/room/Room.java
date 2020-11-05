@@ -49,11 +49,6 @@ public abstract class Room
         return "You are " + description + ".\n" + getExitString();
     }
 
-    @Override
-    public String toString() {
-        return "Items in the Room: " + item;
-    }
-
     private String getExitString()
     {
         String returnString = "Exits:";
