@@ -29,7 +29,7 @@ public class EventManager {
             event.setActionsLeft(event.getActionsLeft() - 1);
             //check if the player is in the correct room
             if (player.getCurrentRoom() == event.getRoom()) {
-                event.start(player);
+                event.start(player, this);
                 eventRunning = false;
                 player.getCurrentRoom().setAccessible(false);
             }
@@ -44,12 +44,14 @@ public class EventManager {
 
             //check if the player is high enough level to start lake event, and check if lake event has been played
             if (player.getCurrentLevel() == 3 && player.isReadyForFinalLevel() && !lakeEventPlayed) {
+                eventRunning = true;
                 event = new LakeEvent(lake);
                 lake.setDeadly(false);
             }
 
             //check if seeds are planted, and start final event
-            if (player.isSeedsPlanted()) {
+            if (player.isSeedsPlanted() && !finalEventPlayed) {
+                eventRunning = true;
                 event = new FinalEvent(spawn);
             }
         }
@@ -57,19 +59,49 @@ public class EventManager {
 
     public void randomEvent(Player player) {
         //5% chance of starting a random event if the player is a sprout
-        if (player.getCurrentLevel() == 1 && random.nextInt(100) <= 5 && !southernEventPlayed) {
+        if (player.getCurrentLevel() == 1 && random.nextInt(100) <= 15 && !southernEventPlayed) {
             event = new SouthernEvent(southernEntrance);
             southernEntrance.setAccessible(true);
             eventRunning = true;
-            southernEventPlayed = true;
         }
         //5% chance of starting a random event if the player is a seedling
-        else if (player.getCurrentLevel() == 2 && random.nextInt(100) <= 5 && !northernEventPlayed) {
+        else if (player.getCurrentLevel() == 2 && random.nextInt(100) <= 15 && !northernEventPlayed) {
             event = new NorthernEvent(northernEntrance);
             northernEntrance.setAccessible(true);
             eventRunning = true;
-            northernEventPlayed = true;
         }
+    }
+
+    public boolean isFinalEventPlayed() {
+        return finalEventPlayed;
+    }
+
+    public void setFinalEventPlayed(boolean finalEventPlayed) {
+        this.finalEventPlayed = finalEventPlayed;
+    }
+
+    public boolean isNorthernEventPlayed() {
+        return northernEventPlayed;
+    }
+
+    public void setNorthernEventPlayed(boolean northernEventPlayed) {
+        this.northernEventPlayed = northernEventPlayed;
+    }
+
+    public boolean isSouthernEventPlayed() {
+        return southernEventPlayed;
+    }
+
+    public void setSouthernEventPlayed(boolean southernEventPlayed) {
+        this.southernEventPlayed = southernEventPlayed;
+    }
+
+    public boolean isLakeEventPlayed() {
+        return lakeEventPlayed;
+    }
+
+    public void setLakeEventPlayed(boolean lakeEventPlayed) {
+        this.lakeEventPlayed = lakeEventPlayed;
     }
 
 }

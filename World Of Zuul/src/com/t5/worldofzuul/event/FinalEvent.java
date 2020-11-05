@@ -10,10 +10,10 @@ public class FinalEvent extends Event {
     }
 
     @Override
-    public void start(Player player) {
+    public void start(Player player, EventManager eventManager) {
         boolean answered = false;
         String answer;
-        System.out.println(super.getRoom().getNpc().getInfo());
+        System.out.println(getRoom().getNpc().getInfo());
         System.out.println("1: answer 1");
         System.out.println("2: answer 2");
         System.out.println("3: answer 3");
@@ -24,6 +24,7 @@ public class FinalEvent extends Event {
             if (answer.equals("1")) {
                 System.out.println("That's right");
                 answered = true;
+                eventManager.setFinalEventPlayed(true);
             } else if (answer.equals("2")) {
                 System.out.println("That's wrong");
             } else if (answer.equals("3")) {

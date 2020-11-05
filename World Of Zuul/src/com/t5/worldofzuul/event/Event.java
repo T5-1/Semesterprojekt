@@ -9,7 +9,6 @@ public abstract class Event {
 
     private String description;
 
-    private boolean eventFinished = false;
     private int actionsLeft = -1;
 
     private Room room;
@@ -38,5 +37,5 @@ public abstract class Event {
         return scanner;
     }
 
-    public abstract void start(Player player);
+    public abstract void start(Player player, EventManager eventManager);
 }

@@ -2,36 +2,42 @@ package com.t5.worldofzuul.player;
 
 import com.t5.worldofzuul.command.Command;
 import com.t5.worldofzuul.command.Parser;
-import com.t5.worldofzuul.item.ItemType;
-import com.t5.worldofzuul.item.NullItem;
+import com.t5.worldofzuul.event.EventManager;
+import com.t5.worldofzuul.item.*;
 import com.t5.worldofzuul.room.Room;
 
 public class Player {
 
-    private int xp, xpNeededForNextLvl, currentLevel;
+    private int xp, xpNeededForNextLvl, currentLevel, npcsReactedWith, npcsNeededReactionWith;
     private final int MAX_LEVEL = 4;
-    private boolean alive, restartGame, readyForFinalLevel, commandAvailable, seedsPlanted;
+    private boolean alive, restartGame, readyForFinalLevel, commandAvailable, seedsPlanted, canLevelUp;
     private String[] evolution = {"Seed", "Sprout", "Seedling", "Sapling", "Mature Tree"};
 
     private Room currentRoom;
     private Command command;
     private Parser parser;
     private Inventory inventory;
+    private EventManager eventManager;
 
-    public Player(Room spawn) {
+    public Player(Room spawn, EventManager eventManager) {
         xp = 0;
-        xpNeededForNextLvl = 1;
         currentLevel = 0;
+        npcsReactedWith = 0;
+        npcsNeededReactionWith = 3;
+        xpNeededForNextLvl = currentLevel + 1;
 
         alive = commandAvailable = true;
         restartGame = readyForFinalLevel = seedsPlanted = false;
+        canLevelUp = true;
 
         currentRoom = spawn;
         parser = new Parser();
         inventory = new Inventory();
+        this.eventManager = eventManager;
     }
 
     public void update() {
+        //check if the current room will kill you(only happens in lake)
         if (currentRoom.isDeadly()) {
             die("You drowned in the Lake.");
         }
@@ -39,34 +45,40 @@ public class Player {
         //Check if you've collected too much of either water or sun
         if (inventory.getWaterCount() > xpNeededForNextLvl) {
             die("You gathered too much water, and drowned yourself.");
-        }
-        else if (inventory.getSunCount() > xpNeededForNextLvl) {
+        } else if (inventory.getSunCount() > xpNeededForNextLvl) {
             die("You gathered too much sun, and dried out.");
         }
+        //check if you've consumed enough items to level up, and checks if you are under level 3
         if (xp >= xpNeededForNextLvl && currentLevel < 3) {
             levelUp();
         }
+        //checks if you have enough xp to start lake event, when in level 3
         else if (xp >= xpNeededForNextLvl) {
             readyForFinalLevel = true;
+            xp = 0;
+            command = null;
+            return;
         }
 
         command = parser.getCommand();
 
     }
 
-    public void plant(){
+    public void plant() {
+        //check if the command is available for use
         if (commandAvailable) {
-            if (inventory.getSeedCount() >= 8){
-                if (currentLevel == MAX_LEVEL){
-                // plant all of the seeds except yourself.
-                System.out.println("you have now planted all of the seeds, go to spawn and plant " +
-                        "yourself to complete the forest");
-                // we need to "disable" the other Rooms. You can enter the rooms, but you can't interact or gather.
-                //boolean in player "command availabe", when everything is ready CommandAvailabe=false.
-                commandAvailable = false;
-                seedsPlanted = true;
+            //check if you have 8 seeds in inventory
+            if (inventory.getSeedCount() >= 8) {
+                if (currentLevel == MAX_LEVEL) {
+                    // plant all of the seeds except yourself.
+                    System.out.println("you have now planted all of the seeds, go to spawn and plant " +
+                            "yourself to complete the forest");
+                    // we need to "disable" the other Rooms. You can enter the rooms, but you can't interact or gather.
+                    //boolean in player "command availabe", when everything is ready CommandAvailabe=false.
+                    commandAvailable = false;
+                    seedsPlanted = true;
                 } else {
-                System.out.println("You aren't big enough");
+                    System.out.println("You aren't big enough");
                 }
             } else {
                 System.out.println("You need 8 seeds to plant, and you need to be a mature tree.");
@@ -74,7 +86,7 @@ public class Player {
         }
     }
 
-    public boolean isCommandAvailable(){
+    public boolean isCommandAvailable() {
         return commandAvailable;
     }
 
@@ -146,28 +158,48 @@ public class Player {
 
     public void consume() {
         if (commandAvailable) {
-            int minVal;
-            if (inventory.getSunCount() >= inventory.getWaterCount()) {
-                minVal = inventory.getWaterCount();
-            } else {
-                minVal = inventory.getSunCount();
-            }
+            if (npcsReactedWith >= npcsNeededReactionWith) {
+                if (canLevelUp || currentLevel == 3) {
+                    int minVal;
+                    if (inventory.getSunCount() >= inventory.getWaterCount()) {
+                        minVal = inventory.getWaterCount();
+                    } else {
+                        minVal = inventory.getSunCount();
+                    }
 
-            for (int i = 0; i < minVal; i++) {
-                inventory.remove(ItemType.WATER);
-                inventory.remove(ItemType.SUN);
-                xp++;
+                    for (int i = 0; i < minVal; i++) {
+                        inventory.remove(ItemType.WATER);
+                        inventory.remove(ItemType.SUN);
+                        xp++;
+                    }
+                    System.out.println("you consumed " + xp + " water & " + xp + " sun");
+                } else {
+                    System.out.println("Somethings missing but you don't quite know what hmm... try wandering around a bit");
+                }
+            } else {
+                System.out.println("You need more information to consume, try talking with someone");
             }
-            System.out.println("you consumed " + xp + " water & "+ xp + " sun");
-        }else {
+        } else {
             System.out.println("This action isn't available anymore");
         }
     }
 
     public void interact() {
         if (commandAvailable) {
-            System.out.println(currentRoom.getNpc().getInfo());
-        }else {
+            if (npcsReactedWith >= npcsNeededReactionWith) {
+                System.out.println("you can't gather more information right now, you should try evolving");
+            } else if (!currentRoom.getNpc().getName().equals("Old Tutorial Tree")) {
+                System.out.println(currentRoom.getNpc().getInfo());
+                if (!currentRoom.getNpc().isInteracted()) {
+                    npcsReactedWith++;
+                    System.out.println("Information gathered!");
+                } else if (currentRoom.getNpc().isInteracted()) {
+                    System.out.println("You already know this");
+                }
+                currentRoom.getNpc().setInteracted(true);
+            }
+
+        } else {
             System.out.println("This action isn't available anymore");
         }
     }
@@ -180,9 +212,24 @@ public class Player {
             currentLevel++;
         }
         System.out.println("You are now a " + evolution[currentLevel]);
+        if (currentLevel == 1) {
+            npcsNeededReactionWith += 3;
+        }
+        else if (currentLevel == 2) {
+            npcsNeededReactionWith += 2;
+        }
+        canLevelUp = false;
     }
 
     public boolean isSeedsPlanted() {
         return seedsPlanted;
+    }
+
+    public String[] getEvolution() {
+        return evolution;
+    }
+
+    public void setCanLevelUp(boolean canLevelUp) {
+        this.canLevelUp = canLevelUp;
     }
 }

@@ -17,8 +17,8 @@ public class Game
     {
         createRooms();
         parser = new Parser();
-        player = new Player(spawn);
         eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
+        player = new Player(spawn, eventManager);
     }
 
     private void createRooms()
@@ -82,18 +82,31 @@ public class Game
     public void play()
     {
         printWelcome();
+        System.out.println("Current level: " + player.getEvolution()[player.getCurrentLevel()]);
 
         boolean finished = false;
         while (!finished) {
             if (player.isAlive()) {
-                eventManager.update(player);
-                player.update();
-                finished = player.getCommand().processCommand(player.getCommand(), player);
+                if (!eventManager.isFinalEventPlayed()) {
+                    eventManager.update(player);
+                    if(eventManager.isFinalEventPlayed()) {
+                        continue;
+                    }
+                    player.update();
+                    if (player.getCommand() != null) {
+                        finished = player.getCommand().processCommand(player.getCommand(), player);
+                    }
+                }
+                else {
+                    eventManager.update(player);
+                    printEnd();
+                    finished = true;
+                }
             }
             else {
                 if (player.isRestartGame()) {
                     createRooms();
-                    player = new Player(spawn);
+                    player = new Player(spawn, eventManager);
                     printWelcome();
                 }
                 else {
@@ -112,6 +125,10 @@ public class Game
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         System.out.println(player.getCurrentRoom().getLongDescription(player));
+    }
+
+    public void printEnd() {
+
     }
 
     public static void main(String[] args) {
