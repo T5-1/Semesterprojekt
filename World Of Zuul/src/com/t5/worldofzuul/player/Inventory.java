@@ -9,11 +9,11 @@ public class Inventory {
 
     private ArrayList<Item> inventory;
 
-    private int sunCount, waterCount;
+    private int sunCount, waterCount, seedCount;
 
     public Inventory() {
         inventory = new ArrayList<>();
-        sunCount = waterCount = 0;
+        sunCount = waterCount = seedCount = 0;
     }
 
     public void add(Item item) {
@@ -25,6 +25,9 @@ public class Inventory {
                 break;
             case WATER:
                 waterCount++;
+                break;
+            case SEED:
+                seedCount++;
                 break;
         }
     }
@@ -47,19 +50,26 @@ public class Inventory {
             case WATER:
                 waterCount--;
                 break;
+            case SEED:
+                seedCount--;
+                break;
         }
     }
 
     public void printInventory() {
-        if (waterCount > 1 && sunCount > 1) {
-            System.out.println("You have " + sunCount + "x Suns & " + waterCount + "x Waters");
-        } else if (waterCount < 2 && sunCount > 1) {
-            System.out.println("You have " + sunCount + "x Suns & " + waterCount + "x Water");
-        } else if (waterCount > 1 && sunCount < 2) {
-            System.out.println("You have " + sunCount + "x Sun & " + waterCount + "x Waters");
-        } else if (waterCount < 2 && sunCount < 2) {
-            System.out.println("You have " + sunCount + "x Sun & " + waterCount + "x Water");
+        if (sunCount < 2) {
+            System.out.println("You have " + sunCount + "x Sun");
         }
+        else {
+            System.out.println("You have " + sunCount + "x Suns");
+        }
+        if (sunCount < 2) {
+            System.out.println("You have " + waterCount + "x Water");
+        }
+        else {
+            System.out.println("You have " + waterCount + "x Waters");
+        }
+        System.out.println("You have " + seedCount + "x Seeds");
     }
 
     public int getSunCount() {
