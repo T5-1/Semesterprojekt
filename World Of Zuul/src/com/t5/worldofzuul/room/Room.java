@@ -49,6 +49,11 @@ public abstract class Room
         return "You are " + description + ".\n" + getExitString();
     }
 
+    @Override
+    public String toString() {
+        return "Items in the Room: " + item;
+    }
+
     private String getExitString()
     {
         String returnString = "Exits:";
@@ -56,8 +61,11 @@ public abstract class Room
         for(String exit : keys) {
             returnString += " " + exit;
         }
+        returnString += "\nItems in the room: "+item.getName();
+        returnString += "\nYou can interact with: "+npc.getName();
         return returnString;
     }
+
 
     public Room getExit(String direction)
     {
