@@ -1,5 +1,6 @@
 package com.t5.worldofzuul.event;
 
+import com.t5.worldofzuul.player.Player;
 import com.t5.worldofzuul.room.Room;
 
 public class FinalEvent extends Event {
@@ -9,7 +10,7 @@ public class FinalEvent extends Event {
     }
 
     @Override
-    public void start() {
+    public void start(Player player) {
         boolean answered = false;
         String answer;
         System.out.println(super.getRoom().getNpc().getInfo());

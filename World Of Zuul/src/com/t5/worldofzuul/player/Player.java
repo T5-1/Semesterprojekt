@@ -11,6 +11,7 @@ public class Player {
     private int xp, xpNeededForNextLvl, currentLevel;
     private final int MAX_LEVEL = 4;
     private boolean alive, restartGame, readyForFinalLevel, commandAvailable, seedsPlanted;
+    private String[] evolution = {"Seed", "Sprout", "Seedling", "Sapling", "Mature Tree"};
 
     private Room currentRoom;
     private Command command;
@@ -35,6 +36,10 @@ public class Player {
     }
 
     public void update() {
+        if (currentRoom.isDeadly()) {
+            die("You drowned in the Lake.");
+        }
+
         //Check if you've collected too much of either water or sun
         if (inventory.getWaterCount() > xpNeededForNextLvl) {
             die("You gathered too much water, and drowned yourself.");
@@ -42,14 +47,14 @@ public class Player {
         else if (inventory.getSunCount() > xpNeededForNextLvl) {
             die("You gathered too much sun, and dried out.");
         }
-
-        command = parser.getCommand();
         if (xp >= xpNeededForNextLvl && currentLevel < 3) {
             levelUp();
         }
         else if (xp >= xpNeededForNextLvl) {
             readyForFinalLevel = true;
         }
+
+        command = parser.getCommand();
 
     }
 
@@ -157,7 +162,7 @@ public class Player {
                 inventory.remove(ItemType.SUN);
                 xp++;
             }
-            System.out.println("you consume " + xp + " water & "+ xp + " sun");
+            System.out.println("you consumed " + xp + " water & "+ xp + " sun");
         }else {
             System.out.println("This action isn't available anymore");
         }
@@ -178,6 +183,7 @@ public class Player {
         if (currentLevel > MAX_LEVEL) {
             currentLevel++;
         }
+        System.out.println("You are now a " + evolution[currentLevel]);
     }
 
     public boolean isSeedsPlanted() {

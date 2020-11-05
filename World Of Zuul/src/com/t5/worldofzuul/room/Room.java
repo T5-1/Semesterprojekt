@@ -11,6 +11,9 @@ import java.util.HashMap;
 
 public abstract class Room
 {
+    private boolean accessible = true;
+    private boolean deadly = false;
+
     private Item item = new NullItem();
     private NPC npc;
     private String description;
@@ -90,6 +93,22 @@ public abstract class Room
 
     public String getName() {
         return name;
+    }
+
+    public boolean isAccessible() {
+        return accessible;
+    }
+
+    public void setAccessible(boolean accessible) {
+        this.accessible = accessible;
+    }
+
+    public boolean isDeadly() {
+        return deadly;
+    }
+
+    public void setDeadly(boolean deadly) {
+        this.deadly = deadly;
     }
 
 }

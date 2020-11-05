@@ -1,5 +1,6 @@
 package com.t5.worldofzuul.event;
 
+import com.t5.worldofzuul.player.Player;
 import com.t5.worldofzuul.room.Room;
 
 import java.util.Scanner;
@@ -37,5 +38,5 @@ public abstract class Event {
         return scanner;
     }
 
-    public abstract void start();
+    public abstract void start(Player player);
 }

@@ -51,7 +51,6 @@ public class Command {
 
     public boolean processCommand(Command command, Player player) {
         boolean wantToQuit = false;
-
         CommandWord commandWord = command.getCommandWord();
         if (!player.isAlive()) {
             parser = new Parser();
@@ -71,7 +70,6 @@ public class Command {
                 }
             }
         }
-
         else if (commandWord == CommandWord.UNKNOWN || commandWord == CommandWord.YES || commandWord == CommandWord.NO) {
             System.out.println("I don't know what you mean...");
             return false;
@@ -135,12 +133,20 @@ public class Command {
         String direction = command.getSecondWord();
 
         Room nextRoom = player.getCurrentRoom().getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        } else {
+        if (nextRoom.isDeadly()) {
             player.setCurrentRoom(nextRoom);
-            System.out.println(player.getCurrentRoom().getLongDescription(player));
+        }
+        else if (nextRoom.isAccessible()) {
+            if (nextRoom == null) {
+                System.out.println("There is no door!");
+            }
+            else {
+                player.setCurrentRoom(nextRoom);
+                System.out.println(player.getCurrentRoom().getLongDescription(player));
+            }
+        }
+        else {
+            System.out.println("This room can't be accessed at the moment");
         }
     }
 

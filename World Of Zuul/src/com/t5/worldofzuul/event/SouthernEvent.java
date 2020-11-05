@@ -1,5 +1,7 @@
 package com.t5.worldofzuul.event;
 
+import com.t5.worldofzuul.item.Seed;
+import com.t5.worldofzuul.player.Player;
 import com.t5.worldofzuul.room.Room;
 
 public class SouthernEvent extends Event {
@@ -10,7 +12,7 @@ public class SouthernEvent extends Event {
     }
 
     @Override
-    public void start() {
+    public void start(Player player) {
         boolean answered = false;
         String answer;
         System.out.println(super.getRoom().getNpc().getInfo());
@@ -22,7 +24,10 @@ public class SouthernEvent extends Event {
         while (!answered) {
             answer = getScanner().nextLine();
             if (answer.equals("1")) {
-                System.out.println("That's right");
+                System.out.println("That's right, here take these two seeds");
+                for (int i = 0; i < 2; i++) {
+                    player.getInventory().add(new Seed());
+                }
                 answered = true;
             } else if (answer.equals("2")) {
                 System.out.println("That's wrong");
