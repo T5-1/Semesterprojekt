@@ -24,6 +24,7 @@ public abstract class Room
     }
     public Room(String description, String name, NPC npc){
         this.description = description;
+        this.name = name;
         exits = new HashMap<String, Room>();
         this.npc = npc;
     }
