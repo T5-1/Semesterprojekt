@@ -71,4 +71,8 @@ public abstract class Room
         return item.getItemType().getItem();
     }
 
+    public NPC getNpc() {
+        return npc;
+    }
+
 }

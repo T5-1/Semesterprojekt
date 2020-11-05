@@ -91,8 +91,8 @@ public class Command {
             wantToQuit = quit(command);
         } else if (commandWord == CommandWord.MAP) {
             getMap();
-        } else if (commandWord == CommandWord.INTERRACT) {
-            player.interract();
+        } else if (commandWord == CommandWord.INTERACT) {
+            player.interact();
         }
 
         return wantToQuit;

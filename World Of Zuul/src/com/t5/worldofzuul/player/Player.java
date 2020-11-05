@@ -125,13 +125,16 @@ public class Player {
     }
 
     public void levelUp() {
+
         xp = 0;
         xpNeededForNextLvl++;
         if (currentLevel > MAX_LEVEL) {
             currentLevel++;
         }
     }
-    public void interract() {
+    public void interact() {
+        System.out.println(currentRoom.getNpc().getInfo());
+
 
     }
 
