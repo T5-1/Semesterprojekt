@@ -10,7 +10,7 @@ public class Player {
 
     private int xp, xpNeededForNextLvl, currentLevel;
     private final int MAX_LEVEL = 4;
-    private boolean alive, restartGame, readyForFinalLevel, commandAvailable;
+    private boolean alive, restartGame, readyForFinalLevel, commandAvailable, seedsPlanted;
 
     private Room currentRoom;
     private Command command;
@@ -23,7 +23,7 @@ public class Player {
         currentLevel = 0;
 
         alive = commandAvailable = true;
-        restartGame = readyForFinalLevel =false;
+        restartGame = readyForFinalLevel = seedsPlanted = false;
 
         currentRoom = spawn;
         parser = new Parser();
@@ -54,19 +54,22 @@ public class Player {
     }
 
     public void plant(){
-        if (inventory.getSeedCount() >= 2){
-            //if (currentLevel == MAX_LEVEL){
+        if (commandAvailable) {
+            if (inventory.getSeedCount() >= 8){
+                if (currentLevel == MAX_LEVEL){
                 // plant all of the seeds except yourself.
                 System.out.println("you have now planted all of the seeds, go to spawn and plant " +
                         "yourself to complete the forest");
                 // we need to "disable" the other Rooms. You can enter the rooms, but you can't interact or gather.
                 //boolean in player "command availabe", when everything is ready CommandAvailabe=false.
                 commandAvailable = false;
-            //} else {
-                //System.out.println("You aren't big enough");
-            //}
-        } else {
-            System.out.println("You need 8 seeds to plant, and you need to be a mature tree.");
+                seedsPlanted = true;
+                } else {
+                System.out.println("You aren't big enough");
+                }
+            } else {
+                System.out.println("You need 8 seeds to plant, and you need to be a mature tree.");
+            }
         }
     }
 
@@ -175,5 +178,9 @@ public class Player {
         if (currentLevel > MAX_LEVEL) {
             currentLevel++;
         }
+    }
+
+    public boolean isSeedsPlanted() {
+        return seedsPlanted;
     }
 }

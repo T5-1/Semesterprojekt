@@ -40,6 +40,9 @@ public class EventManager {
             if (player.getCurrentLevel() == 3 && player.isReadyForFinalLevel() &&!lakeEventPlayed) {
                 event = new LakeEvent(lake);
             }
+            if (player.isSeedsPlanted()) {
+                event = new FinalEvent(spawn);
+            }
         }
     }
 
