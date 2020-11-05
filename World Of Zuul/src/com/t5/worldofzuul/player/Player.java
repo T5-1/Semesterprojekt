@@ -198,6 +198,9 @@ public class Player {
                 }
                 currentRoom.getNpc().setInteracted(true);
             }
+            else {
+                System.out.println(currentRoom.getNpc().getInfo());
+            }
 
         } else {
             System.out.println("This action isn't available anymore");
