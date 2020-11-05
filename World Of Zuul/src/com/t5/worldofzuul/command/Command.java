@@ -110,17 +110,19 @@ public class Command {
     }
 
     private void getMap(){
-        System.out.println(" ------------------------------------------------------------------- ");
-        System.out.println("|                                 |NorthernEntrance|                |");
-        System.out.println("|-------------------------------------------------------------------|");
-        System.out.println("|                |  FlowerField   |     River      |      Cave      |");
-        System.out.println("|-------------------------------------------------------------------|");
-        System.out.println("|      Lake      |     Shore      |     Spawn      |    Mountain    |");
-        System.out.println("| ------------------------------------------------------------------|");
-        System.out.println("|                |    Savanna     |      Camp      |     Desert     |");
-        System.out.println("|-------------------------------------------------------------------|");
-        System.out.println("|                                 |SouthernEntrance|                |");
-        System.out.println(" ------------------------------------------------------------------- ");
+        System.out.println("                                     north                                     ");
+        System.out.println("      -------------------------------------------------------------------      ");
+        System.out.println("     |                                 |NorthernEntrance|                |     ");
+        System.out.println("     |-------------------------------------------------------------------|     ");
+        System.out.println("     |                |  FlowerField   |     River      |      Cave      |     ");
+        System.out.println("     |-------------------------------------------------------------------|     ");
+        System.out.println("west |      Lake      |     Shore      |     Spawn      |    Mountain    | east");
+        System.out.println("     | ------------------------------------------------------------------|     ");
+        System.out.println("     |                |    Savanna     |      Camp      |     Desert     |     ");
+        System.out.println("     |-------------------------------------------------------------------|     ");
+        System.out.println("     |                                 |SouthernEntrance|                |     ");
+        System.out.println("      -------------------------------------------------------------------      ");
+        System.out.println("                                     south                                     ");
     }
 
     private void goRoom(Command command, Player player) {
