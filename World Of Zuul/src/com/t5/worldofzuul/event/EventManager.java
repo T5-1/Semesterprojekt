@@ -10,11 +10,11 @@ public class EventManager {
     private Random random = new Random();
     private Event event;
     private boolean eventRunning = false;
-    private boolean lakeEventPlayed, finalEventPlayed;
-    Room spawn, lake, northernEntrance, southernEntrance;
+    private boolean lakeEventPlayed, finalEventPlayed, northernEventPlayed, southernEventPlayed;
+    private Room spawn, lake, northernEntrance, southernEntrance;
 
     public EventManager(Room spawn, Room lake, Room northernEntrance, Room southernEntrance) {
-        lakeEventPlayed = finalEventPlayed = false;
+        lakeEventPlayed = finalEventPlayed = northernEventPlayed = southernEventPlayed = false;
         this.spawn = spawn;
         this.lake = lake;
         this.northernEntrance = northernEntrance;
@@ -26,20 +26,27 @@ public class EventManager {
         if (eventRunning) {
             //remove one available action from the player
             event.setActionsLeft(event.getActionsLeft() - 1);
-            //check if the player is en the correct room
+            //check if the player is in the correct room
+            System.out.println(player.getCurrentRoom().getName() + "    " + event.getRoom().getName());
             if (player.getCurrentRoom() == event.getRoom()) {
                 event.start();
+                eventRunning = false;
             }
             //check if the player has anymore actions left
             else if (event.getActionsLeft() < 1 && event.getActionsLeft() > -1) {
                 player.die("You didn't get to the " + event.getRoom().getName() + " in time, and the forrest is now dead");
+                eventRunning = false;
             }
-        }
-        else {
+        } else {
+            //call random event method
             randomEvent(player);
-            if (player.getCurrentLevel() == 3 && player.isReadyForFinalLevel() &&!lakeEventPlayed) {
+
+            //check if the player is high enough level to start lake event, and check if lake event has been played
+            if (player.getCurrentLevel() == 3 && player.isReadyForFinalLevel() && !lakeEventPlayed) {
                 event = new LakeEvent(lake);
             }
+
+            //check if seeds are planted, and start final event
             if (player.isSeedsPlanted()) {
                 event = new FinalEvent(spawn);
             }
@@ -47,11 +54,17 @@ public class EventManager {
     }
 
     public void randomEvent(Player player) {
-        if (random.nextInt(1000) > 990) {
-            if (player.getCurrentLevel() >= 3) {
-                event = (random.nextInt(2) > 0) ? new NorthernEvent(northernEntrance) : new SouthernEvent(southernEntrance);
-                eventRunning = true;
-            }
+        //5% chance of starting a random event if the player is a sprout
+        if (player.getCurrentLevel() == 1 && random.nextInt(100) <= 5 && !southernEventPlayed) {
+            event = new SouthernEvent(southernEntrance);
+            eventRunning = true;
+            southernEventPlayed = true;
+        }
+        //5% chance of starting a random event if the player is a seedling
+        else if (player.getCurrentLevel() == 2 && random.nextInt(100) <= 5 && !northernEventPlayed) {
+            event = new NorthernEvent(northernEntrance);
+            eventRunning = true;
+            northernEventPlayed = true;
         }
     }
 

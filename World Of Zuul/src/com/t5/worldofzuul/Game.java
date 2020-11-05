@@ -87,12 +87,13 @@ public class Game
         while (!finished) {
             if (player.isAlive()) {
                 player.update();
-                eventManager.update(player);
                 finished = player.getCommand().processCommand(player.getCommand(), player);
+                eventManager.update(player);
             }
             else {
                 if (player.isRestartGame()) {
                     createRooms();
+                    player = new Player(spawn);
                     printWelcome();
                 }
                 else {
