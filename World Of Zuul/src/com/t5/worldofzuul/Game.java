@@ -87,8 +87,8 @@ public class Game
         while (!finished) {
             if (player.isAlive()) {
                 player.update();
-                finished = player.getCommand().processCommand(player.getCommand(), player);
                 eventManager.update(player);
+                finished = player.getCommand().processCommand(player.getCommand(), player);
             }
             else {
                 if (player.isRestartGame()) {

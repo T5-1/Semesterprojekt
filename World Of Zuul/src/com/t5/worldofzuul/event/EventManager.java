@@ -28,7 +28,6 @@ public class EventManager {
             //remove one available action from the player
             event.setActionsLeft(event.getActionsLeft() - 1);
             //check if the player is in the correct room
-            System.out.println(player.getCurrentRoom().getName() + "    " + event.getRoom().getName());
             if (player.getCurrentRoom() == event.getRoom()) {
                 event.start(player);
                 eventRunning = false;

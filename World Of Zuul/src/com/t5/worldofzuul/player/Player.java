@@ -180,7 +180,7 @@ public class Player {
 
         xp = 0;
         xpNeededForNextLvl++;
-        if (currentLevel > MAX_LEVEL) {
+        if (currentLevel < MAX_LEVEL) {
             currentLevel++;
         }
         System.out.println("You are now a " + evolution[currentLevel]);
