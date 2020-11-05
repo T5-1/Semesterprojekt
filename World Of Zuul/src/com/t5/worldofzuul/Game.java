@@ -21,18 +21,18 @@ public class Game
     {
         Room camp, cave, desert, flowerField, lake, mountain, river, savanna, shore, spawn, northernEntrance, southernEntrance;
 
-        camp = new Camp("This is the Camp");
-        cave = new Cave("This is the Cave");
-        desert = new Desert("This is the desert");
-        flowerField = new FlowerField("This is the FlowerField");
-        lake = new Lake("This is the lake");
-        mountain = new Mountain("This is the Mountain");
-        river = new River("This is the River");
-        savanna = new Savanna("This is the Savanna");
-        shore = new Shore("This is the Shore");
-        spawn = new Spawn("This is the Spawn");
-        northernEntrance = new NorthernEntrance("This is the Northern Entrance");
-        southernEntrance = new SouthernEntrance("This is the Southern Entrance");
+        camp = new Camp("at the Camp");
+        cave = new Cave("at the Cave");
+        desert = new Desert("at the desert");
+        flowerField = new FlowerField("at the FlowerField");
+        lake = new Lake("at the lake");
+        mountain = new Mountain("on the Mountain");
+        river = new River("at the River");
+        savanna = new Savanna("at the Savanna");
+        shore = new Shore("at the Shore");
+        spawn = new Spawn("at the Spawn");
+        northernEntrance = new NorthernEntrance("at the Northern Entrance");
+        southernEntrance = new SouthernEntrance("at the Southern Entrance");
 
         camp.setExit("west", savanna);
         camp.setExit("north",spawn);
