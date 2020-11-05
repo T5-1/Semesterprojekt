@@ -74,8 +74,7 @@ public class Command {
             System.out.println("I don't know what you mean...");
             return false;
         }
-
-        if (commandWord == CommandWord.HELP) {
+        else if (commandWord == CommandWord.HELP) {
             printHelp(player);
         } else if (commandWord == CommandWord.GO) {
             goRoom(command, player);
@@ -133,17 +132,15 @@ public class Command {
         String direction = command.getSecondWord();
 
         Room nextRoom = player.getCurrentRoom().getExit(direction);
-        if (nextRoom.isDeadly()) {
+        if (nextRoom == null) {
+            System.out.println("There is no door!");
+        }
+        else if (nextRoom.isDeadly()) {
             player.setCurrentRoom(nextRoom);
         }
         else if (nextRoom.isAccessible()) {
-            if (nextRoom == null) {
-                System.out.println("There is no door!");
-            }
-            else {
                 player.setCurrentRoom(nextRoom);
                 System.out.println(player.getCurrentRoom().getLongDescription(player));
-            }
         }
         else {
             System.out.println("This room can't be accessed at the moment");

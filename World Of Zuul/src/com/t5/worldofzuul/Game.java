@@ -86,8 +86,8 @@ public class Game
         boolean finished = false;
         while (!finished) {
             if (player.isAlive()) {
-                player.update();
                 eventManager.update(player);
+                player.update();
                 finished = player.getCommand().processCommand(player.getCommand(), player);
             }
             else {

@@ -31,10 +31,6 @@ public class Player {
         inventory = new Inventory();
     }
 
-    public void start() {
-        command = parser.getCommand();
-    }
-
     public void update() {
         if (currentRoom.isDeadly()) {
             die("You drowned in the Lake.");
