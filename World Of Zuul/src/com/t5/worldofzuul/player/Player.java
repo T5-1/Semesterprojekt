@@ -157,7 +157,7 @@ public class Player {
                 inventory.remove(ItemType.SUN);
                 xp++;
             }
-            System.out.println("you consume " + xp + " water & sun");
+            System.out.println("you consume " + xp + " water & "+ xp + " sun");
         }else {
             System.out.println("This action isn't available anymore");
         }
