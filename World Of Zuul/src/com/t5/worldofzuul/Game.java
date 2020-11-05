@@ -83,8 +83,6 @@ public class Game
     {
         printWelcome();
 
-        System.out.println(southernEntrance.getShortDescription());
-
         boolean finished = false;
         while (!finished) {
             if (player.isAlive()) {

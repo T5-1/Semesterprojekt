@@ -78,6 +78,10 @@ public abstract class Room
         return item.getItemType().getItem();
     }
 
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
     public NPC getNpc() {
         return npc;
     }

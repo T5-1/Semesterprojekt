@@ -3,6 +3,7 @@ package com.t5.worldofzuul.player;
 import com.t5.worldofzuul.command.Command;
 import com.t5.worldofzuul.command.Parser;
 import com.t5.worldofzuul.item.ItemType;
+import com.t5.worldofzuul.item.NullItem;
 import com.t5.worldofzuul.room.Room;
 
 public class Player {
@@ -19,7 +20,7 @@ public class Player {
     public Player(Room spawn) {
         xp = 0;
         xpNeededForNextLvl = 1;
-        currentLevel = 3;
+        currentLevel = 0;
 
         alive = true;
         restartGame = readyForFinalLevel =false;
@@ -102,10 +103,16 @@ public class Player {
             System.out.println("Gather what?");
         }
         else {
-            if (currentRoom.getItem().getItemType() != ItemType.NULLITEM) {
+            if (currentRoom.getItem().getItemType() == ItemType.SEED) {
                 inventory.add(currentRoom.getItem());
                 System.out.println("You picked up: " + currentRoom.getItem().getName());
-            } else {
+                currentRoom.setItem(new NullItem());
+            }
+            else if (currentRoom.getItem().getItemType() != ItemType.NULLITEM) {
+                inventory.add(currentRoom.getItem());
+                System.out.println("You picked up: " + currentRoom.getItem().getName());
+            }
+            else {
                 System.out.println("There is nothing to pick up in this room");
             }
         }
