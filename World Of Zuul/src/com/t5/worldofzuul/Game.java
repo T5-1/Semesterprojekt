@@ -106,6 +106,7 @@ public class Game
             else {
                 if (player.isRestartGame()) {
                     createRooms();
+                    eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
                     player = new Player(spawn, eventManager);
                     printWelcome();
                 }
