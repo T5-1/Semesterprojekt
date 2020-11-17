@@ -22,8 +22,8 @@ public class Player {
 
     public Player(Room spawn, EventManager eventManager) {
         xp = 0;
-        currentLevel = 1;
-        npcsReactedWith = 6;
+        currentLevel = 0;
+        npcsReactedWith = 0;
         npcsNeededReactionWith = 3;
         xpNeededForNextLvl = currentLevel + 1;
 
