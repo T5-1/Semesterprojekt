@@ -1,16 +1,25 @@
-package dk.t5.grp1.worldofzuul.room;
+package dk.t5.grp1.worldofzuul.graphics.room;
 
+import dk.t5.grp1.worldofzuul.graphics.Screen;
+import dk.t5.grp1.worldofzuul.graphics.room.tile.Tile;
 import dk.t5.grp1.worldofzuul.item.Item;
 import dk.t5.grp1.worldofzuul.item.ItemType;
 import dk.t5.grp1.worldofzuul.item.NullItem;
 import dk.t5.grp1.worldofzuul.npc.NPC;
 import dk.t5.grp1.worldofzuul.player.Player;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Set;
 import java.util.HashMap;
 
 public abstract class Room
 {
+    protected int width, height;
+    protected int[] tiles;
+    private int[] map;
+
     private boolean accessible = true;
     private boolean deadly = false;
 
@@ -20,24 +29,60 @@ public abstract class Room
     private String name;
     private HashMap<String, Room> exits;
 
-    public Room(String description, String name, Item item, NPC npc)
+    public Room(String description, String name, Item item, NPC npc, String path)
     {
-        this(description, name, npc);
+        this(description, name, npc, path);
         exits = new HashMap<String, Room>();
         this.item=item;
     }
-    public Room(String description, String name, NPC npc){
+    public Room(String description, String name, NPC npc, String path){
         this.description = description;
         this.name = name;
         exits = new HashMap<String, Room>();
         this.npc = npc;
+        loadLevel(path);
     }
 
-    public Room(String description)
-    {
-        this.description = description;
-        exits = new HashMap<String, Room>();
-        item = new NullItem();
+    public void loadLevel(String path) {
+        try {
+            BufferedImage image = ImageIO.read(this.getClass().getResource(path));
+            width = image.getWidth();
+            height = image.getHeight();
+            tiles = new int[width * height];
+            map = new int[width * height];
+            image.getRGB(0, 0, width, height, map, 0, width);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < map.length; i++) {
+            if (map[i] == 0xff6bbb36) {
+                tiles[i] = 0;
+            }
+            else if(map[i] == 0xff805210) {
+                tiles[i] = 1;
+            }
+            else {
+                tiles[i] = -1;
+            }
+        }
+    }
+
+    public void render(Screen screen) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                getTile(x, y).render(x, y, screen);
+            }
+        }
+    }
+
+    public Tile getTile(int x, int y) {
+        if (tiles[x + y * width] == 0) {
+            return Tile.grass;
+        }
+        else if (tiles[x + y * width] == 1) {
+            return Tile.treestump;
+        }
+        return Tile.voidTile;
     }
 
     public void setExit(String direction, Room neighbor)

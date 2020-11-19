@@ -5,9 +5,10 @@ import dk.t5.grp1.worldofzuul.command.Parser;
 import dk.t5.grp1.worldofzuul.event.EventManager;
 import dk.t5.grp1.worldofzuul.item.ItemType;
 import dk.t5.grp1.worldofzuul.item.NullItem;
-import dk.t5.grp1.worldofzuul.room.Room;
+import dk.t5.grp1.worldofzuul.graphics.room.Room;
 
 public class Player {
+    private int x, y;
 
     private int xp, xpNeededForNextLvl, currentLevel, npcsReactedWith, npcsNeededReactionWith;
     private final int MAX_LEVEL = 4;
@@ -20,7 +21,9 @@ public class Player {
     private Inventory inventory;
     private EventManager eventManager;
 
-    public Player(Room spawn, EventManager eventManager) {
+    public Player(Room spawn, EventManager eventManager, int x, int y) {
+        this.x = x;
+        this.y = y;
         xp = 0;
         currentLevel = 1;
         npcsReactedWith = 6;

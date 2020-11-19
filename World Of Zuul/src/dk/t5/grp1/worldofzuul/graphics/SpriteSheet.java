@@ -1,0 +1,40 @@
+package dk.t5.grp1.worldofzuul.graphics;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+public class SpriteSheet {
+
+    private String path;
+    private final int SIZE;
+    private int[] pixels;
+
+    public static final SpriteSheet tiles = new SpriteSheet("/textures/sheets/spritesheet.png", 1024);
+
+    public SpriteSheet(String path, int size) {
+        this.path = path;
+        this.SIZE = size;
+        pixels = new int[SIZE * SIZE];
+        load();
+    }
+
+    public void load() {
+        try {
+            BufferedImage image = ImageIO.read(this.getClass().getResource(path));
+            int w = image.getWidth();
+            int h = image.getHeight();
+            image.getRGB(0, 0, w, h, pixels, 0, w);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int[] getPixels() {
+        return pixels;
+    }
+
+    public int getSIZE() {
+        return SIZE;
+    }
+}

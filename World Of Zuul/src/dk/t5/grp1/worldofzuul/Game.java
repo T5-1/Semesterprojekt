@@ -1,28 +1,36 @@
 package dk.t5.grp1.worldofzuul;
 
 import dk.t5.grp1.worldofzuul.command.CommandWord;
-import dk.t5.grp1.worldofzuul.command.Parser;
 import dk.t5.grp1.worldofzuul.event.EventManager;
-import dk.t5.grp1.worldofzuul.room.*;
+import dk.t5.grp1.worldofzuul.graphics.Screen;
+import dk.t5.grp1.worldofzuul.graphics.room.*;
 import dk.t5.grp1.worldofzuul.player.Player;
+import javafx.animation.AnimationTimer;
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelFormat;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.stage.Stage;
 
-public class Game
-{
-    private Parser parser;
+public class Game extends Application {
+    private final int width = 1606;
+    private final int height = 925;
+
+    private String title = "Game Title";
+
+    private final WritableImage writableImage = new WritableImage(width, height);
+    private final PixelWriter pixelWriter = writableImage.getPixelWriter();
+
+    private Screen screen = new Screen(width, height);
+
     private Player player;
     private EventManager eventManager;
     private Room camp, cave, desert, flowerField, lake, mountain, river, savanna, shore, spawn, northernEntrance, southernEntrance;
 
-    public Game()
-    {
-        createRooms();
-        parser = new Parser();
-        eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
-        player = new Player(spawn, eventManager);
-    }
-
-    private void createRooms()
-    {
+    private void createRooms() {
         camp = new Camp("at the Camp", "Camp");
         cave = new Cave("at the Cave", "Cave");
         desert = new Desert("at the desert", "Desert");
@@ -37,11 +45,11 @@ public class Game
         southernEntrance = new SouthernEntrance("at the Southern Entrance", "Southern Entrance");
 
         camp.setExit("west", savanna);
-        camp.setExit("north",spawn);
-        camp.setExit("east",desert);
-        camp.setExit("south",southernEntrance);
+        camp.setExit("north", spawn);
+        camp.setExit("east", desert);
+        camp.setExit("south", southernEntrance);
 
-        cave.setExit("west",river);
+        cave.setExit("west", river);
         cave.setExit("south", mountain);
 
         desert.setExit("west", camp);
@@ -53,7 +61,7 @@ public class Game
         lake.setExit("east", shore);
 
         mountain.setExit("north", cave);
-        mountain.setExit("west",spawn);
+        mountain.setExit("west", spawn);
         mountain.setExit("south", desert);
 
         river.setExit("north", northernEntrance);
@@ -72,15 +80,57 @@ public class Game
         spawn.setExit("north", river);
         spawn.setExit("west", shore);
         spawn.setExit("east", mountain);
-        spawn.setExit("south",camp);
+        spawn.setExit("south", camp);
 
         northernEntrance.setExit("south", river);
 
         southernEntrance.setExit("north", camp);
     }
 
-    public void play()
-    {
+    @Override
+    public void start(Stage stage) {
+        ImageView imageView = new ImageView(writableImage);
+        Group root = new Group(imageView);
+        Scene scene = new Scene(root, width, height);
+
+        createRooms();
+        eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
+        player = new Player(spawn, eventManager, width / 2, height / 2);
+
+        stage.setTitle(title);
+        stage.setResizable(false);
+        stage.setWidth(width);
+        stage.setHeight(height);
+        stage.setScene(scene);
+
+        stage.show();
+        stage.requestFocus();
+
+        AnimationTimer animation = new AnimationTimer() {
+
+            @Override
+            public void handle(long now) {
+                update();
+                render();
+                stage.setScene(scene);
+            }
+        };
+
+        animation.start();
+    }
+
+    public void update() {
+
+    }
+
+    public void render() {
+        screen.clear();
+        player.getCurrentRoom().render(screen);
+
+        pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), screen.getPixels(), 0, width);
+    }
+
+    public void play() {
         printWelcome();
         System.out.println("Current level: " + player.getEvolution()[player.getCurrentLevel()]);
 
@@ -89,36 +139,32 @@ public class Game
             if (player.isAlive()) {
                 if (!eventManager.isFinalEventPlayed()) {
                     eventManager.update(player);
-                    if(eventManager.isFinalEventPlayed()) {
+                    if (eventManager.isFinalEventPlayed()) {
                         continue;
                     }
                     player.update();
                     if (player.getCommand() != null) {
                         finished = player.getCommand().processCommand(player.getCommand(), player);
                     }
-                }
-                else {
+                } else {
                     eventManager.update(player);
                     printEnd();
                     finished = true;
                 }
-            }
-            else {
+            } else {
                 if (player.isRestartGame()) {
                     createRooms();
                     eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
-                    player = new Player(spawn, eventManager);
+                    player = new Player(spawn, eventManager, width / 2, height / 2);
                     printWelcome();
-                }
-                else {
+                } else {
                     finished = true;
                 }
             }
         }
     }
 
-    private void printWelcome()
-    {
+    private void printWelcome() {
         System.out.println();
         System.out.println("Welcome to **insert game name**!");
         System.out.println("In this game you are going to learn about the forest while saving it!");
@@ -133,7 +179,6 @@ public class Game
     }
 
     public static void main(String[] args) {
-            Game game = new Game();
-            game.play();
+        launch(args);
     }
 }

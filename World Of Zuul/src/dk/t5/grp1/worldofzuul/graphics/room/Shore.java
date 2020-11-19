@@ -1,11 +1,11 @@
-package dk.t5.grp1.worldofzuul.room;
+package dk.t5.grp1.worldofzuul.graphics.room;
 
 import dk.t5.grp1.worldofzuul.item.Water;
 import dk.t5.grp1.worldofzuul.npc.Fish;
 
 public class Shore extends Room {
     public Shore(String description, String name) {
-        super(description, name, new Water(), new Fish());
+        super(description, name, new Water(), new Fish(), "/textures/rooms/spawn.png");
 
     }
 

@@ -1,11 +1,11 @@
-package dk.t5.grp1.worldofzuul.room;
+package dk.t5.grp1.worldofzuul.graphics.room;
 
 import dk.t5.grp1.worldofzuul.npc.Orangutan;
 
 public class SouthernEntrance extends Room {
 
     public SouthernEntrance(String description, String name) {
-        super(description, name, new Orangutan());
+        super(description, name, new Orangutan(), "/textures/rooms/spawn.png");
         setAccessible(false);
     }
 }
