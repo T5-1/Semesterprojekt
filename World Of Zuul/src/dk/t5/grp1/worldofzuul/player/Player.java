@@ -1,14 +1,18 @@
 package dk.t5.grp1.worldofzuul.player;
 
+import dk.t5.grp1.worldofzuul.Game;
 import dk.t5.grp1.worldofzuul.command.Command;
 import dk.t5.grp1.worldofzuul.command.Parser;
 import dk.t5.grp1.worldofzuul.event.EventManager;
+import dk.t5.grp1.worldofzuul.graphics.Screen;
+import dk.t5.grp1.worldofzuul.input.Keyboard;
 import dk.t5.grp1.worldofzuul.item.ItemType;
 import dk.t5.grp1.worldofzuul.item.NullItem;
 import dk.t5.grp1.worldofzuul.graphics.room.Room;
 
 public class Player {
     private int x, y;
+    private int speed = 4;
 
     private int xp, xpNeededForNextLvl, currentLevel, npcsReactedWith, npcsNeededReactionWith;
     private final int MAX_LEVEL = 4;
@@ -25,8 +29,8 @@ public class Player {
         this.x = x;
         this.y = y;
         xp = 0;
-        currentLevel = 1;
-        npcsReactedWith = 6;
+        currentLevel = 0;
+        npcsReactedWith = 0;
         npcsNeededReactionWith = 3;
         xpNeededForNextLvl = currentLevel + 1;
 
@@ -40,7 +44,31 @@ public class Player {
         this.eventManager = eventManager;
     }
 
-    public void update() {
+    public void update(Keyboard key) {
+
+        if (key.up) y -= speed;
+        if (key.down) y += speed;
+        if (key.left) x -= speed;
+        if (key.right) x += speed;
+
+        if (y < 16 && currentRoom.getExit(0) != null){
+            currentRoom = currentRoom.getExit(0);
+            y = Game.height - 54;
+        }
+        if (x > Game.width - 54 && currentRoom.getExit(1) != null){
+            currentRoom = currentRoom.getExit(1);
+            x = 16;
+        }
+        if (y > Game.height - 54 && currentRoom.getExit(2) != null) {
+            currentRoom = currentRoom.getExit(2);
+            y = 16;
+        }
+        if (x < 16 && currentRoom.getExit(3) != null) {
+            currentRoom = currentRoom.getExit(3);
+            x = Game.width - 54;
+        }
+
+
         //check if the current room will kill you(only happens in lake)
         if (currentRoom.isDeadly()) {
             die("You drowned in the Lake.");
@@ -60,12 +88,15 @@ public class Player {
         else if (xp >= xpNeededForNextLvl) {
             readyForFinalLevel = true;
             xp = 0;
-            command = null;
+           // command = null;
             return;
         }
 
-        command = parser.getCommand();
+        //command = parser.getCommand();
+    }
 
+    public void render(Screen screen) {
+        screen.renderMob(x, y);
     }
 
     public void plant() {

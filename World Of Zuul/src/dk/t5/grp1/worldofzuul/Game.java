@@ -4,6 +4,7 @@ import dk.t5.grp1.worldofzuul.command.CommandWord;
 import dk.t5.grp1.worldofzuul.event.EventManager;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
 import dk.t5.grp1.worldofzuul.graphics.room.*;
+import dk.t5.grp1.worldofzuul.input.Keyboard;
 import dk.t5.grp1.worldofzuul.player.Player;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -16,15 +17,16 @@ import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 
 public class Game extends Application {
-    private final int width = 1606;
-    private final int height = 925;
+    public static final int width = 1606;
+    public static final int height = 925;
 
     private String title = "Game Title";
 
-    private final WritableImage writableImage = new WritableImage(width, height);
-    private final PixelWriter pixelWriter = writableImage.getPixelWriter();
+    private WritableImage writableImage = new WritableImage(width, height);
+    private PixelWriter pixelWriter = writableImage.getPixelWriter();
 
     private Screen screen = new Screen(width, height);
+    private Keyboard key;
 
     private Player player;
     private EventManager eventManager;
@@ -44,47 +46,47 @@ public class Game extends Application {
         northernEntrance = new NorthernEntrance("at the Northern Entrance", "Northern Entrance");
         southernEntrance = new SouthernEntrance("at the Southern Entrance", "Southern Entrance");
 
-        camp.setExit("west", savanna);
-        camp.setExit("north", spawn);
-        camp.setExit("east", desert);
-        camp.setExit("south", southernEntrance);
+        camp.setExit(0, spawn);
+        camp.setExit(1, desert);
+        camp.setExit(2, southernEntrance);
+        camp.setExit(3, savanna);
 
-        cave.setExit("west", river);
-        cave.setExit("south", mountain);
+        cave.setExit(2, mountain);
+        cave.setExit(3, river);
 
-        desert.setExit("west", camp);
-        desert.setExit("north", mountain);
+        desert.setExit(0, mountain);
+        desert.setExit(3, camp);
 
-        flowerField.setExit("east", river);
-        flowerField.setExit("south", shore);
+        flowerField.setExit(1, river);
+        flowerField.setExit(2, shore);
 
-        lake.setExit("east", shore);
+        lake.setExit(1, shore);
 
-        mountain.setExit("north", cave);
-        mountain.setExit("west", spawn);
-        mountain.setExit("south", desert);
+        mountain.setExit(0, cave);
+        mountain.setExit(2, desert);
+        mountain.setExit(3, spawn);
 
-        river.setExit("north", northernEntrance);
-        river.setExit("west", flowerField);
-        river.setExit("east", cave);
-        river.setExit("south", spawn);
+        river.setExit(0, northernEntrance);
+        river.setExit(1, cave);
+        river.setExit(2, spawn);
+        river.setExit(3, flowerField);
 
-        savanna.setExit("north", shore);
-        savanna.setExit("east", camp);
+        savanna.setExit(0, shore);
+        savanna.setExit(1, camp);
 
-        shore.setExit("north", flowerField);
-        shore.setExit("west", lake);
-        shore.setExit("east", spawn);
-        shore.setExit("south", savanna);
+        shore.setExit(0, flowerField);
+        shore.setExit(1, spawn);
+        shore.setExit(2, savanna);
+        shore.setExit(3, lake);
 
-        spawn.setExit("north", river);
-        spawn.setExit("west", shore);
-        spawn.setExit("east", mountain);
-        spawn.setExit("south", camp);
+        spawn.setExit(0, river);
+        spawn.setExit(1, mountain);
+        spawn.setExit(2, camp);
+        spawn.setExit(3, shore);
 
-        northernEntrance.setExit("south", river);
+        northernEntrance.setExit(2, river);
 
-        southernEntrance.setExit("north", camp);
+        southernEntrance.setExit(0, camp);
     }
 
     @Override
@@ -92,6 +94,7 @@ public class Game extends Application {
         ImageView imageView = new ImageView(writableImage);
         Group root = new Group(imageView);
         Scene scene = new Scene(root, width, height);
+        key = new Keyboard(scene);
 
         createRooms();
         eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
@@ -112,7 +115,7 @@ public class Game extends Application {
             public void handle(long now) {
                 update();
                 render();
-                stage.setScene(scene);
+                stage.setTitle(title + "  |  " + player.getCurrentRoom().getName());
             }
         };
 
@@ -120,17 +123,19 @@ public class Game extends Application {
     }
 
     public void update() {
-
+        key.update();
+        player.update(key);
     }
 
     public void render() {
         screen.clear();
         player.getCurrentRoom().render(screen);
+        player.render(screen);
 
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), screen.getPixels(), 0, width);
     }
 
-    public void play() {
+    /*public void play() {
         printWelcome();
         System.out.println("Current level: " + player.getEvolution()[player.getCurrentLevel()]);
 
@@ -172,7 +177,7 @@ public class Game extends Application {
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         System.out.println(player.getCurrentRoom().getLongDescription(player));
-    }
+    }*/
 
     public void printEnd() {
 

@@ -27,18 +27,18 @@ public abstract class Room
     private NPC npc;
     private String description;
     private String name;
-    private HashMap<String, Room> exits;
+    private Room[] exits;
 
     public Room(String description, String name, Item item, NPC npc, String path)
     {
         this(description, name, npc, path);
-        exits = new HashMap<String, Room>();
+        exits = new Room[4];
         this.item=item;
     }
     public Room(String description, String name, NPC npc, String path){
         this.description = description;
         this.name = name;
-        exits = new HashMap<String, Room>();
+        exits = new Room[4];
         this.npc = npc;
         loadLevel(path);
     }
@@ -85,9 +85,9 @@ public abstract class Room
         return Tile.voidTile;
     }
 
-    public void setExit(String direction, Room neighbor)
+    public void setExit(int direction, Room neighbor)
     {
-        exits.put(direction, neighbor);
+        exits[direction] = neighbor;
     }
 
     public String getShortDescription()
@@ -95,12 +95,12 @@ public abstract class Room
         return description;
     }
 
-    public String getLongDescription(Player player)
+    /*public String getLongDescription(Player player)
     {
         return "You are " + description + ".\n" + getExitString(player);
-    }
+    }*/
 
-    private String getExitString(Player player)
+    /*private String getExitString(Player player)
     {
         String returnString = "Exits:";
         Set<String> keys = exits.keySet();
@@ -116,12 +116,12 @@ public abstract class Room
             returnString += "\nYou can interact with: " + npc.getName();
         }
         return returnString;
-    }
+    }*/
 
 
-    public Room getExit(String direction)
+    public Room getExit(int direction)
     {
-        return exits.get(direction);
+        return exits[direction];
     }
 
     public Item getItem(){

@@ -30,6 +30,15 @@ public class Screen {
         }
     }
 
+    public void renderMob(int xp, int yp) {
+        for (int y = 0; y < 32; y++) {
+            for (int x = 0; x < 32; x++) {
+                if (yp - 16 < 0 || yp + 16 > height || xp - 16 < 0 || xp + 16 > width) break;
+                pixels[(x + xp - 16) + (y + yp - 16) * width] = 0xffffffff;
+            }
+        }
+    }
+
     public int[] getPixels() {
         return pixels;
     }

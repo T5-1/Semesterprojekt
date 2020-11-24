@@ -49,7 +49,7 @@ public class Command {
     }
 
 
-    public boolean processCommand(Command command, Player player) {
+    /*public boolean processCommand(Command command, Player player) {
         boolean wantToQuit = false;
         CommandWord commandWord = command.getCommandWord();
         if (!player.isAlive()) {
@@ -147,7 +147,7 @@ public class Command {
         else {
             System.out.println("This room can't be accessed at the moment");
         }
-    }
+    }*/
 
     private boolean quit(Command command) {
         if (command.hasSecondWord()) {
