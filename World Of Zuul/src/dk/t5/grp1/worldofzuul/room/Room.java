@@ -1,24 +1,22 @@
-package dk.t5.grp1.worldofzuul.graphics.room;
+package dk.t5.grp1.worldofzuul.room;
 
+import dk.t5.grp1.worldofzuul.Game;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
-import dk.t5.grp1.worldofzuul.graphics.room.tile.Tile;
+import dk.t5.grp1.worldofzuul.room.tile.Tile;
 import dk.t5.grp1.worldofzuul.item.Item;
-import dk.t5.grp1.worldofzuul.item.ItemType;
 import dk.t5.grp1.worldofzuul.item.NullItem;
 import dk.t5.grp1.worldofzuul.npc.NPC;
-import dk.t5.grp1.worldofzuul.player.Player;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Set;
-import java.util.HashMap;
 
 public abstract class Room
 {
     protected int width, height;
     protected int[] tiles;
     private int[] map;
+    private boolean[] collisionMap;
 
     private boolean accessible = true;
     private boolean deadly = false;
@@ -50,19 +48,29 @@ public abstract class Room
             height = image.getHeight();
             tiles = new int[width * height];
             map = new int[width * height];
+            collisionMap = new boolean[Game.width * Game.height];
             image.getRGB(0, 0, width, height, map, 0, width);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (int i = 0; i < map.length; i++) {
-            if (map[i] == 0xff6bbb36) {
-                tiles[i] = 0;
-            }
-            else if(map[i] == 0xff805210) {
-                tiles[i] = 1;
-            }
-            else {
-                tiles[i] = -1;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (map[x + y * width] == 0xff6bbb36) {
+                    tiles[x + y * width] = 0;
+                }
+                else if(map[x + y * width] == 0xff805210) {
+                    tiles[x + y * width] = 1;
+                }
+                else {
+                    tiles[x + y * width] = -1;
+                }
+                if(getTile(x, y).solid()) {
+                    for (int cy = 0; cy < getTile(x, y).sprite.SIZE; cy++) {
+                        for (int cx = 0; cx < getTile(x, y).sprite.SIZE; cx++) {
+                            collisionMap[(x * getTile(x, y).sprite.SIZE + cx) + (y * getTile(x, y).sprite.SIZE + cy) * Game.width] = true;
+                        }
+                    }
+                }
             }
         }
     }
@@ -73,6 +81,7 @@ public abstract class Room
                 getTile(x, y).render(x, y, screen);
             }
         }
+        screen.renderMob(npc.getX(), npc.getY(), npc.getSprite());
     }
 
     public Tile getTile(int x, int y) {
@@ -156,4 +165,7 @@ public abstract class Room
         this.deadly = deadly;
     }
 
+    public boolean[] getCollisionMap() {
+        return collisionMap;
+    }
 }

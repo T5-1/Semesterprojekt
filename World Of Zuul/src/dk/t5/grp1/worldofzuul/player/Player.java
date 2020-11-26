@@ -5,13 +5,14 @@ import dk.t5.grp1.worldofzuul.command.Command;
 import dk.t5.grp1.worldofzuul.command.Parser;
 import dk.t5.grp1.worldofzuul.event.EventManager;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
+import dk.t5.grp1.worldofzuul.graphics.Sprite;
 import dk.t5.grp1.worldofzuul.input.Keyboard;
 import dk.t5.grp1.worldofzuul.item.ItemType;
 import dk.t5.grp1.worldofzuul.item.NullItem;
-import dk.t5.grp1.worldofzuul.graphics.room.Room;
+import dk.t5.grp1.worldofzuul.room.Room;
 
 public class Player {
-    private int x, y;
+    public int x, y;
     private int speed = 4;
 
     private int xp, xpNeededForNextLvl, currentLevel, npcsReactedWith, npcsNeededReactionWith;
@@ -24,6 +25,7 @@ public class Player {
     private Parser parser;
     private Inventory inventory;
     private EventManager eventManager;
+    private Sprite sprite = Sprite.voidSprite;
 
     public Player(Room spawn, EventManager eventManager, int x, int y) {
         this.x = x;
@@ -44,12 +46,64 @@ public class Player {
         this.eventManager = eventManager;
     }
 
+    public boolean topCollision() {
+        boolean collision = false;
+        for (int i = 0; i < 32; i++) {
+            if (y - 17 < 0) continue;
+            if (currentRoom.getCollisionMap()[x - 16 + i + (y - 17) * Game.width]) {
+                collision = true;
+            }
+        }
+        return collision;
+    }
+
+    public boolean bottomCollision() {
+        boolean collision = false;
+        for (int i = 0; i < 32; i++) {
+            if (y + 17 > Game.height) continue;
+            if (currentRoom.getCollisionMap()[x - 16 + i + (y + 17) * Game.width]) {
+                collision = true;
+            }
+        }
+        return collision;
+    }
+
+    public boolean leftCollision() {
+        boolean collision = false;
+        for (int i = 0; i < 32; i++) {
+            if (x - 17 < 0 || y - 17 < 0) continue;
+            if (currentRoom.getCollisionMap()[x - 17 + (y - 16 + i) * Game.width]) {
+                collision = true;
+            }
+        }
+        return collision;
+    }
+
+    public boolean rightCollision() {
+        boolean collision = false;
+        for (int i = 0; i < 32; i++) {
+            if (x + 17 > Game.width || y - 17 < 0) continue;
+            if (currentRoom.getCollisionMap()[x + 17 + (y - 16 + i) * Game.width]) {
+                collision = true;
+            }
+        }
+        return collision;
+    }
+
     public void update(Keyboard key) {
 
-        if (key.up) y -= speed;
-        if (key.down) y += speed;
-        if (key.left) x -= speed;
-        if (key.right) x += speed;
+        if (!topCollision()) {
+            if (key.up) y -= speed;
+        }
+        if (!bottomCollision()) {
+            if (key.down) y += speed;
+        }
+        if (!leftCollision()) {
+            if (key.left) x -= speed;
+        }
+        if(!rightCollision()) {
+            if (key.right) x += speed;
+        }
 
         if (y < 16 && currentRoom.getExit(0) != null){
             currentRoom = currentRoom.getExit(0);
@@ -96,7 +150,7 @@ public class Player {
     }
 
     public void render(Screen screen) {
-        screen.renderMob(x, y);
+        screen.renderMob(x, y, sprite);
     }
 
     public void plant() {

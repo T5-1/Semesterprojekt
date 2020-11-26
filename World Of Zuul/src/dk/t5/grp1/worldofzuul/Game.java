@@ -1,9 +1,8 @@
 package dk.t5.grp1.worldofzuul;
 
-import dk.t5.grp1.worldofzuul.command.CommandWord;
 import dk.t5.grp1.worldofzuul.event.EventManager;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
-import dk.t5.grp1.worldofzuul.graphics.room.*;
+import dk.t5.grp1.worldofzuul.room.*;
 import dk.t5.grp1.worldofzuul.input.Keyboard;
 import dk.t5.grp1.worldofzuul.player.Player;
 import javafx.animation.AnimationTimer;

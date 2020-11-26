@@ -1,7 +1,7 @@
 package dk.t5.grp1.worldofzuul.event;
 
 import dk.t5.grp1.worldofzuul.player.Player;
-import dk.t5.grp1.worldofzuul.graphics.room.Room;
+import dk.t5.grp1.worldofzuul.room.Room;
 
 import java.util.Random;
 

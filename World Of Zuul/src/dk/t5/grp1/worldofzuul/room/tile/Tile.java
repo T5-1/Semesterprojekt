@@ -1,4 +1,4 @@
-package dk.t5.grp1.worldofzuul.graphics.room.tile;
+package dk.t5.grp1.worldofzuul.room.tile;
 
 import dk.t5.grp1.worldofzuul.graphics.Screen;
 import dk.t5.grp1.worldofzuul.graphics.Sprite;

@@ -1,8 +1,10 @@
 package dk.t5.grp1.worldofzuul.npc;
 
 
+import dk.t5.grp1.worldofzuul.graphics.Sprite;
+
 public class Fish extends NPC {
-    public Fish() {
+    public Fish(int x, int y) {
         super("Uncle Bob the Fish", "blob. blob. blob. \n" +
                 "my name is uncle bob\n" +
                 "the forest you must save\n" +
@@ -11,7 +13,7 @@ public class Fish extends NPC {
                 "It might be a mistake\n" +
                 "To save the wooden nation\n" +
                 "you need some information\n" +
-                "****insert information****\n");
+                "****insert information****\n", x, y, Sprite.voidSprite);
     }
 
 }

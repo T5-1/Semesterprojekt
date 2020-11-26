@@ -1,6 +1,6 @@
 package dk.t5.grp1.worldofzuul.graphics;
 
-import dk.t5.grp1.worldofzuul.graphics.room.tile.Tile;
+import dk.t5.grp1.worldofzuul.room.tile.Tile;
 
 public class Screen {
     private int width;
@@ -30,7 +30,7 @@ public class Screen {
         }
     }
 
-    public void renderMob(int xp, int yp) {
+    public void renderMob(int xp, int yp, Sprite sprite) {
         for (int y = 0; y < 32; y++) {
             for (int x = 0; x < 32; x++) {
                 if (yp - 16 < 0 || yp + 16 > height || xp - 16 < 0 || xp + 16 > width) break;

@@ -19,9 +19,6 @@
 
 package dk.t5.grp1.worldofzuul.command;
 
-import dk.t5.grp1.worldofzuul.player.Player;
-import dk.t5.grp1.worldofzuul.graphics.room.Room;
-
 public class Command {
     private CommandWord commandWord;
     private String secondWord;

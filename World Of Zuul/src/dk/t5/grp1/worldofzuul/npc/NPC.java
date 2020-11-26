@@ -1,13 +1,31 @@
 package dk.t5.grp1.worldofzuul.npc;
 
+import dk.t5.grp1.worldofzuul.graphics.Screen;
+import dk.t5.grp1.worldofzuul.graphics.Sprite;
+
 public abstract class NPC {
+    private int x, y;
+
     private String name;
     private String info;
     private boolean interacted = false;
 
-    public NPC(String name, String info) {
+    private Sprite sprite;
+
+    public NPC(String name, String info, int x, int y, Sprite sprite) {
         this.name = name;
         this.info = info;
+        this.x = x;
+        this.y = y;
+        this.sprite = sprite;
+    }
+
+    public void update() {
+
+    }
+
+    public void render(Screen screen) {
+        screen.renderMob(x, y, sprite);
     }
 
     public String getName() {
@@ -24,5 +42,17 @@ public abstract class NPC {
 
     public void setInteracted(boolean interacted) {
         this.interacted = interacted;
+    }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
