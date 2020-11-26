@@ -6,6 +6,8 @@ import dk.t5.grp1.worldofzuul.graphics.Sprite;
 public abstract class NPC {
     private int x, y;
 
+    private int startCollisionX, startCollisionY, endCollisionX, endCollisionY;
+
     private String name;
     private String info;
     private boolean interacted = false;

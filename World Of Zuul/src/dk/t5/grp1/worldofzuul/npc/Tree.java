@@ -11,7 +11,7 @@ public class Tree extends NPC{
                 "that will guide you towards the rebirth of the flora. You will also meet \n" +
                 "different dangers and riddles. To overcome these, you must remember what \n" +
                 "the different species tell you. \n" +
-                "Good luck! I put the life of the forest in your hands.", x, y, Sprite.voidSprite);
+                "Good luck! I put the life of the forest in your hands.", x, y, Sprite.npcTutorialTree);
     }
 
 }

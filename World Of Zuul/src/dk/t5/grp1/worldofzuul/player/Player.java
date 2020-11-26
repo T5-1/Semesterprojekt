@@ -12,7 +12,7 @@ import dk.t5.grp1.worldofzuul.item.NullItem;
 import dk.t5.grp1.worldofzuul.room.Room;
 
 public class Player {
-    public int x, y;
+    private int x, y;
     private int speed = 4;
 
     private int xp, xpNeededForNextLvl, currentLevel, npcsReactedWith, npcsNeededReactionWith;
@@ -25,7 +25,7 @@ public class Player {
     private Parser parser;
     private Inventory inventory;
     private EventManager eventManager;
-    private Sprite sprite = Sprite.voidSprite;
+    private Sprite sprite = Sprite.npcVoidSprite;
 
     public Player(Room spawn, EventManager eventManager, int x, int y) {
         this.x = x;
@@ -46,6 +46,7 @@ public class Player {
         this.eventManager = eventManager;
     }
 
+    //Check for collision on the top side of the player
     public boolean topCollision() {
         boolean collision = false;
         for (int i = 0; i < 32; i++) {
@@ -54,9 +55,13 @@ public class Player {
                 collision = true;
             }
         }
+        if (currentRoom.getCollisionMap()[x + (y - 16) * Game.width]) {
+            y++;
+        }
         return collision;
     }
 
+    //Check for collision on the bottom side of the player
     public boolean bottomCollision() {
         boolean collision = false;
         for (int i = 0; i < 32; i++) {
@@ -65,9 +70,13 @@ public class Player {
                 collision = true;
             }
         }
+        if (currentRoom.getCollisionMap()[x + (y + 16) * Game.width]) {
+            y--;
+        }
         return collision;
     }
 
+    //Check for collision on the left side of the player
     public boolean leftCollision() {
         boolean collision = false;
         for (int i = 0; i < 32; i++) {
@@ -76,9 +85,13 @@ public class Player {
                 collision = true;
             }
         }
+        if (currentRoom.getCollisionMap()[x - 16 + y * Game.width]) {
+            x++;
+        }
         return collision;
     }
 
+    //Check for collision on the right side of the player
     public boolean rightCollision() {
         boolean collision = false;
         for (int i = 0; i < 32; i++) {
@@ -87,39 +100,65 @@ public class Player {
                 collision = true;
             }
         }
+        if (currentRoom.getCollisionMap()[x + 16 + y * Game.width]) {
+            x--;
+        }
         return collision;
     }
 
     public void update(Keyboard key) {
+        //check if the player is not colliding with a solid tile, and if the directional key is pressed
+        //if true add/subtract speed from the players position
+        //UP
+        if (!topCollision() && key.up) {
+            y -= speed;
+        }
+        //DOWN
+        if (!bottomCollision() && key.down) {
+            y += speed;
+        }
+        //LEFT
+        if (!leftCollision() && key.left) {
+            x -= speed;
+        }
+        //RIGHT
+        if(!rightCollision() && key.right) {
+            x += speed;
+        }
 
-        if (!topCollision()) {
-            if (key.up) y -= speed;
-        }
-        if (!bottomCollision()) {
-            if (key.down) y += speed;
-        }
-        if (!leftCollision()) {
-            if (key.left) x -= speed;
-        }
-        if(!rightCollision()) {
-            if (key.right) x += speed;
-        }
-
+        //check if player is close enough to the edge of the screen, and check if the next room is not null
+        //if true then set the players current room to the exit, and place the player at the bottom of the screen
+        //NORTH
         if (y < 16 && currentRoom.getExit(0) != null){
             currentRoom = currentRoom.getExit(0);
             y = Game.height - 54;
         }
-        if (x > Game.width - 54 && currentRoom.getExit(1) != null){
+        else if (y < 17 && currentRoom.getExit(0) == null) {
+            y += speed;
+        }
+        //EAST
+        if (x > Game.width - 31 && currentRoom.getExit(1) != null){
             currentRoom = currentRoom.getExit(1);
             x = 16;
         }
+        else if (x > Game.width - 32 && currentRoom.getExit(1) == null) {
+            x -= speed;
+        }
+        //SOUTH
         if (y > Game.height - 54 && currentRoom.getExit(2) != null) {
             currentRoom = currentRoom.getExit(2);
             y = 16;
         }
+        else if (y > Game.height - 55 && currentRoom.getExit(2) == null) {
+            y -= speed;
+        }
+        //WESt
         if (x < 16 && currentRoom.getExit(3) != null) {
             currentRoom = currentRoom.getExit(3);
-            x = Game.width - 54;
+            x = Game.width - 31;
+        }
+        else if (x < 17 && currentRoom.getExit(3) == null) {
+            x += speed;
         }
 
 
@@ -323,5 +362,13 @@ public class Player {
 
     public void setCanLevelUp(boolean canLevelUp) {
         this.canLevelUp = canLevelUp;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }

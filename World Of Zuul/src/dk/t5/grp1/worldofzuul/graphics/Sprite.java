@@ -7,8 +7,11 @@ public class Sprite {
     private int[] pixels;
 
     public static final Sprite grass = new Sprite(64, 0, 0, SpriteSheet.tiles);
-    public static final Sprite treestump = new Sprite(64, 1, 0, SpriteSheet.tiles);
+    public static final Sprite treestump = new Sprite(64, 0, 1, SpriteSheet.tiles);
     public static final Sprite voidSprite = new Sprite(64, 0xFF00FF);
+
+    public static final Sprite npcTutorialTree = new Sprite(512, 0, 1, SpriteSheet.npc);
+    public static final Sprite npcVoidSprite = new Sprite(32, 0xFFFFFF);
 
     private SpriteSheet sheet;
 

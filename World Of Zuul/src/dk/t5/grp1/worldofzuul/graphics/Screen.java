@@ -31,10 +31,12 @@ public class Screen {
     }
 
     public void renderMob(int xp, int yp, Sprite sprite) {
-        for (int y = 0; y < 32; y++) {
-            for (int x = 0; x < 32; x++) {
+        for (int y = 0; y < sprite.SIZE; y++) {
+            for (int x = 0; x < sprite.SIZE; x++) {
                 if (yp - 16 < 0 || yp + 16 > height || xp - 16 < 0 || xp + 16 > width) break;
-                pixels[(x + xp - 16) + (y + yp - 16) * width] = 0xffffffff;
+                if (sprite.getPixels()[x + y * sprite.SIZE] != 0xffff00ff) {
+                    pixels[(x + xp - sprite.SIZE / 2) + (y + yp - sprite.SIZE / 2) * width] = sprite.getPixels()[x + y * sprite.SIZE];
+                }
             }
         }
     }

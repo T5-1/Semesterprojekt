@@ -16,8 +16,8 @@ import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 
 public class Game extends Application {
-    public static final int width = 1606;
-    public static final int height = 925;
+    public static final int width = 1616;
+    public static final int height = 935;
 
     private String title = "Game Title";
 
@@ -97,7 +97,7 @@ public class Game extends Application {
 
         createRooms();
         eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
-        player = new Player(spawn, eventManager, width / 2, height / 2);
+        player = new Player(spawn, eventManager, width / 2, height / 2 + 150);
 
         stage.setTitle(title);
         stage.setResizable(false);
@@ -129,7 +129,14 @@ public class Game extends Application {
     public void render() {
         screen.clear();
         player.getCurrentRoom().render(screen);
-        player.render(screen);
+        if ( player.getY() > player.getCurrentRoom().getNpc().getY() + 160) {
+            player.getCurrentRoom().getNpc().render(screen);
+            player.render(screen);
+        }
+        else {
+            player.render(screen);
+            player.getCurrentRoom().getNpc().render(screen);
+        }
 
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), screen.getPixels(), 0, width);
     }

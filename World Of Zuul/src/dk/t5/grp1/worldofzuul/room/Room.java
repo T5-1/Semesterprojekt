@@ -81,7 +81,6 @@ public abstract class Room
                 getTile(x, y).render(x, y, screen);
             }
         }
-        screen.renderMob(npc.getX(), npc.getY(), npc.getSprite());
     }
 
     public Tile getTile(int x, int y) {
