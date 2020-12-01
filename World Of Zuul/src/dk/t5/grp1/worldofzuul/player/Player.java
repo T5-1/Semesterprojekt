@@ -15,6 +15,8 @@ public class Player {
     private int x, y;
     private int speed = 4;
 
+    private int startInteractionX, startInteractionY, endInteractionX, endInteractionY;
+
     private int xp, xpNeededForNextLvl, currentLevel, npcsReactedWith, npcsNeededReactionWith;
     private final int MAX_LEVEL = 4;
     private boolean alive, restartGame, readyForFinalLevel, commandAvailable, seedsPlanted, canLevelUp;
@@ -106,7 +108,27 @@ public class Player {
         return collision;
     }
 
+    private boolean npcInteractionOverlap () {
+        return (startInteractionX < currentRoom.getNpc().endInteractionX) &&
+               (currentRoom.getNpc().startInteractionX < endInteractionX) &&
+               (startInteractionY < currentRoom.getNpc().endInteractionY) &&
+               (currentRoom.getNpc().startInteractionY < endInteractionY);
+    }
+
+    private void npcInteraction() {
+
+    }
+
     public void update(Keyboard key) {
+        startInteractionX = x - sprite.SIZE - 16;
+        startInteractionY = y - sprite.SIZE - 16;
+        endInteractionX = x + sprite.SIZE + 16;
+        endInteractionY = y + sprite.SIZE + 16;
+
+        if (npcInteractionOverlap() && key.interact) {
+            npcInteraction();
+        }
+
         //check if the player is not colliding with a solid tile, and if the directional key is pressed
         //if true add/subtract speed from the players position
         //UP
