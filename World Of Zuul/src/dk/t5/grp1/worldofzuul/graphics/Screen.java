@@ -42,7 +42,19 @@ public class Screen {
     }
 
     public void renderDialogueBox() {
+        for (int y = height - 220; y < height - 80; y++) {
+            for (int x = 300; x < width - 300; x++) {
+                int r = (pixels[x + y * width] & 0xFF0000) >> 16;
+                int g = (pixels[x + y * width] & 0xFF00) >> 8;
+                int b = (pixels[x + y * width] & 0xFF);
 
+                r *= 0.25;
+                g *= 0.25;
+                b *= 0.25;
+
+                pixels[x + y * width] = 0xff000000 + (r << 16) + (g << 8) + b;
+            }
+        }
     }
 
     public int[] getPixels() {

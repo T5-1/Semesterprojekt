@@ -7,6 +7,7 @@ import dk.t5.grp1.worldofzuul.event.EventManager;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
 import dk.t5.grp1.worldofzuul.graphics.Sprite;
 import dk.t5.grp1.worldofzuul.input.Keyboard;
+import dk.t5.grp1.worldofzuul.interaction.Interaction;
 import dk.t5.grp1.worldofzuul.item.ItemType;
 import dk.t5.grp1.worldofzuul.item.NullItem;
 import dk.t5.grp1.worldofzuul.room.Room;
@@ -27,6 +28,7 @@ public class Player {
     private Parser parser;
     private Inventory inventory;
     private EventManager eventManager;
+    private Interaction interaction = new Interaction();
     private Sprite sprite = Sprite.npcVoidSprite;
 
     public Player(Room spawn, EventManager eventManager, int x, int y) {
@@ -115,37 +117,33 @@ public class Player {
                (currentRoom.getNpc().startInteractionY < endInteractionY);
     }
 
-    private void npcInteraction() {
-
-    }
-
     public void update(Keyboard key) {
         startInteractionX = x - sprite.SIZE - 16;
         startInteractionY = y - sprite.SIZE - 16;
         endInteractionX = x + sprite.SIZE + 16;
         endInteractionY = y + sprite.SIZE + 16;
 
-        if (npcInteractionOverlap() && key.interact) {
-            npcInteraction();
-        }
+        interaction.update(key);
 
-        //check if the player is not colliding with a solid tile, and if the directional key is pressed
-        //if true add/subtract speed from the players position
-        //UP
-        if (!topCollision() && key.up) {
-            y -= speed;
-        }
-        //DOWN
-        if (!bottomCollision() && key.down) {
-            y += speed;
-        }
-        //LEFT
-        if (!leftCollision() && key.left) {
-            x -= speed;
-        }
-        //RIGHT
-        if(!rightCollision() && key.right) {
-            x += speed;
+        if (!interaction.isInteracting()) {
+            //check if the player is not colliding with a solid tile, and if the directional key is pressed
+            //if true add/subtract speed from the players position
+            //UP
+            if (!topCollision() && key.up) {
+                y -= speed;
+            }
+            //DOWN
+            if (!bottomCollision() && key.down) {
+                y += speed;
+            }
+            //LEFT
+            if (!leftCollision() && key.left) {
+                x -= speed;
+            }
+            //RIGHT
+            if(!rightCollision() && key.right) {
+                x += speed;
+            }
         }
 
         //check if player is close enough to the edge of the screen, and check if the next room is not null
@@ -392,5 +390,9 @@ public class Player {
 
     public int getY() {
         return y;
+    }
+
+    public Interaction getInteraction() {
+        return interaction;
     }
 }

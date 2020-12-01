@@ -129,6 +129,7 @@ public class Game extends Application {
     public void render() {
         screen.clear();
         player.getCurrentRoom().render(screen);
+
         if ( player.getY() > player.getCurrentRoom().getNpc().getY() + player.getCurrentRoom().getNpc().startInteractionY) {
             player.getCurrentRoom().getNpc().render(screen);
             player.render(screen);
@@ -137,6 +138,8 @@ public class Game extends Application {
             player.render(screen);
             player.getCurrentRoom().getNpc().render(screen);
         }
+
+        player.getInteraction().render(screen);
 
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), screen.getPixels(), 0, width);
     }
