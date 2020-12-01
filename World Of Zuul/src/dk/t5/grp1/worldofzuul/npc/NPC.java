@@ -6,7 +6,7 @@ import dk.t5.grp1.worldofzuul.graphics.Sprite;
 public abstract class NPC {
     private int x, y;
 
-    private int startCollisionX, startCollisionY, endCollisionX, endCollisionY;
+    public final int startCollisionX, startCollisionY, endCollisionX, endCollisionY;
 
     private String name;
     private String info;
@@ -14,12 +14,16 @@ public abstract class NPC {
 
     private Sprite sprite;
 
-    public NPC(String name, String info, int x, int y, Sprite sprite) {
+    public NPC(String name, String info, int x, int y, Sprite sprite, int startCollisionX, int startCollisionY, int endCollisionX, int endCollisionY) {
         this.name = name;
         this.info = info;
         this.x = x;
         this.y = y;
         this.sprite = sprite;
+        this.startCollisionX = startCollisionX;
+        this.startCollisionY = startCollisionY;
+        this.endCollisionX = endCollisionX;
+        this.endCollisionY = endCollisionY;
     }
 
     public void update() {

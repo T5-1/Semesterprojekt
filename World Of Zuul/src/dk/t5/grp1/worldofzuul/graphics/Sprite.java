@@ -10,6 +10,17 @@ public class Sprite {
     public static final Sprite treestump = new Sprite(64, 0, 1, SpriteSheet.tiles);
     public static final Sprite voidSprite = new Sprite(64, 0xFF00FF);
 
+    public static final Sprite npcFish = new Sprite(256, 0, 0, SpriteSheet.npc);
+    public static final Sprite npcCactus = new Sprite(256, 1, 0, SpriteSheet.npc);
+    public static final Sprite npcOrangutan = new Sprite(256, 2, 0, SpriteSheet.npc);
+    public static final Sprite npcTroll = new Sprite(256, 3, 0, SpriteSheet.npc);
+    public static final Sprite npcDeforester = new Sprite(256, 4, 0, SpriteSheet.npc);
+    public static final Sprite npcBat = new Sprite(256, 0, 1, SpriteSheet.npc);
+    public static final Sprite npcTreehugger = new Sprite(256, 1, 1, SpriteSheet.npc);
+    public static final Sprite npcGoat = new Sprite(256, 2, 1, SpriteSheet.npc);
+    public static final Sprite npcMermaid = new Sprite(256, 3, 1, SpriteSheet.npc);
+    public static final Sprite npcFlower = new Sprite(256, 4, 1, SpriteSheet.npc);
+    public static final Sprite npcTucan = new Sprite(256, 4, 2, SpriteSheet.npc);
     public static final Sprite npcTutorialTree = new Sprite(512, 0, 1, SpriteSheet.npc);
     public static final Sprite npcVoidSprite = new Sprite(32, 0xFFFFFF);
 

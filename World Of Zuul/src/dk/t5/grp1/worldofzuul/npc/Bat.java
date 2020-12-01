@@ -8,7 +8,7 @@ public class Bat extends NPC {
                 "well okay then. Hello I am Batshitcrazy. \n" +
                 "I SWEAR ON MY ANCESTOR YOU WILL NOT LEAVE \n" +
                 "WITHOUT SUFFERING some information.\n" +
-                "*****insert information*****", x, y, Sprite.voidSprite);
+                "*****insert information*****", x, y, Sprite.npcBat, x - 20, y - 20, x + 20, y + 20);
     }
 
 }

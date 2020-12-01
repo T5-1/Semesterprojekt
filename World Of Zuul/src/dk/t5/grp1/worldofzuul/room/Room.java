@@ -39,6 +39,7 @@ public abstract class Room
         exits = new Room[4];
         this.npc = npc;
         loadLevel(path);
+        createNPCCollision();
     }
 
     public void loadLevel(String path) {
@@ -91,6 +92,14 @@ public abstract class Room
             return Tile.treestump;
         }
         return Tile.voidTile;
+    }
+
+    public void createNPCCollision() {
+        for (int y = npc.startCollisionY; y < npc.endCollisionY; y++) {
+            for (int x = npc.startCollisionX; x < npc.endCollisionX; x++) {
+                collisionMap[x + y * Game.width] = true;
+            }
+        }
     }
 
     public void setExit(int direction, Room neighbor)

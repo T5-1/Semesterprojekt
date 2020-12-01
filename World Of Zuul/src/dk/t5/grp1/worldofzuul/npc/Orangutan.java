@@ -8,7 +8,7 @@ public class Orangutan extends NPC {
                 "Can anyone help me plant a new forest? \n" +
                 "“Hello I am Pongo. If you answer my question right, I can give you a seed for your forest,\n" +
                 "and then maybe you can give me a new home\n" +
-                "*****insert question(s)*****”\n", x, y, Sprite.voidSprite);
+                "*****insert question(s)*****”\n", x, y, Sprite.npcOrangutan, x - 20, y - 20, x + 20, y + 20);
     }
 
 }

@@ -13,7 +13,7 @@ public class Fish extends NPC {
                 "It might be a mistake\n" +
                 "To save the wooden nation\n" +
                 "you need some information\n" +
-                "****insert information****\n", x, y, Sprite.voidSprite);
+                "****insert information****\n", x, y, Sprite.npcFish, x - 20, y - 20, x + 20, y + 20);
     }
 
 }
