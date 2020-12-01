@@ -62,6 +62,30 @@ public abstract class Room
                 else if(map[x + y * width] == 0xff805210) {
                     tiles[x + y * width] = 1;
                 }
+                else if(map[x + y * width] == 0xffFF1924) {
+                    tiles[x + y * width] = 2;
+                }
+                else if(map[x + y * width] == 0xffFFD416) {
+                    tiles[x + y * width] = 3;
+                }
+                else if(map[x + y * width] == 0xff2F28FF) {
+                    tiles[x + y * width] = 4;
+                }
+                else if(map[x + y * width] == 0xff57007F) {
+                    tiles[x + y * width] = 5;
+                }
+                else if(map[x + y * width] == 0xff447F47) {
+                    tiles[x + y * width] = 6;
+                }
+                else if(map[x + y * width] == 0xff3C3F2F) {
+                    tiles[x + y * width] = 7;
+                }
+                else if(map[x + y * width] == 0xff1664FF) {
+                    tiles[x + y * width] = 8;
+                }
+                else if(map[x + y * width] == 0xffFF6A00) {
+                    tiles[x + y * width] = 9;
+                }
                 else {
                     tiles[x + y * width] = -1;
                 }
@@ -90,6 +114,30 @@ public abstract class Room
         }
         else if (tiles[x + y * width] == 1) {
             return Tile.treestump;
+        }
+        else if (tiles[x + y * width] == 2) {
+            return Tile.flower1;
+        }
+        else if (tiles[x + y * width] == 3) {
+            return Tile.flower2;
+        }
+        else if (tiles[x + y * width] == 4) {
+            return Tile.water;
+        }
+        else if (tiles[x + y * width] == 5) {
+            return Tile.sand;
+        }
+        else if (tiles[x + y * width] == 6) {
+            return Tile.burnt;
+        }
+        else if (tiles[x + y * width] == 7) {
+            return Tile.stone;
+        }
+        else if (tiles[x + y * width] == 8) {
+            return Tile.water2;
+        }
+        else if (tiles[x + y * width] == 9) {
+            return Tile.savanna;
         }
         return Tile.voidTile;
     }
