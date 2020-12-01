@@ -8,7 +8,7 @@ public class Flower extends NPC {
     public Flower(int x, int y) {
         super("Daisy the flower", "Hello, nice to meet you! I am Daisy and I \n" +
                 "have some valuable information for you! \n" +
-                "*****insert information*****", x, y, Sprite.voidSprite);
+                "*****insert information*****", x, y, Sprite.npcFlower, x - 20, y - 20, x + 20, y + 20);
     }
 
 }

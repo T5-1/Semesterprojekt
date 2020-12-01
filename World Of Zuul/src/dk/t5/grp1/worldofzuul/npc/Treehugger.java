@@ -9,7 +9,7 @@ public class Treehugger extends NPC {
                 "Hey dude, you want some of this organic oil for the roots? Man the world is\n" +
                 "so corrupted, we need more love in the world.. more trees. I’m Olive Bluebird and I can like, \n" +
                 "totally help you with this quest, man. \n" +
-                "*****insert information*****", x, y, Sprite.voidSprite);
+                "*****insert information*****", x, y, Sprite.npcTreehugger, x - 20, y - 20, x + 20, y + 20);
     }
 
 }

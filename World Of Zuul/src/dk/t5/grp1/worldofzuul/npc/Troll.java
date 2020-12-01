@@ -8,7 +8,7 @@ public class Troll extends NPC {
         super("Gnarlag the troll", "Gnarlarg I am. What do you on my bridge here. \n" +
                 "Ah! mission I see. Cross my bridge you shall. \n" +
                 "information receive you must. \n" +
-                "***** insert information*****", x, y, Sprite.voidSprite);
+                "***** insert information*****", x, y, Sprite.npcTroll, x - 20, y - 20, x + 20, y + 20);
     }
 
 

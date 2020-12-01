@@ -10,7 +10,7 @@ public class Cactus extends NPC {
                 "Oh hey… I didn’t see you there. I guess you want what everybody else wants from me..\n"+
                 "sobs… some “valuable” information i guess. Well here you go… \n" +
                 "take your stupid information and leave”\n" +
-                "*****insert information*****", x, y, Sprite.voidSprite);
+                "*****insert information*****", x, y, Sprite.npcCactus, x - 20, y - 20, x + 20, y + 20);
     }
 
 
