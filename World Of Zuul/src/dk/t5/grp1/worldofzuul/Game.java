@@ -138,6 +138,9 @@ public class Game extends Application {
             player.getCurrentRoom().getNpc().render(screen);
         }
 
+
+        
+
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), screen.getPixels(), 0, width);
     }
 

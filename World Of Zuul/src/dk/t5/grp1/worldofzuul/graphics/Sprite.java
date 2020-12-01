@@ -9,6 +9,15 @@ public class Sprite {
     public static final Sprite grass = new Sprite(64, 0, 0, SpriteSheet.tiles);
     public static final Sprite treestump = new Sprite(64, 0, 1, SpriteSheet.tiles);
     public static final Sprite voidSprite = new Sprite(64, 0xFF00FF);
+    public static final Sprite flower1 = new Sprite(64, 0, 2, SpriteSheet.tiles);
+    public static final Sprite flower2 = new Sprite(64, 1, 2, SpriteSheet.tiles);
+    public static final Sprite water = new Sprite(64, 1, 0, SpriteSheet.tiles);
+    public static final Sprite stone = new Sprite(64, 2, 0, SpriteSheet.tiles);
+    public static final Sprite burnt = new Sprite(64, 4, 0, SpriteSheet.tiles);
+    public static final Sprite sand = new Sprite(64, 3, 0, SpriteSheet.tiles);
+    public static final Sprite water2 = new Sprite(64, 1, 0, SpriteSheet.tiles);
+    public static final Sprite savanna = new Sprite(64, 1, 0, SpriteSheet.tiles);
+
 
     public static final Sprite npcFish = new Sprite(256, 0, 0, SpriteSheet.npc);
     public static final Sprite npcCactus = new Sprite(256, 1, 0, SpriteSheet.npc);

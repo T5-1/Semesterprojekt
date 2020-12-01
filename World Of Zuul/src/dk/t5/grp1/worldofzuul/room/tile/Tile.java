@@ -11,6 +11,14 @@ public class Tile {
     public static final Tile grass = new GrassTile(Sprite.grass);
     public static final Tile treestump = new TreestumpTile(Sprite.treestump);
     public static final Tile voidTile = new VoidTile(Sprite.voidSprite);
+    public static final Tile flower1 = new FlowerTile1(Sprite.flower1);
+    public static final Tile flower2 = new FlowerTile2(Sprite.flower2);
+    public static final Tile water = new WaterTile(Sprite.water);
+    public static final Tile sand = new SandTile(Sprite.sand);
+    public static final Tile burnt = new BurntTile(Sprite.burnt);
+    public static final Tile stone = new StoneTile(Sprite.stone);
+    public static final Tile water2 = new WaterTile2(Sprite.water2);
+    public static final Tile savanna = new SavannaTile(Sprite.savanna);
 
     public Tile(Sprite sprite) {
         this.sprite = sprite;
