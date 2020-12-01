@@ -41,6 +41,10 @@ public class Screen {
         }
     }
 
+    public void renderDialogueBox() {
+
+    }
+
     public int[] getPixels() {
         return pixels;
     }

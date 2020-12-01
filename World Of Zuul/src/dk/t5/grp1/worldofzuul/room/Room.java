@@ -95,8 +95,8 @@ public abstract class Room
     }
 
     public void createNPCCollision() {
-        for (int y = npc.startCollisionY; y < npc.endCollisionY; y++) {
-            for (int x = npc.startCollisionX; x < npc.endCollisionX; x++) {
+        for (int y = npc.startInteractionY; y < npc.endInteractionY; y++) {
+            for (int x = npc.startInteractionX; x < npc.endInteractionX; x++) {
                 collisionMap[x + y * Game.width] = true;
             }
         }
