@@ -9,7 +9,7 @@ public class Tucan extends NPC {
                 "WHEN TUCTUC HEARD YOU WERE GOING TO SAVE THE FOREST \n" +
                 "TUCTUC COULDN’T SIT STILL! SO TUCTUC HAVE GATHERED \n" +
                 "SOME INFORMATION FOR YOU!\n" +
-                "***** insert information*****\n", x, y, Sprite.voidSprite);
+                "***** insert information*****\n", x, y, Sprite.npcTucan, x - 20, y - 20, x + 20, y + 20);
     }
 
 }

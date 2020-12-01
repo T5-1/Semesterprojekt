@@ -129,13 +129,19 @@ public class Game extends Application {
     public void render() {
         screen.clear();
         player.getCurrentRoom().render(screen);
-        if ( player.getY() > player.getCurrentRoom().getNpc().getY() + 160) {
+        if ( player.getY() > player.getCurrentRoom().getNpc().getY() + player.getCurrentRoom().getNpc().startCollisionY) {
             player.getCurrentRoom().getNpc().render(screen);
             player.render(screen);
         }
         else {
             player.render(screen);
             player.getCurrentRoom().getNpc().render(screen);
+        }
+
+        for (int i = 0; i < screen.getPixels().length; i++) {
+            if (player.getCurrentRoom().getCollisionMap()[i]) {
+                //screen.getPixels()[i] = 0xff000000;
+            }
         }
 
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), screen.getPixels(), 0, width);
