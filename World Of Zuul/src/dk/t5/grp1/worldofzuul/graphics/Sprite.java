@@ -16,7 +16,7 @@ public class Sprite {
     public static final Sprite burnt = new Sprite(64, 4, 0, SpriteSheet.tiles);
     public static final Sprite sand = new Sprite(64, 3, 0, SpriteSheet.tiles);
     public static final Sprite water2 = new Sprite(64, 1, 0, SpriteSheet.tiles);
-    public static final Sprite savanna = new Sprite(64, 1, 0, SpriteSheet.tiles);
+    public static final Sprite savanna = new Sprite(64, 5, 0, SpriteSheet.tiles);
 
 
     public static final Sprite npcFish = new Sprite(256, 0, 0, SpriteSheet.npc);
