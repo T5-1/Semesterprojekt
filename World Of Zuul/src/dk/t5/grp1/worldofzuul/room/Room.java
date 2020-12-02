@@ -89,6 +89,8 @@ public abstract class Room
                     tiles[x + y * width] = 10;
                 } else if (map[x + y * width] == 0xffFF475F) {
                     tiles[x + y * width] = 11;
+                } else if (map[x + y * width] == 0xff0BBAB1) {
+                    tiles[x + y * width] = 12;
                 }
                 else {
                     tiles[x + y * width] = -1;
@@ -145,6 +147,8 @@ public abstract class Room
             return Tile.burnt2;
         } else if (tiles[x + y * width] == 11) {
             return Tile.savanna2;
+        } else if (tiles[x + y * width] == 12) {
+            return Tile.cactus;
         }
         return Tile.voidTile;
     }
