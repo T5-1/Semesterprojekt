@@ -1,5 +1,6 @@
 package dk.t5.grp1.worldofzuul.room;
 
+import dk.t5.grp1.worldofzuul.Game;
 import dk.t5.grp1.worldofzuul.assets.Assets;
 import dk.t5.grp1.worldofzuul.assets.Tent1;
 import dk.t5.grp1.worldofzuul.assets.Tent2;
@@ -14,7 +15,7 @@ public class Camp extends Room{
     public Camp(String description, String name) {
         super(description, name, new Seed(), new ArrayList<>(), new Treehugger(1340, 580),"/textures/rooms/camp.png");
 
-        super.assets.add(new Tent1(600, 780));
-        super.assets.add(new Tent2(400, 780));
+        super.assets.add(new Tent1(800, 450));
+        super.assets.add(new Tent2(600, 450));
     }
 }

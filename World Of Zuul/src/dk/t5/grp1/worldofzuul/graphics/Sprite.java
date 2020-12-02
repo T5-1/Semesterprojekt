@@ -40,6 +40,7 @@ public class Sprite {
     public static final Sprite assetBridge = new Sprite(192, 0xff0BBAB1);
     public static final Sprite assetTent1 = new Sprite(192, 0xff0BBAB1);
     public static final Sprite assetTent2 = new Sprite(192, 0xff0BBAB1);
+    public static final Sprite assetCaveEntity = new Sprite(256, 0xff0BBAB1);
 
     private SpriteSheet sheet;
 
