@@ -9,6 +9,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelWriter;
@@ -93,11 +94,14 @@ public class Game extends Application {
         ImageView imageView = new ImageView(writableImage);
         Group root = new Group(imageView);
         Scene scene = new Scene(root, width, height);
+        Canvas canvas = new Canvas(width, height);
         key = new Keyboard(scene);
 
         createRooms();
         eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
-        player = new Player(spawn, eventManager, width / 2, height / 2 + 150);
+        player = new Player(spawn, eventManager, width / 2, height / 2 + 150, canvas);
+
+        root.getChildren().add(canvas);
 
         stage.setTitle(title);
         stage.setResizable(false);
@@ -112,6 +116,7 @@ public class Game extends Application {
 
             @Override
             public void handle(long now) {
+                canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
                 update();
                 render();
                 stage.setTitle(title + "  |  " + player.getCurrentRoom().getName());

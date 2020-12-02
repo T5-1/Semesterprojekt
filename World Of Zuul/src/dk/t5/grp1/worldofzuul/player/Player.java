@@ -11,6 +11,7 @@ import dk.t5.grp1.worldofzuul.interaction.Interaction;
 import dk.t5.grp1.worldofzuul.item.ItemType;
 import dk.t5.grp1.worldofzuul.item.NullItem;
 import dk.t5.grp1.worldofzuul.room.Room;
+import javafx.scene.canvas.Canvas;
 
 public class Player {
     private int x, y;
@@ -28,10 +29,10 @@ public class Player {
     private Parser parser;
     private Inventory inventory;
     private EventManager eventManager;
-    private Interaction interaction = new Interaction();
+    private Interaction interaction;
     private Sprite sprite = Sprite.npcVoidSprite;
 
-    public Player(Room spawn, EventManager eventManager, int x, int y) {
+    public Player(Room spawn, EventManager eventManager, int x, int y, Canvas canvas) {
         this.x = x;
         this.y = y;
         xp = 0;
@@ -48,6 +49,7 @@ public class Player {
         parser = new Parser();
         inventory = new Inventory();
         this.eventManager = eventManager;
+        interaction = new Interaction(canvas, currentRoom.getNpc());
     }
 
     //Check for collision on the top side of the player
@@ -124,6 +126,7 @@ public class Player {
         endInteractionY = y + sprite.SIZE + 16;
 
         interaction.update(key);
+        interaction.setNpc(currentRoom.getNpc());
 
         if (!interaction.isInteracting()) {
             //check if the player is not colliding with a solid tile, and if the directional key is pressed
