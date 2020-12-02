@@ -36,6 +36,9 @@ public class Sprite {
     public static final Sprite npcTutorialTree = new Sprite(512, 0, 1, SpriteSheet.npc);
     public static final Sprite npcVoidSprite = new Sprite(32, 0xFFFFFF);
 
+
+    public static final Sprite assetBridge = new Sprite(192, 0xff0BBAB1);
+
     private SpriteSheet sheet;
 
     private Sprite(int size, int x, int y, SpriteSheet sheet) {

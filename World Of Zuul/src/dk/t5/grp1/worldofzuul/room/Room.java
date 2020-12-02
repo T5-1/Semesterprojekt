@@ -1,6 +1,7 @@
 package dk.t5.grp1.worldofzuul.room;
 
 import dk.t5.grp1.worldofzuul.Game;
+import dk.t5.grp1.worldofzuul.assets.Assets;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
 import dk.t5.grp1.worldofzuul.room.tile.Tile;
 import dk.t5.grp1.worldofzuul.item.Item;
@@ -26,12 +27,28 @@ public abstract class Room
     private String description;
     private String name;
     private Room[] exits;
+    private Assets assets;
 
-    public Room(String description, String name, Item item, NPC npc, String path)
+    public Room(String description, String name, Item item, NPC npc, Assets assets, String path)
     {
         this(description, name, npc, path);
         exits = new Room[4];
         this.item=item;
+        this.assets = assets;
+    }
+    public Room(String description, String name, Item item, NPC npc, String path) {
+        this(description, name, npc, path);
+        exits = new Room[4];
+        this.item = item;
+    }
+    public Room(String description, String name, NPC npc, Assets assets, String path){
+        this.description = description;
+        this.name = name;
+        this.assets = assets;
+        exits = new Room[4];
+        this.npc = npc;
+        loadLevel(path);
+        createNPCCollision();
     }
     public Room(String description, String name, NPC npc, String path){
         this.description = description;
@@ -41,6 +58,7 @@ public abstract class Room
         loadLevel(path);
         createNPCCollision();
     }
+
 
     public void loadLevel(String path) {
         try {
@@ -111,6 +129,9 @@ public abstract class Room
             for (int x = 0; x < width; x++) {
                 getTile(x, y).render(x, y, screen);
             }
+        }
+        if (assets != null) {
+            assets.render(screen);
         }
     }
 
