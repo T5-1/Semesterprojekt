@@ -8,6 +8,6 @@ import dk.t5.grp1.worldofzuul.npc.Troll;
 
 public class River extends Room{
     public River(String description, String name) {
-        super(description, name, new Water(), new Troll(880, 200), new Bridge(600, 300), "/textures/rooms/river.png");
+        super(description, name, new Water(), new Troll(880, 200), new Bridge(800, 480), "/textures/rooms/river.png");
     }
 }
