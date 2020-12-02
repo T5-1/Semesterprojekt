@@ -11,9 +11,10 @@ import dk.t5.grp1.worldofzuul.npc.NPC;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public abstract class Room
-{
+public abstract class Room {
     protected int width, height;
     protected int[] tiles;
     private int[] map;
@@ -27,38 +28,31 @@ public abstract class Room
     private String description;
     private String name;
     private Room[] exits;
-    private Assets assets;
+    protected List<Assets> assets = new ArrayList<>();
 
-    public Room(String description, String name, Item item, NPC npc, Assets assets, String path)
-    {
-        this(description, name, npc, path);
-        exits = new Room[4];
-        this.item=item;
+    public Room(String description, String name, Item item, List<Assets> assets, NPC npc, String path) {
+        this(description, name, item, npc, path);
         this.assets = assets;
     }
+
+    public Room(String description, String name, List<Assets> assets, NPC npc, String path) {
+        this(description, name, npc, path);
+        this.assets = assets;
+    }
+
     public Room(String description, String name, Item item, NPC npc, String path) {
         this(description, name, npc, path);
-        exits = new Room[4];
         this.item = item;
     }
-    public Room(String description, String name, NPC npc, Assets assets, String path){
-        this.description = description;
-        this.name = name;
-        this.assets = assets;
-        exits = new Room[4];
-        this.npc = npc;
-        loadLevel(path);
-        createNPCCollision();
-    }
-    public Room(String description, String name, NPC npc, String path){
-        this.description = description;
-        this.name = name;
-        exits = new Room[4];
-        this.npc = npc;
-        loadLevel(path);
-        createNPCCollision();
-    }
 
+    public Room(String description, String name, NPC npc, String path) {
+        this.description = description;
+        this.name = name;
+        exits = new Room[4];
+        this.npc = npc;
+        loadLevel(path);
+        createNPCCollision();
+    }
 
     public void loadLevel(String path) {
         try {
@@ -76,32 +70,23 @@ public abstract class Room
             for (int x = 0; x < width; x++) {
                 if (map[x + y * width] == 0xff6bbb36) {
                     tiles[x + y * width] = 0;
-                }
-                else if(map[x + y * width] == 0xff805210) {
+                } else if (map[x + y * width] == 0xff805210) {
                     tiles[x + y * width] = 1;
-                }
-                else if(map[x + y * width] == 0xffFF1924) {
+                } else if (map[x + y * width] == 0xffFF1924) {
                     tiles[x + y * width] = 2;
-                }
-                else if(map[x + y * width] == 0xffFFD416) {
+                } else if (map[x + y * width] == 0xffFFD416) {
                     tiles[x + y * width] = 3;
-                }
-                else if(map[x + y * width] == 0xff2F28FF) {
+                } else if (map[x + y * width] == 0xff2F28FF) {
                     tiles[x + y * width] = 4;
-                }
-                else if(map[x + y * width] == 0xff57007F) {
+                } else if (map[x + y * width] == 0xff57007F) {
                     tiles[x + y * width] = 5;
-                }
-                else if(map[x + y * width] == 0xff447F47) {
+                } else if (map[x + y * width] == 0xff447F47) {
                     tiles[x + y * width] = 6;
-                }
-                else if(map[x + y * width] == 0xff3C3F2F) {
+                } else if (map[x + y * width] == 0xff3C3F2F) {
                     tiles[x + y * width] = 7;
-                }
-                else if(map[x + y * width] == 0xff1664FF) {
+                } else if (map[x + y * width] == 0xff1664FF) {
                     tiles[x + y * width] = 8;
-                }
-                else if(map[x + y * width] == 0xffFF6A00) {
+                } else if (map[x + y * width] == 0xffFF6A00) {
                     tiles[x + y * width] = 9;
                 } else if (map[x + y * width] == 0xffFF5B3A) {
                     tiles[x + y * width] = 10;
@@ -109,11 +94,10 @@ public abstract class Room
                     tiles[x + y * width] = 11;
                 } else if (map[x + y * width] == 0xff0BBAB1) {
                     tiles[x + y * width] = 12;
-                }
-                else {
+                } else {
                     tiles[x + y * width] = -1;
                 }
-                if(getTile(x, y).solid()) {
+                if (getTile(x, y).solid()) {
                     for (int cy = 0; cy < getTile(x, y).sprite.SIZE; cy++) {
                         for (int cx = 0; cx < getTile(x, y).sprite.SIZE; cx++) {
                             collisionMap[(x * getTile(x, y).sprite.SIZE + cx) + (y * getTile(x, y).sprite.SIZE + cy) * Game.width] = true;
@@ -131,36 +115,30 @@ public abstract class Room
             }
         }
         if (assets != null) {
-            assets.render(screen);
+            for (int i = 0; i < assets.size(); i++) {
+                assets.get(i).render(screen);
+            }
         }
     }
 
     public Tile getTile(int x, int y) {
         if (tiles[x + y * width] == 0) {
             return Tile.grass;
-        }
-        else if (tiles[x + y * width] == 1) {
+        } else if (tiles[x + y * width] == 1) {
             return Tile.treestump;
-        }
-        else if (tiles[x + y * width] == 2) {
+        } else if (tiles[x + y * width] == 2) {
             return Tile.flower1;
-        }
-        else if (tiles[x + y * width] == 3) {
+        } else if (tiles[x + y * width] == 3) {
             return Tile.flower2;
-        }
-        else if (tiles[x + y * width] == 4) {
+        } else if (tiles[x + y * width] == 4) {
             return Tile.water;
-        }
-        else if (tiles[x + y * width] == 5) {
+        } else if (tiles[x + y * width] == 5) {
             return Tile.sand;
-        }
-        else if (tiles[x + y * width] == 6) {
+        } else if (tiles[x + y * width] == 6) {
             return Tile.burnt;
-        }
-        else if (tiles[x + y * width] == 7) {
+        } else if (tiles[x + y * width] == 7) {
             return Tile.stone;
-        }
-        else if (tiles[x + y * width] == 8) {
+        } else if (tiles[x + y * width] == 8) {
             return Tile.water2;
         } else if (tiles[x + y * width] == 9) {
             return Tile.savanna;
@@ -182,13 +160,11 @@ public abstract class Room
         }
     }
 
-    public void setExit(int direction, Room neighbor)
-    {
+    public void setExit(int direction, Room neighbor) {
         exits[direction] = neighbor;
     }
 
-    public String getShortDescription()
-    {
+    public String getShortDescription() {
         return description;
     }
 
@@ -216,12 +192,11 @@ public abstract class Room
     }*/
 
 
-    public Room getExit(int direction)
-    {
+    public Room getExit(int direction) {
         return exits[direction];
     }
 
-    public Item getItem(){
+    public Item getItem() {
         return item.getItemType().getItem();
     }
 
