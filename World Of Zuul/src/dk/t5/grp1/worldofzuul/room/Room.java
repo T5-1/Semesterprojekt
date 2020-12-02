@@ -1,6 +1,7 @@
 package dk.t5.grp1.worldofzuul.room;
 
 import dk.t5.grp1.worldofzuul.Game;
+import dk.t5.grp1.worldofzuul.assets.Assets;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
 import dk.t5.grp1.worldofzuul.room.tile.Tile;
 import dk.t5.grp1.worldofzuul.item.Item;
@@ -26,12 +27,28 @@ public abstract class Room
     private String description;
     private String name;
     private Room[] exits;
+    private Assets assets;
 
-    public Room(String description, String name, Item item, NPC npc, String path)
+    public Room(String description, String name, Item item, NPC npc, Assets assets, String path)
     {
         this(description, name, npc, path);
         exits = new Room[4];
         this.item=item;
+        this.assets = assets;
+    }
+    public Room(String description, String name, Item item, NPC npc, String path) {
+        this(description, name, npc, path);
+        exits = new Room[4];
+        this.item = item;
+    }
+    public Room(String description, String name, NPC npc, Assets assets, String path){
+        this.description = description;
+        this.name = name;
+        this.assets = assets;
+        exits = new Room[4];
+        this.npc = npc;
+        loadLevel(path);
+        createNPCCollision();
     }
     public Room(String description, String name, NPC npc, String path){
         this.description = description;
@@ -41,6 +58,7 @@ public abstract class Room
         loadLevel(path);
         createNPCCollision();
     }
+
 
     public void loadLevel(String path) {
         try {
@@ -85,6 +103,12 @@ public abstract class Room
                 }
                 else if(map[x + y * width] == 0xffFF6A00) {
                     tiles[x + y * width] = 9;
+                } else if (map[x + y * width] == 0xffFF5B3A) {
+                    tiles[x + y * width] = 10;
+                } else if (map[x + y * width] == 0xffFF475F) {
+                    tiles[x + y * width] = 11;
+                } else if (map[x + y * width] == 0xff0BBAB1) {
+                    tiles[x + y * width] = 12;
                 }
                 else {
                     tiles[x + y * width] = -1;
@@ -105,6 +129,9 @@ public abstract class Room
             for (int x = 0; x < width; x++) {
                 getTile(x, y).render(x, y, screen);
             }
+        }
+        if (assets != null) {
+            assets.render(screen);
         }
     }
 
@@ -135,9 +162,14 @@ public abstract class Room
         }
         else if (tiles[x + y * width] == 8) {
             return Tile.water2;
-        }
-        else if (tiles[x + y * width] == 9) {
+        } else if (tiles[x + y * width] == 9) {
             return Tile.savanna;
+        } else if (tiles[x + y * width] == 10) {
+            return Tile.burnt2;
+        } else if (tiles[x + y * width] == 11) {
+            return Tile.savanna2;
+        } else if (tiles[x + y * width] == 12) {
+            return Tile.cactus;
         }
         return Tile.voidTile;
     }
