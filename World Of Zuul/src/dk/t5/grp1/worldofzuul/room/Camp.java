@@ -6,7 +6,7 @@ import dk.t5.grp1.worldofzuul.npc.Treehugger;
 public class Camp extends Room{
 
     public Camp(String description, String name) {
-        super(description, name, new Seed(), new Treehugger(40, 300), "/textures/rooms/camp.png");
+        super(description, name, new Seed(), new Treehugger(1340, 580), "/textures/rooms/camp.png");
 
     }
 }

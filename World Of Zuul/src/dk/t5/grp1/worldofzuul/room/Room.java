@@ -85,6 +85,10 @@ public abstract class Room
                 }
                 else if(map[x + y * width] == 0xffFF6A00) {
                     tiles[x + y * width] = 9;
+                } else if (map[x + y * width] == 0xffFF5B3A) {
+                    tiles[x + y * width] = 10;
+                } else if (map[x + y * width] == 0xffFF475F) {
+                    tiles[x + y * width] = 11;
                 }
                 else {
                     tiles[x + y * width] = -1;
@@ -135,9 +139,12 @@ public abstract class Room
         }
         else if (tiles[x + y * width] == 8) {
             return Tile.water2;
-        }
-        else if (tiles[x + y * width] == 9) {
+        } else if (tiles[x + y * width] == 9) {
             return Tile.savanna;
+        } else if (tiles[x + y * width] == 10) {
+            return Tile.burnt2;
+        } else if (tiles[x + y * width] == 11) {
+            return Tile.savanna2;
         }
         return Tile.voidTile;
     }
