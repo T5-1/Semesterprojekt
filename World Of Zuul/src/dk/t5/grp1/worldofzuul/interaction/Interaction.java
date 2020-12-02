@@ -42,7 +42,11 @@ public class Interaction {
             else if (!key.interact) {
                 pressed = false;
             }
-            if (interactionLine + 5 > npc.getInfo().length) {
+            else if (npc.getInfo().length < 5 && interactionLine > 0) {
+                interactionLine = 0;
+                interacting = false;
+            }
+            else if (interactionLine + 5 > npc.getInfo().length && npc.getInfo().length >= 5) {
                 interactionLine = 0;
                 interacting = false;
             }
@@ -57,16 +61,18 @@ public class Interaction {
             graphicsContext.setFill(Color.rgb(87, 255, 81));
             graphicsContext.fillText(npc.getName(), 310, Game.height - 200);
             graphicsContext.setFill(Color.rgb(198, 198, 198));
-            if (npc.getInfo().length > 4) {
+            if (npc.getInfo().length > 5) {
                 for (int i = 0; i < 5; i++) {
-                    graphicsContext.fillText(npc.getInfo()[i + interactionLine], 310, Game.height - 180 + (20 * i), Game.width - 620);
+                    if (i + interactionLine < npc.getInfo().length) {
+                        graphicsContext.fillText(npc.getInfo()[i + interactionLine], 310, Game.height - 180 + (20 * i), Game.width - 620);
+                    }
                 }
             }
-            /*else {
+            else {
                 for (int i = 0; i < npc.getInfo().length; i++) {
                     graphicsContext.fillText(npc.getInfo()[i], 310, Game.height - 180 + (20 * i), Game.width - 620);
                 }
-            }*/
+            }
         }
     }
 

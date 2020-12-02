@@ -6,9 +6,7 @@ import dk.t5.grp1.worldofzuul.graphics.Sprite;
 public class Flower extends NPC {
 
     public Flower(int x, int y) {
-        super("Daisy the flower", "Hello, nice to meet you! I am Daisy and I \n" +
-                "have some valuable information for you! \n" +
-                "*****insert information*****", x, y, Sprite.npcFlower, x - 20, y - 20, x + 20, y + 20);
+        super("Daisy the flower", "res/text/dialogue/flower.txt", x, y, Sprite.npcFlower, x - 20, y - 20, x + 20, y + 20);
     }
 
 }
