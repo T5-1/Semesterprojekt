@@ -21,6 +21,8 @@ public class Tile {
     public static final Tile savanna = new SavannaTile(Sprite.savanna);
     public static final Tile burnt2 = new BurntTreeTile(Sprite.burnt2);
     public static final Tile savanna2 = new SavannaTreeTile(Sprite.savanna2);
+    public static final Tile cactus = new CactusTile(Sprite.cactus);
+
 
     public Tile(Sprite sprite) {
         this.sprite = sprite;
