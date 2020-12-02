@@ -125,8 +125,10 @@ public class Player {
         endInteractionX = x + sprite.SIZE + 16;
         endInteractionY = y + sprite.SIZE + 16;
 
-        interaction.update(key);
-        interaction.setNpc(currentRoom.getNpc());
+        if (npcInteractionOverlap()) {
+            interaction.update(key);
+            interaction.setNpc(currentRoom.getNpc());
+        }
 
         if (!interaction.isInteracting()) {
             //check if the player is not colliding with a solid tile, and if the directional key is pressed
