@@ -5,4 +5,6 @@ public class Sun extends Item {
     public Sun(int y, int x) {
         super("Sun", ItemType.SUN, x, y);
     }
+
+    public Sun(){ super("Sun", ItemType.SUN);}
 }
