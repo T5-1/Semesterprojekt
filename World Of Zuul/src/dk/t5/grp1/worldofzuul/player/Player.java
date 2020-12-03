@@ -15,7 +15,7 @@ import javafx.scene.canvas.Canvas;
 
 public class Player {
     private int x, y;
-    private int speed = 4;
+    private int speed = 15;
 
     private int startInteractionX, startInteractionY, endInteractionX, endInteractionY;
 
