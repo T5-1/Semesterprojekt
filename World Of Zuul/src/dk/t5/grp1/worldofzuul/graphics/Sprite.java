@@ -21,6 +21,11 @@ public class Sprite {
     public static final Sprite burnt2 = new Sprite(64, 1, 1, SpriteSheet.tiles);
     public static final Sprite cactus = new Sprite(64, 3, 1, SpriteSheet.tiles);
 
+    public static final Sprite assetTent1 = new Sprite(192, 0, 13, SpriteSheet.tiles);
+    public static final Sprite assetTent2 = new Sprite(192, 3, 13, SpriteSheet.tiles);
+    public static final Sprite assetBridge = new Sprite(192, 6, 13, SpriteSheet.tiles);
+    public static final Sprite assetCaveEntity = new Sprite(512, 0xff0BBAB1);
+
     public static final Sprite npcFish = new Sprite(256, 0, 0, SpriteSheet.npc);
     public static final Sprite npcCactus = new Sprite(256, 1, 0, SpriteSheet.npc);
     public static final Sprite npcOrangutan = new Sprite(256, 2, 0, SpriteSheet.npc);
@@ -34,11 +39,6 @@ public class Sprite {
     public static final Sprite npcTucan = new Sprite(256, 4, 2, SpriteSheet.npc);
     public static final Sprite npcTutorialTree = new Sprite(512, 0, 2, SpriteSheet.npc);
     public static final Sprite npcVoidSprite = new Sprite(32, 0xFFFFFF);
-
-    public static final Sprite assetBridge = new Sprite(192, 0xff0BBAB1);
-    public static final Sprite assetTent1 = new Sprite(192, 0xff0BBAB1);
-    public static final Sprite assetTent2 = new Sprite(192, 0xff0BBAB1);
-    public static final Sprite assetCaveEntity = new Sprite(512, 0xff0BBAB1);
 
     public static final Sprite playerLevel0 = new Sprite(64, 0, 0, SpriteSheet.player);
     public static final Sprite playerLevel1 = new Sprite(64, 1, 0, SpriteSheet.player);
