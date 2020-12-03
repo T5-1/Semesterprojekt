@@ -169,38 +169,39 @@ public class Player {
             }
         }
 
-        //check if player is close enough to the edge of the screen, and check if the next room is not null
+        //check if player is close enough to the edge of the screen, and check if the next room is not null, and if the next room is accessible
         //if true then set the players current room to the exit, and place the player at the bottom of the screen
+        //if false then check again for being close enough to the edge of the screen, and then check if the room is either null or inaccessible
         //NORTH
-        if (y < sprite[currentLevel].SIZE / 2 + 1 && currentRoom.getExit(0) != null){
+        if (y < sprite[currentLevel].SIZE / 2 + 1 && currentRoom.getExit(0) != null && currentRoom.getExit(0).isAccessible()){
             currentRoom = currentRoom.getExit(0);
             y = Game.height - sprite[currentLevel].SIZE - yBoundaryOffset[currentLevel];
         }
-        else if (y < sprite[currentLevel].SIZE / 2 + 1 && currentRoom.getExit(0) == null) {
+        else if (y < sprite[currentLevel].SIZE / 2 + 1 && (currentRoom.getExit(0) == null || !currentRoom.getExit(0).isAccessible())) {
             y += speed;
         }
         //EAST
-        if (x > Game.width - sprite[currentLevel].SIZE - xBoundaryOffset[currentLevel] && currentRoom.getExit(1) != null){
+        if (x > Game.width - sprite[currentLevel].SIZE - xBoundaryOffset[currentLevel] && currentRoom.getExit(1) != null && currentRoom.getExit(1).isAccessible()){
             currentRoom = currentRoom.getExit(1);
             x = sprite[currentLevel].SIZE / 2;
         }
-        else if (x > Game.width - sprite[currentLevel].SIZE && currentRoom.getExit(1) == null) {
+        else if (x > Game.width - sprite[currentLevel].SIZE && (currentRoom.getExit(1) == null || !currentRoom.getExit(1).isAccessible())) {
             x -= speed;
         }
         //SOUTH
-        if (y > Game.height - sprite[currentLevel].SIZE - yBoundaryOffset[currentLevel] && currentRoom.getExit(2) != null) {
+        if (y > Game.height - sprite[currentLevel].SIZE - yBoundaryOffset[currentLevel] && currentRoom.getExit(2) != null && currentRoom.getExit(2).isAccessible()) {
             currentRoom = currentRoom.getExit(2);
             y = sprite[currentLevel].SIZE / 2 + 1;
         }
-        else if (y > Game.height - sprite[currentLevel].SIZE + 23 && currentRoom.getExit(2) == null) {
+        else if (y > Game.height - sprite[currentLevel].SIZE + yBoundaryOffset[currentLevel] && (currentRoom.getExit(2) == null || !currentRoom.getExit(2).isAccessible())) {
             y -= speed;
         }
         //WEST
-        if (x < sprite[currentLevel].SIZE / 2 && currentRoom.getExit(3) != null) {
+        if (x < sprite[currentLevel].SIZE / 2 && currentRoom.getExit(3) != null && currentRoom.getExit(3).isAccessible()) {
             currentRoom = currentRoom.getExit(3);
             x = Game.width - sprite[currentLevel].SIZE - xBoundaryOffset[currentLevel];
         }
-        else if (x < sprite[currentLevel].SIZE / 2 + 1 && currentRoom.getExit(3) == null) {
+        else if (x < sprite[currentLevel].SIZE / 2 + 1 && (currentRoom.getExit(3) == null || !currentRoom.getExit(3).isAccessible())) {
             x += speed;
         }
 
