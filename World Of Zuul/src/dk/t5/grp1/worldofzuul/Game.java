@@ -2,6 +2,8 @@ package dk.t5.grp1.worldofzuul;
 
 import dk.t5.grp1.worldofzuul.event.EventManager;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
+import dk.t5.grp1.worldofzuul.graphics.Sprite;
+import dk.t5.grp1.worldofzuul.graphics.SpriteSheet;
 import dk.t5.grp1.worldofzuul.room.*;
 import dk.t5.grp1.worldofzuul.input.Keyboard;
 import dk.t5.grp1.worldofzuul.player.Player;

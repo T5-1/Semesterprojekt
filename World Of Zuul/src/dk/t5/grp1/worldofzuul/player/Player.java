@@ -15,7 +15,12 @@ import javafx.scene.canvas.Canvas;
 
 public class Player {
     private int x, y;
-    private int speed = 4;
+    //level 0 & 1: x = -16,  y = 7
+    //level 2 & 3: x = -48,  y = -25
+    //level 4    : x = -112, y = -89
+    private int[] xBoundaryOffset = new int[5];
+    private int[] yBoundaryOffset = new int[5];
+    private int speed = 1;
 
     private int startInteractionX, startInteractionY, endInteractionX, endInteractionY;
 
@@ -30,13 +35,13 @@ public class Player {
     private Inventory inventory;
     private EventManager eventManager;
     private Interaction interaction;
-    private Sprite sprite = Sprite.npcVoidSprite;
+    private Sprite[] sprite = new Sprite[5];
 
     public Player(Room spawn, EventManager eventManager, int x, int y, Canvas canvas) {
         this.x = x;
         this.y = y;
         xp = 0;
-        currentLevel = 0;
+        currentLevel = 4;
         npcsReactedWith = 0;
         npcsNeededReactionWith = 3;
         xpNeededForNextLvl = currentLevel + 1;
@@ -50,18 +55,24 @@ public class Player {
         inventory = new Inventory();
         this.eventManager = eventManager;
         interaction = new Interaction(canvas, currentRoom.getNpc());
+
+        sprite[0] = Sprite.playerLevel0;
+        sprite[1] = Sprite.playerLevel1;
+        sprite[2] = Sprite.playerLevel2;
+        sprite[3] = Sprite.playerLevel3;
+        sprite[4] = Sprite.playerLevel4;
     }
 
     //Check for collision on the top side of the player
     public boolean topCollision() {
         boolean collision = false;
-        for (int i = 0; i < 32; i++) {
-            if (y - 17 < 0) continue;
-            if (currentRoom.getCollisionMap()[x - 16 + i + (y - 17) * Game.width]) {
+        for (int i = 0; i < sprite[currentLevel].SIZE; i++) {
+            if (y - sprite[currentLevel].SIZE / 2 + 1 < 0) continue;
+            if (currentRoom.getCollisionMap()[x - sprite[currentLevel].SIZE / 2 + i + (y - sprite[currentLevel].SIZE / 2 + 1) * Game.width]) {
                 collision = true;
             }
         }
-        if (currentRoom.getCollisionMap()[x + (y - 16) * Game.width]) {
+        if (currentRoom.getCollisionMap()[x + (y - sprite[currentLevel].SIZE / 2) * Game.width]) {
             y++;
         }
         return collision;
@@ -70,13 +81,13 @@ public class Player {
     //Check for collision on the bottom side of the player
     public boolean bottomCollision() {
         boolean collision = false;
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < sprite[currentLevel].SIZE; i++) {
             if (y + 17 > Game.height) continue;
-            if (currentRoom.getCollisionMap()[x - 16 + i + (y + 17) * Game.width]) {
+            if (currentRoom.getCollisionMap()[x - sprite[currentLevel].SIZE / 2 + i + (y + sprite[currentLevel].SIZE / 2 + 1) * Game.width]) {
                 collision = true;
             }
         }
-        if (currentRoom.getCollisionMap()[x + (y + 16) * Game.width]) {
+        if (currentRoom.getCollisionMap()[x + (y + sprite[currentLevel].SIZE / 2) * Game.width]) {
             y--;
         }
         return collision;
@@ -85,13 +96,13 @@ public class Player {
     //Check for collision on the left side of the player
     public boolean leftCollision() {
         boolean collision = false;
-        for (int i = 0; i < 32; i++) {
-            if (x - 17 < 0 || y - 17 < 0) continue;
-            if (currentRoom.getCollisionMap()[x - 17 + (y - 16 + i) * Game.width]) {
+        for (int i = 0; i < sprite[currentLevel].SIZE; i++) {
+            if (x - sprite[currentLevel].SIZE / 2 + 1 < 0 || y - sprite[currentLevel].SIZE / 2 + 1 < 0) continue;
+            if (currentRoom.getCollisionMap()[x - sprite[currentLevel].SIZE / 2 + 1 + (y - sprite[currentLevel].SIZE / 2 + i) * Game.width]) {
                 collision = true;
             }
         }
-        if (currentRoom.getCollisionMap()[x - 16 + y * Game.width]) {
+        if (currentRoom.getCollisionMap()[x - sprite[currentLevel].SIZE / 2 + y * Game.width]) {
             x++;
         }
         return collision;
@@ -100,13 +111,13 @@ public class Player {
     //Check for collision on the right side of the player
     public boolean rightCollision() {
         boolean collision = false;
-        for (int i = 0; i < 32; i++) {
-            if (x + 17 > Game.width || y - 17 < 0) continue;
-            if (currentRoom.getCollisionMap()[x + 17 + (y - 16 + i) * Game.width]) {
+        for (int i = 0; i < sprite[currentLevel].SIZE; i++) {
+            if (x + sprite[currentLevel].SIZE / 2 + 1 > Game.width || y - sprite[currentLevel].SIZE / 2 + 1 < 0) continue;
+            if (currentRoom.getCollisionMap()[x + sprite[currentLevel].SIZE / 2 + 1 + (y - sprite[currentLevel].SIZE / 2 + i) * Game.width]) {
                 collision = true;
             }
         }
-        if (currentRoom.getCollisionMap()[x + 16 + y * Game.width]) {
+        if (currentRoom.getCollisionMap()[x + sprite[currentLevel].SIZE / 2 + y * Game.width]) {
             x--;
         }
         return collision;
@@ -120,10 +131,10 @@ public class Player {
     }
 
     public void update(Keyboard key) {
-        startInteractionX = x - sprite.SIZE - 16;
-        startInteractionY = y - sprite.SIZE - 16;
-        endInteractionX = x + sprite.SIZE + 16;
-        endInteractionY = y + sprite.SIZE + 16;
+        startInteractionX = x - sprite[currentLevel].SIZE - sprite[currentLevel].SIZE / 2;
+        startInteractionY = y - sprite[currentLevel].SIZE - sprite[currentLevel].SIZE / 2;
+        endInteractionX = x + sprite[currentLevel].SIZE + sprite[currentLevel].SIZE / 2;
+        endInteractionY = y + sprite[currentLevel].SIZE + sprite[currentLevel].SIZE / 2;
 
         if (npcInteractionOverlap()) {
             interaction.update(key);
@@ -154,35 +165,35 @@ public class Player {
         //check if player is close enough to the edge of the screen, and check if the next room is not null
         //if true then set the players current room to the exit, and place the player at the bottom of the screen
         //NORTH
-        if (y < 16 && currentRoom.getExit(0) != null){
+        if (y < sprite[currentLevel].SIZE / 2 + 1 && currentRoom.getExit(0) != null){
             currentRoom = currentRoom.getExit(0);
-            y = Game.height - 54;
+            y = Game.height - sprite[currentLevel].SIZE - yBoundaryOffset[currentLevel];
         }
-        else if (y < 17 && currentRoom.getExit(0) == null) {
+        else if (y < sprite[currentLevel].SIZE / 2 + 1 && currentRoom.getExit(0) == null) {
             y += speed;
         }
         //EAST
-        if (x > Game.width - 31 && currentRoom.getExit(1) != null){
+        if (x > Game.width - sprite[currentLevel].SIZE - xBoundaryOffset[currentLevel] && currentRoom.getExit(1) != null){
             currentRoom = currentRoom.getExit(1);
-            x = 16;
+            x = sprite[currentLevel].SIZE / 2;
         }
-        else if (x > Game.width - 32 && currentRoom.getExit(1) == null) {
+        else if (x > Game.width - sprite[currentLevel].SIZE && currentRoom.getExit(1) == null) {
             x -= speed;
         }
         //SOUTH
-        if (y > Game.height - 54 && currentRoom.getExit(2) != null) {
+        if (y > Game.height - sprite[currentLevel].SIZE - yBoundaryOffset[currentLevel] && currentRoom.getExit(2) != null) {
             currentRoom = currentRoom.getExit(2);
-            y = 16;
+            y = sprite[currentLevel].SIZE / 2 + 1;
         }
-        else if (y > Game.height - 55 && currentRoom.getExit(2) == null) {
+        else if (y > Game.height - sprite[currentLevel].SIZE + 23 && currentRoom.getExit(2) == null) {
             y -= speed;
         }
-        //WESt
-        if (x < 16 && currentRoom.getExit(3) != null) {
+        //WEST
+        if (x < sprite[currentLevel].SIZE / 2 && currentRoom.getExit(3) != null) {
             currentRoom = currentRoom.getExit(3);
-            x = Game.width - 31;
+            x = Game.width - sprite[currentLevel].SIZE - xBoundaryOffset[currentLevel];
         }
-        else if (x < 17 && currentRoom.getExit(3) == null) {
+        else if (x < sprite[currentLevel].SIZE / 2 + 1 && currentRoom.getExit(3) == null) {
             x += speed;
         }
 
@@ -214,7 +225,27 @@ public class Player {
     }
 
     public void render(Screen screen) {
-        screen.renderMob(x, y, sprite);
+        screen.renderMob(x, y, sprite[currentLevel]);
+
+        for (int y = 0; y < sprite[currentLevel].SIZE; y++) {
+            for (int x = 0; x < sprite[currentLevel].SIZE; x++) {
+                screen.getPixels()[(x + this.x - (sprite[currentLevel].SIZE / 2)) + (y + this.y - (sprite[currentLevel].SIZE / 2)) * Game.width] = 0xff000000;
+            }
+        }
+
+        for (int y = 0; y < Game.height; y++) {
+            //EAST
+            screen.getPixels()[(Game.width - sprite[currentLevel].SIZE - xBoundaryOffset[currentLevel]) + y * Game.width] = 0xffff00ff;
+            //WEST
+            screen.getPixels()[(sprite[currentLevel].SIZE / 2) + y * Game.width] = 0xffff00ff;
+        }
+
+        for (int x = 0; x < Game.width; x++) {
+            //NORTH
+            screen.getPixels()[x + (sprite[currentLevel].SIZE / 2) * Game.width] = 0xffff00ff;
+            //SOUTH
+            screen.getPixels()[x + (Game.height - sprite[currentLevel].SIZE - yBoundaryOffset[currentLevel]) * Game.width] = 0xffff00ff;
+        }
     }
 
     public void plant() {

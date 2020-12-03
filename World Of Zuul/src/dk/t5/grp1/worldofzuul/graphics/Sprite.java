@@ -21,7 +21,6 @@ public class Sprite {
     public static final Sprite burnt2 = new Sprite(64, 1, 1, SpriteSheet.tiles);
     public static final Sprite cactus = new Sprite(64, 3, 1, SpriteSheet.tiles);
 
-
     public static final Sprite npcFish = new Sprite(256, 0, 0, SpriteSheet.npc);
     public static final Sprite npcCactus = new Sprite(256, 1, 0, SpriteSheet.npc);
     public static final Sprite npcOrangutan = new Sprite(256, 2, 0, SpriteSheet.npc);
@@ -33,22 +32,27 @@ public class Sprite {
     public static final Sprite npcMermaid = new Sprite(256, 3, 1, SpriteSheet.npc);
     public static final Sprite npcFlower = new Sprite(256, 4, 1, SpriteSheet.npc);
     public static final Sprite npcTucan = new Sprite(256, 4, 2, SpriteSheet.npc);
-    public static final Sprite npcTutorialTree = new Sprite(512, 0, 1, SpriteSheet.npc);
+    public static final Sprite npcTutorialTree = new Sprite(512, 0, 2, SpriteSheet.npc);
     public static final Sprite npcVoidSprite = new Sprite(32, 0xFFFFFF);
-
 
     public static final Sprite assetBridge = new Sprite(192, 0xff0BBAB1);
     public static final Sprite assetTent1 = new Sprite(192, 0xff0BBAB1);
     public static final Sprite assetTent2 = new Sprite(192, 0xff0BBAB1);
     public static final Sprite assetCaveEntity = new Sprite(256, 0xff0BBAB1);
 
+    public static final Sprite playerLevel0 = new Sprite(64, 0, 0, SpriteSheet.player);
+    public static final Sprite playerLevel1 = new Sprite(64, 1, 0, SpriteSheet.player);
+    public static final Sprite playerLevel2 = new Sprite(128, 0, 1, SpriteSheet.player);
+    public static final Sprite playerLevel3 = new Sprite(128, 0, 3, SpriteSheet.player);
+    public static final Sprite playerLevel4 = new Sprite(256, 2, 0, SpriteSheet.player);
+
     private SpriteSheet sheet;
 
     private Sprite(int size, int x, int y, SpriteSheet sheet) {
         this.SIZE = size;
         pixels = new int[SIZE * SIZE];
-        this.x = x * size;
-        this.y = y * size;
+        this.x = x * sheet.SPRITE_SIZE;
+        this.y = y * sheet.SPRITE_SIZE;
         this.sheet = sheet;
         load();
     }
@@ -68,7 +72,7 @@ public class Sprite {
     private void load() {
         for (int y = 0; y < SIZE; y++) {
             for (int x = 0; x < SIZE; x++) {
-                pixels[x + y * SIZE] = sheet.getPixels()[(x + this.x) + (y + this.y) * sheet.getSIZE()];
+                pixels[x + y * SIZE] = sheet.getPixels()[(x + this.x) + (y + this.y) * sheet.SIZE];
             }
         }
     }
