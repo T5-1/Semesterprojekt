@@ -15,12 +15,9 @@ import javafx.scene.canvas.Canvas;
 
 public class Player {
     private int x, y;
-    //level 0 & 1: x = -16,  y = 7
-    //level 2 & 3: x = -48,  y = -25
-    //level 4    : x = -112, y = -89
     private int[] xBoundaryOffset = new int[5];
     private int[] yBoundaryOffset = new int[5];
-    private int speed = 1;
+    private int speed = 4;
 
     private int startInteractionX, startInteractionY, endInteractionX, endInteractionY;
 
@@ -41,7 +38,7 @@ public class Player {
         this.x = x;
         this.y = y;
         xp = 0;
-        currentLevel = 4;
+        currentLevel = 0;
         npcsReactedWith = 0;
         npcsNeededReactionWith = 3;
         xpNeededForNextLvl = currentLevel + 1;
@@ -61,6 +58,16 @@ public class Player {
         sprite[2] = Sprite.playerLevel2;
         sprite[3] = Sprite.playerLevel3;
         sprite[4] = Sprite.playerLevel4;
+
+        //level 0 & 1: x = -16,  y = 7
+        xBoundaryOffset[0] = xBoundaryOffset[1] = -16;
+        yBoundaryOffset[0] = yBoundaryOffset[1] = 7;
+        //level 2 & 3: x = -48,  y = -25
+        xBoundaryOffset[2] = xBoundaryOffset[3] = -48;
+        yBoundaryOffset[2] = yBoundaryOffset[3] = -25;
+        //level 4    : x = -112, y = -89
+        xBoundaryOffset[4] = -112;
+        yBoundaryOffset[4] = -89;
     }
 
     //Check for collision on the top side of the player
@@ -226,26 +233,6 @@ public class Player {
 
     public void render(Screen screen) {
         screen.renderMob(x, y, sprite[currentLevel]);
-
-        for (int y = 0; y < sprite[currentLevel].SIZE; y++) {
-            for (int x = 0; x < sprite[currentLevel].SIZE; x++) {
-                screen.getPixels()[(x + this.x - (sprite[currentLevel].SIZE / 2)) + (y + this.y - (sprite[currentLevel].SIZE / 2)) * Game.width] = 0xff000000;
-            }
-        }
-
-        for (int y = 0; y < Game.height; y++) {
-            //EAST
-            screen.getPixels()[(Game.width - sprite[currentLevel].SIZE - xBoundaryOffset[currentLevel]) + y * Game.width] = 0xffff00ff;
-            //WEST
-            screen.getPixels()[(sprite[currentLevel].SIZE / 2) + y * Game.width] = 0xffff00ff;
-        }
-
-        for (int x = 0; x < Game.width; x++) {
-            //NORTH
-            screen.getPixels()[x + (sprite[currentLevel].SIZE / 2) * Game.width] = 0xffff00ff;
-            //SOUTH
-            screen.getPixels()[x + (Game.height - sprite[currentLevel].SIZE - yBoundaryOffset[currentLevel]) * Game.width] = 0xffff00ff;
-        }
     }
 
     public void plant() {
