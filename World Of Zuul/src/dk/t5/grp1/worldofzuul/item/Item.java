@@ -15,6 +15,7 @@ public abstract class Item {
     public Item(String name, ItemType itemType) {
         this.name = name;
         this.itemType = itemType;
+        x = y = 0;
     }
 
     public int getX() {
