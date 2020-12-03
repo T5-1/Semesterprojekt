@@ -3,6 +3,8 @@ package dk.t5.grp1.worldofzuul.room;
 import dk.t5.grp1.worldofzuul.Game;
 import dk.t5.grp1.worldofzuul.assets.Assets;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
+import dk.t5.grp1.worldofzuul.graphics.Sprite;
+import dk.t5.grp1.worldofzuul.item.ItemType;
 import dk.t5.grp1.worldofzuul.room.tile.Tile;
 import dk.t5.grp1.worldofzuul.item.Item;
 import dk.t5.grp1.worldofzuul.item.NullItem;
@@ -118,6 +120,9 @@ public abstract class Room {
             for (int i = 0; i < assets.size(); i++) {
                 assets.get(i).render(screen);
             }
+        }
+        if (item.getItemType() != ItemType.NULLITEM) {
+            screen.renderMob(item.getX(),item.getY(), Sprite.item);
         }
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 public class Cave extends Room {
 
     public Cave(String description, String name) {
-        super(description, name, new Seed(), new ArrayList<>(), new Bat(900, 350), "/textures/rooms/cave.png");
+        super(description, name, new Seed(500, 500), new ArrayList<>(), new Bat(900, 350), "/textures/rooms/cave.png");
 
         super.assets.add(new CaveEntity(Game.width-270, 256));
     }
