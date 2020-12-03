@@ -75,7 +75,7 @@ public class Player {
         boolean collision = false;
         for (int i = 0; i < sprite[currentLevel].SIZE; i++) {
             if (y - sprite[currentLevel].SIZE / 2 + 1 < 0) continue;
-            if (currentRoom.getCollisionMap()[x - sprite[currentLevel].SIZE / 2 + i + (y - sprite[currentLevel].SIZE / 2 + 1) * Game.width]) {
+            if (currentRoom.getCollisionMap()[x - sprite[currentLevel].SIZE / 2 + i + (y - sprite[currentLevel].SIZE / 2 - 1) * Game.width]) {
                 collision = true;
             }
         }
@@ -89,7 +89,7 @@ public class Player {
     public boolean bottomCollision() {
         boolean collision = false;
         for (int i = 0; i < sprite[currentLevel].SIZE; i++) {
-            if (y + 17 > Game.height) continue;
+            if (y + sprite[currentLevel].SIZE + 1 > Game.height) continue;
             if (currentRoom.getCollisionMap()[x - sprite[currentLevel].SIZE / 2 + i + (y + sprite[currentLevel].SIZE / 2 + 1) * Game.width]) {
                 collision = true;
             }
@@ -104,7 +104,7 @@ public class Player {
     public boolean leftCollision() {
         boolean collision = false;
         for (int i = 0; i < sprite[currentLevel].SIZE; i++) {
-            if (x - sprite[currentLevel].SIZE / 2 + 1 < 0 || y - sprite[currentLevel].SIZE / 2 + 1 < 0) continue;
+            if (x - sprite[currentLevel].SIZE / 2 + 1 < 0 || y - sprite[currentLevel].SIZE / 2 - 1 < 0) continue;
             if (currentRoom.getCollisionMap()[x - sprite[currentLevel].SIZE / 2 + 1 + (y - sprite[currentLevel].SIZE / 2 + i) * Game.width]) {
                 collision = true;
             }
@@ -119,7 +119,7 @@ public class Player {
     public boolean rightCollision() {
         boolean collision = false;
         for (int i = 0; i < sprite[currentLevel].SIZE; i++) {
-            if (x + sprite[currentLevel].SIZE / 2 + 1 > Game.width || y - sprite[currentLevel].SIZE / 2 + 1 < 0) continue;
+            if (x + sprite[currentLevel].SIZE / 2 + 1 > Game.width || y - sprite[currentLevel].SIZE / 2 - 1 < 0) continue;
             if (currentRoom.getCollisionMap()[x + sprite[currentLevel].SIZE / 2 + 1 + (y - sprite[currentLevel].SIZE / 2 + i) * Game.width]) {
                 collision = true;
             }

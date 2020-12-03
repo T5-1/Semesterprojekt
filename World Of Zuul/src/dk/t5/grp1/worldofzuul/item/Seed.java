@@ -6,6 +6,7 @@ public class Seed extends Item {
         super("Seed", ItemType.SEED, x, y);
     }
 
-    public Seed() {super("Seed", ItemType.SEED);
+    public Seed() {
+        super("Seed", ItemType.SEED);
     }
 }
