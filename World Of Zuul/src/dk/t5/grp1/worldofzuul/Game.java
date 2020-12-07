@@ -138,6 +138,7 @@ public class Game extends Application {
     public void update() {
         key.update();
         player.update(key);
+        player.getCurrentRoom().getNpc().update();
     }
 
     public void render() {
@@ -153,7 +154,7 @@ public class Game extends Application {
             player.getCurrentRoom().getNpc().render(screen);
         }
 
-        player.getInteraction().render(screen);
+        player.getInteraction().render(screen, player);
 
         hud.render(screen);
 

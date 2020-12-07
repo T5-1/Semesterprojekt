@@ -10,6 +10,8 @@ import dk.t5.grp1.worldofzuul.input.Keyboard;
 import dk.t5.grp1.worldofzuul.interaction.Interaction;
 import dk.t5.grp1.worldofzuul.item.ItemType;
 import dk.t5.grp1.worldofzuul.item.NullItem;
+import dk.t5.grp1.worldofzuul.item.Sun;
+import dk.t5.grp1.worldofzuul.item.Water;
 import dk.t5.grp1.worldofzuul.room.Room;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -147,6 +149,7 @@ public class Player {
     }
 
     public void update(Keyboard key) {
+
         startInteractionX = x - sprite[currentLevel].SIZE - sprite[currentLevel].SIZE / 2;
         startInteractionY = y - sprite[currentLevel].SIZE - sprite[currentLevel].SIZE / 2;
         endInteractionX = x + sprite[currentLevel].SIZE + sprite[currentLevel].SIZE / 2;
@@ -155,11 +158,11 @@ public class Player {
         if (npcInteractionOverlap()) {
             interaction.update(key, "npc", this);
             interaction.setNpc(currentRoom.getNpc());
-        }
-
-        if (itemInteractionOverlap()) {
+        } else if (itemInteractionOverlap()) {
             interaction.setItem(currentRoom.getItem());
             interaction.update(key, "item", this);
+        } else if (inventory.getSunCount() > 0 && inventory.getWaterCount() > 0) {
+            interaction.update(key, "consume", this);
         }
 
         if (!interaction.isInteracting()) {
@@ -217,10 +220,10 @@ public class Player {
 
 
         //check if the current room will kill you(only happens in lake)
-        if (currentRoom.isDeadly())
-        if (currentLevel < 3)
-        {
-            die("You drowned in the Lake.");
+        if (currentRoom.isDeadly()) {
+            if (currentLevel < 3) {
+                die("You drowned in the Lake.");
+            }
         }
 
         //Check if you've collected too much of either water or sun
@@ -231,7 +234,8 @@ public class Player {
         }
         //check if you've consumed enough items to level up, and checks if you are under level 3
         if (xp >= xpNeededForNextLvl && currentLevel < 3) {
-            levelUp();
+            interaction.setInteracting(true);
+            interaction.update(key, "level", this);
         }
         //checks if you have enough xp to start lake event, when in level 3
         else if (xp >= xpNeededForNextLvl) {
@@ -323,70 +327,47 @@ public class Player {
         if (currentRoom.getItem().getItemType() == ItemType.SEED) {
             inventory.add(currentRoom.getItem());
             currentRoom.setItem(new NullItem());
-        }
-        else if (currentRoom.getItem().getItemType() != ItemType.NULLITEM) {
+        } else if (currentRoom.getItem().getItemType() != ItemType.NULLITEM) {
             inventory.add(currentRoom.getItem());
         }
     }
 
     public void consume() {
-        if (commandAvailable) {
-            if (npcsReactedWith >= npcsNeededReactionWith) {
-                if (canLevelUp || currentLevel == 3) {
-                    int minVal;
-                    if (inventory.getSunCount() >= inventory.getWaterCount()) {
-                        minVal = inventory.getWaterCount();
-                    } else {
-                        minVal = inventory.getSunCount();
-                    }
-
-                    for (int i = 0; i < minVal; i++) {
-                        inventory.remove(ItemType.WATER);
-                        inventory.remove(ItemType.SUN);
-                        xp++;
-                    }
-                    System.out.println("you consumed " + xp + " water & " + xp + " sun");
+        if (npcsReactedWith >= npcsNeededReactionWith) {
+            if (canLevelUp || currentLevel == 3) {
+                int minVal;
+                if (inventory.getSunCount() >= inventory.getWaterCount()) {
+                    minVal = inventory.getWaterCount();
                 } else {
-                    System.out.println("Somethings missing but you don't quite know what hmm... try wandering around a bit");
+                    minVal = inventory.getSunCount();
                 }
-            } else {
-                System.out.println("You need more information to consume, try talking with someone");
+
+                for (int i = 0; i < minVal; i++) {
+                    inventory.remove(ItemType.WATER);
+                    inventory.remove(ItemType.SUN);
+                    xp++;
+                }
             }
-        } else {
-            System.out.println("This action isn't available anymore");
         }
     }
 
     public void interact() {
-        if (commandAvailable) {
-            if (npcsReactedWith >= npcsNeededReactionWith) {
-                System.out.println("you can't gather more information right now, you should try evolving");
-            } else if (!currentRoom.getNpc().getName().equals("Old Tutorial Tree")) {
-                System.out.println(currentRoom.getNpc().getInfo());
-                if (!currentRoom.getNpc().isInteracted()) {
-                    npcsReactedWith++;
-                    System.out.println("Information gathered!");
-                } else if (currentRoom.getNpc().isInteracted()) {
-                    System.out.println("You already know this");
-                }
-                currentRoom.getNpc().setInteracted(true);
-            } else {
-                System.out.println(currentRoom.getNpc().getInfo());
+        if (npcsReactedWith >= npcsNeededReactionWith) {
+        } else if (!currentRoom.getNpc().getName().equals("Old Tutorial Tree")) {
+            if (!currentRoom.getNpc().isInteracted()) {
+                npcsReactedWith++;
+            } else if (currentRoom.getNpc().isInteracted()) {
             }
-
-        } else {
-            System.out.println("This action isn't available anymore");
+            currentRoom.getNpc().setInteracted(true);
         }
     }
 
     public void levelUp() {
-
         xp = 0;
         xpNeededForNextLvl++;
         if (currentLevel < MAX_LEVEL) {
             currentLevel++;
         }
-        System.out.println("You are now a " + evolution[currentLevel]);
         if (currentLevel == 1) {
             npcsNeededReactionWith += 3;
         } else if (currentLevel == 2) {
@@ -417,5 +398,21 @@ public class Player {
 
     public Interaction getInteraction() {
         return interaction;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    public boolean isCanLevelUp() {
+        return canLevelUp;
+    }
+
+    public int getNpcsReactedWith() {
+        return npcsReactedWith;
+    }
+
+    public int getNpcsNeededReactionWith() {
+        return npcsNeededReactionWith;
     }
 }

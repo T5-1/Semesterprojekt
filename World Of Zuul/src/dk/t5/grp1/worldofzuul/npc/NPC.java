@@ -17,6 +17,7 @@ public abstract class NPC {
     private String name;
     private String[] info;
     private boolean interacted = false;
+    private boolean infoUpdated = false;
 
     private Sprite sprite;
 
@@ -33,7 +34,10 @@ public abstract class NPC {
     }
 
     public void update() {
-
+        if (interacted && !infoUpdated && !name.equals("Old Tutorial Tree") && !name.equals("Pongo the orangutan") && !name.equals("De-forester Dennis") && !name.equals("Mera the Mermaid")) {
+            info[info.length - 1] = "You already know this";
+            infoUpdated = true;
+        }
     }
 
     public void render(Screen screen) {
@@ -50,21 +54,23 @@ public abstract class NPC {
                 npcInfo.add(currentLine);
             } while (currentLine != null);
 
-            info = new String[npcInfo.size() - 1];
+            if (!name.equals("Old Tutorial Tree") && !name.equals("Pongo the orangutan") && !name.equals("De-forester Dennis") && !name.equals("Mera the Mermaid")) {
+                info = new String[npcInfo.size()];
+            }
+            else {
+                info = new String[npcInfo.size() - 1];
+            }
 
             for (int i = 0; i < info.length; i++) {
                 info[i] = npcInfo.get(i);
             }
 
-            /*info = npcInfo.split(";");
-            for (int i = 0; i < info.length; i++) {
-                if (info[i].startsWith(" ")) {
-                    info[i] = info[i].substring(2);
-                }
-            }*/
-            //info[info.length - 1] = info[info.length - 1].replace(" null", "");
+            if (!name.equals("Old Tutorial Tree") && !name.equals("Pongo the orangutan") && !name.equals("De-forester Dennis") && !name.equals("Mera the Mermaid")) {
+                info[info.length - 1] = "Information Acquired";
+            }
+
         } catch (IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
