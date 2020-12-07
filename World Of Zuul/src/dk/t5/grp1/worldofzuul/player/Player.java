@@ -12,6 +12,7 @@ import dk.t5.grp1.worldofzuul.item.ItemType;
 import dk.t5.grp1.worldofzuul.item.NullItem;
 import dk.t5.grp1.worldofzuul.room.Room;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 
 public class Player {
     private int x, y;
@@ -34,7 +35,7 @@ public class Player {
     private Interaction interaction;
     private Sprite[] sprite = new Sprite[5];
 
-    public Player(Room spawn, EventManager eventManager, int x, int y, Canvas canvas) {
+    public Player(Room spawn, EventManager eventManager, int x, int y, GraphicsContext graphicsContext) {
         this.x = x;
         this.y = y;
         xp = 0;
@@ -51,7 +52,7 @@ public class Player {
         parser = new Parser();
         inventory = new Inventory();
         this.eventManager = eventManager;
-        interaction = new Interaction(canvas, currentRoom.getNpc(), currentRoom.getItem());
+        interaction = new Interaction(graphicsContext, currentRoom.getNpc(), currentRoom.getItem());
 
         sprite[0] = Sprite.playerLevel0;
         sprite[1] = Sprite.playerLevel1;

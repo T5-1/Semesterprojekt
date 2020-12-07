@@ -21,6 +21,8 @@ public class Sprite {
     public static final Sprite burnt2 = new Sprite(64, 1, 1, SpriteSheet.tiles);
     public static final Sprite cactus = new Sprite(64, 3, 1, SpriteSheet.tiles);
 
+    public static final Sprite item = new Sprite(64, 15, 15, SpriteSheet.tiles);
+
     public static final Sprite assetTent1 = new Sprite(192, 0, 13, SpriteSheet.tiles);
     public static final Sprite assetTent2 = new Sprite(192, 3, 13, SpriteSheet.tiles);
     public static final Sprite assetBridge = new Sprite(192, 6, 13, SpriteSheet.tiles);
@@ -45,8 +47,6 @@ public class Sprite {
     public static final Sprite playerLevel2 = new Sprite(128, 0, 1, SpriteSheet.player);
     public static final Sprite playerLevel3 = new Sprite(128, 0, 3, SpriteSheet.player);
     public static final Sprite playerLevel4 = new Sprite(256, 2, 0, SpriteSheet.player);
-
-    public static final Sprite item = new Sprite(64, 0xff0BBAB1);
 
     private SpriteSheet sheet;
 

@@ -41,9 +41,9 @@ public class Screen {
         }
     }
 
-    public void renderDialogueBox() {
-        for (int y = height - 220; y < height - 80; y++) {
-            for (int x = 300; x < width - 300; x++) {
+    public void renderBox(int x0, int y0, int x1, int y1) {
+        for (int y = y0; y < y1; y++) {
+            for (int x = x0; x < x1; x++) {
                 int r = (pixels[x + y * width] & 0xFF0000) >> 16;
                 int g = (pixels[x + y * width] & 0xFF00) >> 8;
                 int b = (pixels[x + y * width] & 0xFF);

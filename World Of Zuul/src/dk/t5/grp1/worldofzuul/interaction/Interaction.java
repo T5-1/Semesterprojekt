@@ -20,9 +20,9 @@ public class Interaction {
 
     private String type;
 
-    public Interaction(Canvas canvas, NPC npc, Item item) {
+    public Interaction(GraphicsContext graphicsContext, NPC npc, Item item) {
         interacting = false;
-        graphicsContext = canvas.getGraphicsContext2D();
+        this.graphicsContext = graphicsContext;
         this.npc = npc;
         this.item = item;
     }
@@ -66,10 +66,8 @@ public class Interaction {
     }
 
     public void render(Screen screen) {
-        graphicsContext.setFont(Font.font("Verdana", 16));
-
         if (interacting) {
-            screen.renderDialogueBox();
+            screen.renderBox(300, Game.height - 220, Game.width - 300, Game.height - 80);
             graphicsContext.setFill(Color.rgb(198, 198, 198));
             if (type.equals("npc")) {
                 graphicsContext.setFill(Color.rgb(87, 255, 81));

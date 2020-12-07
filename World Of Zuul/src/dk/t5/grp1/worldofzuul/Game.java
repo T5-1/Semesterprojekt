@@ -1,21 +1,22 @@
 package dk.t5.grp1.worldofzuul;
 
 import dk.t5.grp1.worldofzuul.event.EventManager;
+import dk.t5.grp1.worldofzuul.graphics.HUD;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
-import dk.t5.grp1.worldofzuul.graphics.Sprite;
-import dk.t5.grp1.worldofzuul.graphics.SpriteSheet;
+import dk.t5.grp1.worldofzuul.player.Player;
 import dk.t5.grp1.worldofzuul.room.*;
 import dk.t5.grp1.worldofzuul.input.Keyboard;
-import dk.t5.grp1.worldofzuul.player.Player;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Game extends Application {
@@ -26,11 +27,14 @@ public class Game extends Application {
 
     private WritableImage writableImage = new WritableImage(width, height);
     private PixelWriter pixelWriter = writableImage.getPixelWriter();
+    private Canvas canvas = new Canvas(width, height);
+    private GraphicsContext graphicsContext;
 
     private Screen screen = new Screen(width, height);
     private Keyboard key;
 
     private Player player;
+    private HUD hud;
     private EventManager eventManager;
     private Room camp, cave, desert, flowerField, lake, mountain, river, savanna, shore, spawn, northernEntrance, southernEntrance;
 
@@ -96,12 +100,15 @@ public class Game extends Application {
         ImageView imageView = new ImageView(writableImage);
         Group root = new Group(imageView);
         Scene scene = new Scene(root, width, height);
-        Canvas canvas = new Canvas(width, height);
         key = new Keyboard(scene);
 
         createRooms();
         eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
-        player = new Player(spawn, eventManager, width / 2, height / 2 + 150, canvas);
+        graphicsContext = canvas.getGraphicsContext2D();
+        player = new Player(spawn, eventManager, width / 2, height / 2 + 150, graphicsContext);
+        hud = new HUD(player, graphicsContext);
+
+        graphicsContext.setFont(Font.font("Verdana", 16));
 
         root.getChildren().add(canvas);
 
@@ -147,6 +154,8 @@ public class Game extends Application {
         }
 
         player.getInteraction().render(screen);
+
+        hud.render(screen);
 
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), screen.getPixels(), 0, width);
     }

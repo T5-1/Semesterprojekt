@@ -4,9 +4,9 @@ import dk.t5.grp1.worldofzuul.Game;
 import dk.t5.grp1.worldofzuul.assets.Assets;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
 import dk.t5.grp1.worldofzuul.graphics.Sprite;
+import dk.t5.grp1.worldofzuul.item.Item;
 import dk.t5.grp1.worldofzuul.item.ItemType;
 import dk.t5.grp1.worldofzuul.room.tile.Tile;
-import dk.t5.grp1.worldofzuul.item.Item;
 import dk.t5.grp1.worldofzuul.item.NullItem;
 import dk.t5.grp1.worldofzuul.npc.NPC;
 
@@ -25,7 +25,7 @@ public abstract class Room {
     private boolean accessible = true;
     private boolean deadly = false;
 
-    private Item item;
+    private Item item = new NullItem();
     private NPC npc;
     private String description;
     private String name;
@@ -40,7 +40,6 @@ public abstract class Room {
     public Room(String description, String name, List<Assets> assets, NPC npc, String path) {
         this(description, name, npc, path);
         this.assets = assets;
-        this.item = new NullItem();
     }
 
     public Room(String description, String name, Item item, NPC npc, String path) {
@@ -53,7 +52,6 @@ public abstract class Room {
         this.name = name;
         exits = new Room[4];
         this.npc = npc;
-        this.item = new NullItem();
         loadLevel(path);
         createNPCCollision();
     }
@@ -170,34 +168,6 @@ public abstract class Room {
     public void setExit(int direction, Room neighbor) {
         exits[direction] = neighbor;
     }
-
-    public String getShortDescription() {
-        return description;
-    }
-
-    /*public String getLongDescription(Player player)
-    {
-        return "You are " + description + ".\n" + getExitString(player);
-    }*/
-
-    /*private String getExitString(Player player)
-    {
-        String returnString = "Exits:";
-        Set<String> keys = exits.keySet();
-        for(String exit : keys) {
-            returnString += " " + exit;
-        }
-        if (player.isCommandAvailable()) {
-            if (item.getItemType() != ItemType.NULLITEM) {
-                returnString += "\nItems in the room: " + item.getName();
-            } else {
-                returnString += "\nThere is no item in this room";
-            }
-            returnString += "\nYou can interact with: " + npc.getName();
-        }
-        return returnString;
-    }*/
-
 
     public Room getExit(int direction) {
         return exits[direction];

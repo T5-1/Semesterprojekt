@@ -33,7 +33,7 @@ public class EventManager {
                 player.getCurrentRoom().setAccessible(false);
             }
             //check if the player has anymore actions left
-            else if (event.getActionsLeft() == 0) {
+            else if (event.getActionsLeft() < 1 && event.getActionsLeft() > -1) {
                 eventRunning = false;
                 player.die("You didn't get to the " + event.getRoom().getName() + " in time, and the forrest is now dead.");
             }
