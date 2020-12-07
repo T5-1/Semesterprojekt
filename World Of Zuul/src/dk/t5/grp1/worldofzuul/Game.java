@@ -1,28 +1,40 @@
 package dk.t5.grp1.worldofzuul;
 
-import dk.t5.grp1.worldofzuul.command.CommandWord;
-import dk.t5.grp1.worldofzuul.command.Parser;
 import dk.t5.grp1.worldofzuul.event.EventManager;
+import dk.t5.grp1.worldofzuul.graphics.Screen;
+import dk.t5.grp1.worldofzuul.graphics.Sprite;
+import dk.t5.grp1.worldofzuul.graphics.SpriteSheet;
 import dk.t5.grp1.worldofzuul.room.*;
+import dk.t5.grp1.worldofzuul.input.Keyboard;
 import dk.t5.grp1.worldofzuul.player.Player;
+import javafx.animation.AnimationTimer;
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelFormat;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.stage.Stage;
 
-public class Game
-{
-    private Parser parser;
+public class Game extends Application {
+    public static final int width = 1616;
+    public static final int height = 935;
+
+    private String title = "Game Title";
+
+    private WritableImage writableImage = new WritableImage(width, height);
+    private PixelWriter pixelWriter = writableImage.getPixelWriter();
+
+    private Screen screen = new Screen(width, height);
+    private Keyboard key;
+
     private Player player;
     private EventManager eventManager;
     private Room camp, cave, desert, flowerField, lake, mountain, river, savanna, shore, spawn, northernEntrance, southernEntrance;
 
-    public Game()
-    {
-        createRooms();
-        parser = new Parser();
-        eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
-        player = new Player(spawn, eventManager);
-    }
-
-    private void createRooms()
-    {
+    private void createRooms() {
         camp = new Camp("at the Camp", "Camp");
         cave = new Cave("at the Cave", "Cave");
         desert = new Desert("at the desert", "Desert");
@@ -36,51 +48,110 @@ public class Game
         northernEntrance = new NorthernEntrance("at the Northern Entrance", "Northern Entrance");
         southernEntrance = new SouthernEntrance("at the Southern Entrance", "Southern Entrance");
 
-        camp.setExit("west", savanna);
-        camp.setExit("north",spawn);
-        camp.setExit("east",desert);
-        camp.setExit("south",southernEntrance);
+        camp.setExit(0, spawn);
+        camp.setExit(1, desert);
+        camp.setExit(2, southernEntrance);
+        camp.setExit(3, savanna);
 
-        cave.setExit("west",river);
-        cave.setExit("south", mountain);
+        cave.setExit(2, mountain);
+        cave.setExit(3, river);
 
-        desert.setExit("west", camp);
-        desert.setExit("north", mountain);
+        desert.setExit(0, mountain);
+        desert.setExit(3, camp);
 
-        flowerField.setExit("east", river);
-        flowerField.setExit("south", shore);
+        flowerField.setExit(1, river);
+        flowerField.setExit(2, shore);
 
-        lake.setExit("east", shore);
+        lake.setExit(1, shore);
 
-        mountain.setExit("north", cave);
-        mountain.setExit("west",spawn);
-        mountain.setExit("south", desert);
+        mountain.setExit(0, cave);
+        mountain.setExit(2, desert);
+        mountain.setExit(3, spawn);
 
-        river.setExit("north", northernEntrance);
-        river.setExit("west", flowerField);
-        river.setExit("east", cave);
-        river.setExit("south", spawn);
+        river.setExit(0, northernEntrance);
+        river.setExit(1, cave);
+        river.setExit(2, spawn);
+        river.setExit(3, flowerField);
 
-        savanna.setExit("north", shore);
-        savanna.setExit("east", camp);
+        savanna.setExit(0, shore);
+        savanna.setExit(1, camp);
 
-        shore.setExit("north", flowerField);
-        shore.setExit("west", lake);
-        shore.setExit("east", spawn);
-        shore.setExit("south", savanna);
+        shore.setExit(0, flowerField);
+        shore.setExit(1, spawn);
+        shore.setExit(2, savanna);
+        shore.setExit(3, lake);
 
-        spawn.setExit("north", river);
-        spawn.setExit("west", shore);
-        spawn.setExit("east", mountain);
-        spawn.setExit("south",camp);
+        spawn.setExit(0, river);
+        spawn.setExit(1, mountain);
+        spawn.setExit(2, camp);
+        spawn.setExit(3, shore);
 
-        northernEntrance.setExit("south", river);
+        northernEntrance.setExit(2, river);
 
-        southernEntrance.setExit("north", camp);
+        southernEntrance.setExit(0, camp);
     }
 
-    public void play()
-    {
+    @Override
+    public void start(Stage stage) {
+        ImageView imageView = new ImageView(writableImage);
+        Group root = new Group(imageView);
+        Scene scene = new Scene(root, width, height);
+        Canvas canvas = new Canvas(width, height);
+        key = new Keyboard(scene);
+
+        createRooms();
+        eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
+        player = new Player(spawn, eventManager, width / 2, height / 2 + 150, canvas);
+
+        root.getChildren().add(canvas);
+
+        stage.setTitle(title);
+        stage.setResizable(false);
+        stage.setWidth(width);
+        stage.setHeight(height);
+        stage.setScene(scene);
+
+        stage.show();
+        stage.requestFocus();
+
+        AnimationTimer animation = new AnimationTimer() {
+
+            @Override
+            public void handle(long now) {
+                canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
+                update();
+                render();
+                stage.setTitle(title + "  |  " + player.getCurrentRoom().getName());
+            }
+        };
+
+        animation.start();
+    }
+
+    public void update() {
+        key.update();
+        player.update(key);
+    }
+
+    public void render() {
+        screen.clear();
+        player.getCurrentRoom().render(screen);
+
+        if ( player.getY() > player.getCurrentRoom().getNpc().getY() + player.getCurrentRoom().getNpc().startInteractionY) {
+            player.getCurrentRoom().getNpc().render(screen);
+            player.render(screen);
+        }
+        else {
+            player.render(screen);
+            player.getCurrentRoom().getNpc().render(screen);
+        }
+
+        player.getInteraction().render(screen);
+
+        pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), screen.getPixels(), 0, width);
+    }
+
+    /*public void play() {
         printWelcome();
         System.out.println("Current level: " + player.getEvolution()[player.getCurrentLevel()]);
 
@@ -89,36 +160,32 @@ public class Game
             if (player.isAlive()) {
                 if (!eventManager.isFinalEventPlayed()) {
                     eventManager.update(player);
-                    if(eventManager.isFinalEventPlayed()) {
+                    if (eventManager.isFinalEventPlayed()) {
                         continue;
                     }
                     player.update();
                     if (player.getCommand() != null) {
                         finished = player.getCommand().processCommand(player.getCommand(), player);
                     }
-                }
-                else {
+                } else {
                     eventManager.update(player);
                     printEnd();
                     finished = true;
                 }
-            }
-            else {
+            } else {
                 if (player.isRestartGame()) {
                     createRooms();
                     eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
-                    player = new Player(spawn, eventManager);
+                    player = new Player(spawn, eventManager, width / 2, height / 2);
                     printWelcome();
-                }
-                else {
+                } else {
                     finished = true;
                 }
             }
         }
     }
 
-    private void printWelcome()
-    {
+    private void printWelcome() {
         System.out.println();
         System.out.println("Welcome to **insert game name**!");
         System.out.println("In this game you are going to learn about the forest while saving it!");
@@ -126,14 +193,13 @@ public class Game
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         System.out.println(player.getCurrentRoom().getLongDescription(player));
-    }
+    }*/
 
     public void printEnd() {
 
     }
 
     public static void main(String[] args) {
-            Game game = new Game();
-            game.play();
+        launch(args);
     }
 }

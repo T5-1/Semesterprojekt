@@ -1,12 +1,10 @@
 package dk.t5.grp1.worldofzuul.npc;
 
+import dk.t5.grp1.worldofzuul.graphics.Sprite;
+
 public class Bat extends NPC {
-    public Bat() {
-        super("Batshitcrazy", "YOU FOOL! YOU DARE VENTURE NEAR MY CAVE! \n" +
-                "well okay then. Hello I am Batshitcrazy. \n" +
-                "I SWEAR ON MY ANCESTOR YOU WILL NOT LEAVE \n" +
-                "WITHOUT SUFFERING some information.\n" +
-                "*****insert information*****");
+    public Bat(int x, int y) {
+        super("Batshitcrazy", "res/text/dialogue/bat.txt", x, y, Sprite.npcBat, x - 100, y - 50, x + 100, y + 60);
     }
 
 }

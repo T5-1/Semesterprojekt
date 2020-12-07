@@ -5,7 +5,7 @@ import dk.t5.grp1.worldofzuul.npc.Fish;
 
 public class Shore extends Room {
     public Shore(String description, String name) {
-        super(description, name, new Water(), new Fish());
+        super(description, name, new Water(180, 300), new Fish(180, 500), "/textures/rooms/shore.png");
 
     }
 

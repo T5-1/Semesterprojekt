@@ -1,12 +1,11 @@
 package dk.t5.grp1.worldofzuul.npc;
 
 
+import dk.t5.grp1.worldofzuul.graphics.Sprite;
+
 public class Goat extends NPC {
 
-    public Goat() {
-        super("Goatee the goat", "Baaah, you have ventured a long way to the top of this \n" +
-                "mountain, and for that I applaud you. Baaah. I, Goatee, \n" +
-                "will reward you with some valuable Information. \n" +
-                "*****insert information*****\n");
+    public Goat(int x, int y) {
+        super("Goatee the goat", "res/text/dialogue/goat.txt", x, y, Sprite.npcGoat, x - 80, y - 40, x + 90, y + 70);
     }
 }
