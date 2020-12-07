@@ -24,7 +24,7 @@ public class Sprite {
     public static final Sprite assetTent1 = new Sprite(192, 0, 13, SpriteSheet.tiles);
     public static final Sprite assetTent2 = new Sprite(192, 3, 13, SpriteSheet.tiles);
     public static final Sprite assetBridge = new Sprite(192, 6, 13, SpriteSheet.tiles);
-    public static final Sprite assetCaveEntity = new Sprite(512, 0xff0BBAB1);
+    public static final Sprite assetCaveEntity = new Sprite(512, 8, 0,SpriteSheet.tiles);
 
     public static final Sprite npcFish = new Sprite(256, 0, 0, SpriteSheet.npc);
     public static final Sprite npcCactus = new Sprite(256, 1, 0, SpriteSheet.npc);
