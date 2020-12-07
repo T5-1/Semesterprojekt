@@ -51,7 +51,7 @@ public class Player {
         parser = new Parser();
         inventory = new Inventory();
         this.eventManager = eventManager;
-        interaction = new Interaction(canvas, currentRoom.getNpc());
+        interaction = new Interaction(canvas, currentRoom.getNpc(), currentRoom.getItem());
 
         sprite[0] = Sprite.playerLevel0;
         sprite[1] = Sprite.playerLevel1;
@@ -119,7 +119,8 @@ public class Player {
     public boolean rightCollision() {
         boolean collision = false;
         for (int i = 0; i < sprite[currentLevel].SIZE; i++) {
-            if (x + sprite[currentLevel].SIZE / 2 + 1 > Game.width || y - sprite[currentLevel].SIZE / 2 - 1 < 0) continue;
+            if (x + sprite[currentLevel].SIZE / 2 + 1 > Game.width || y - sprite[currentLevel].SIZE / 2 - 1 < 0)
+                continue;
             if (currentRoom.getCollisionMap()[x + sprite[currentLevel].SIZE / 2 + 1 + (y - sprite[currentLevel].SIZE / 2 + i) * Game.width]) {
                 collision = true;
             }
@@ -130,11 +131,18 @@ public class Player {
         return collision;
     }
 
-    private boolean npcInteractionOverlap () {
+    private boolean npcInteractionOverlap() {
         return (startInteractionX < currentRoom.getNpc().endInteractionX) &&
-               (currentRoom.getNpc().startInteractionX < endInteractionX) &&
-               (startInteractionY < currentRoom.getNpc().endInteractionY) &&
-               (currentRoom.getNpc().startInteractionY < endInteractionY);
+                (currentRoom.getNpc().startInteractionX < endInteractionX) &&
+                (startInteractionY < currentRoom.getNpc().endInteractionY) &&
+                (currentRoom.getNpc().startInteractionY < endInteractionY);
+    }
+
+    private boolean itemInteractionOverlap() {
+        return (startInteractionX < currentRoom.getItem().endInteractionX) &&
+                (currentRoom.getItem().startInteractionX < endInteractionX) &&
+                (startInteractionY < currentRoom.getItem().endInteractionY) &&
+                (currentRoom.getItem().startInteractionY < endInteractionY);
     }
 
     public void update(Keyboard key) {
@@ -144,8 +152,13 @@ public class Player {
         endInteractionY = y + sprite[currentLevel].SIZE + sprite[currentLevel].SIZE / 2;
 
         if (npcInteractionOverlap()) {
-            interaction.update(key);
+            interaction.update(key, "npc", this);
             interaction.setNpc(currentRoom.getNpc());
+        }
+
+        if (itemInteractionOverlap()) {
+            interaction.setItem(currentRoom.getItem());
+            interaction.update(key, "item", this);
         }
 
         if (!interaction.isInteracting()) {
@@ -164,7 +177,7 @@ public class Player {
                 x -= speed;
             }
             //RIGHT
-            if(!rightCollision() && key.right) {
+            if (!rightCollision() && key.right) {
                 x += speed;
             }
         }
@@ -173,35 +186,31 @@ public class Player {
         //if true then set the players current room to the exit, and place the player at the bottom of the screen
         //if false then check again for being close enough to the edge of the screen, and then check if the room is either null or inaccessible
         //NORTH
-        if (y < sprite[currentLevel].SIZE / 2 + 1 && currentRoom.getExit(0) != null && currentRoom.getExit(0).isAccessible()){
+        if (y < sprite[currentLevel].SIZE / 2 + 1 && currentRoom.getExit(0) != null && currentRoom.getExit(0).isAccessible()) {
             currentRoom = currentRoom.getExit(0);
             y = Game.height - sprite[currentLevel].SIZE - yBoundaryOffset[currentLevel];
-        }
-        else if (y < sprite[currentLevel].SIZE / 2 + 1 && (currentRoom.getExit(0) == null || !currentRoom.getExit(0).isAccessible())) {
+        } else if (y < sprite[currentLevel].SIZE / 2 + 1 && (currentRoom.getExit(0) == null || !currentRoom.getExit(0).isAccessible())) {
             y += speed;
         }
         //EAST
-        if (x > Game.width - sprite[currentLevel].SIZE - xBoundaryOffset[currentLevel] && currentRoom.getExit(1) != null && currentRoom.getExit(1).isAccessible()){
+        if (x > Game.width - sprite[currentLevel].SIZE - xBoundaryOffset[currentLevel] && currentRoom.getExit(1) != null && currentRoom.getExit(1).isAccessible()) {
             currentRoom = currentRoom.getExit(1);
             x = sprite[currentLevel].SIZE / 2;
-        }
-        else if (x > Game.width - sprite[currentLevel].SIZE && (currentRoom.getExit(1) == null || !currentRoom.getExit(1).isAccessible())) {
+        } else if (x > Game.width - sprite[currentLevel].SIZE && (currentRoom.getExit(1) == null || !currentRoom.getExit(1).isAccessible())) {
             x -= speed;
         }
         //SOUTH
         if (y > Game.height - sprite[currentLevel].SIZE - yBoundaryOffset[currentLevel] && currentRoom.getExit(2) != null && currentRoom.getExit(2).isAccessible()) {
             currentRoom = currentRoom.getExit(2);
             y = sprite[currentLevel].SIZE / 2 + 1;
-        }
-        else if (y > Game.height - sprite[currentLevel].SIZE + yBoundaryOffset[currentLevel] && (currentRoom.getExit(2) == null || !currentRoom.getExit(2).isAccessible())) {
+        } else if (y > Game.height - sprite[currentLevel].SIZE + yBoundaryOffset[currentLevel] && (currentRoom.getExit(2) == null || !currentRoom.getExit(2).isAccessible())) {
             y -= speed;
         }
         //WEST
         if (x < sprite[currentLevel].SIZE / 2 && currentRoom.getExit(3) != null && currentRoom.getExit(3).isAccessible()) {
             currentRoom = currentRoom.getExit(3);
             x = Game.width - sprite[currentLevel].SIZE - xBoundaryOffset[currentLevel];
-        }
-        else if (x < sprite[currentLevel].SIZE / 2 + 1 && (currentRoom.getExit(3) == null || !currentRoom.getExit(3).isAccessible())) {
+        } else if (x < sprite[currentLevel].SIZE / 2 + 1 && (currentRoom.getExit(3) == null || !currentRoom.getExit(3).isAccessible())) {
             x += speed;
         }
 
@@ -225,7 +234,7 @@ public class Player {
         else if (xp >= xpNeededForNextLvl) {
             readyForFinalLevel = true;
             xp = 0;
-           // command = null;
+            // command = null;
             return;
         }
 
@@ -308,23 +317,12 @@ public class Player {
     }
 
     public void gather() {
-        if (commandAvailable) {
-            if (command.hasSecondWord()) {
-                System.out.println("Gather what?");
-            } else {
-                if (currentRoom.getItem().getItemType() == ItemType.SEED) {
-                    inventory.add(currentRoom.getItem());
-                    System.out.println("You picked up: " + currentRoom.getItem().getName());
-                    currentRoom.setItem(new NullItem());
-                } else if (currentRoom.getItem().getItemType() != ItemType.NULLITEM) {
-                    inventory.add(currentRoom.getItem());
-                    System.out.println("You picked up: " + currentRoom.getItem().getName());
-                } else {
-                    System.out.println("There is nothing to pick up in this room");
-                }
-            }
-        } else {
-            System.out.println("This action isn't available anymore");
+        if (currentRoom.getItem().getItemType() == ItemType.SEED) {
+            inventory.add(currentRoom.getItem());
+            currentRoom.setItem(new NullItem());
+        }
+        else if (currentRoom.getItem().getItemType() != ItemType.NULLITEM) {
+            inventory.add(currentRoom.getItem());
         }
     }
 
@@ -369,8 +367,7 @@ public class Player {
                     System.out.println("You already know this");
                 }
                 currentRoom.getNpc().setInteracted(true);
-            }
-            else {
+            } else {
                 System.out.println(currentRoom.getNpc().getInfo());
             }
 
@@ -389,8 +386,7 @@ public class Player {
         System.out.println("You are now a " + evolution[currentLevel]);
         if (currentLevel == 1) {
             npcsNeededReactionWith += 3;
-        }
-        else if (currentLevel == 2) {
+        } else if (currentLevel == 2) {
             npcsNeededReactionWith += 2;
         }
         canLevelUp = false;

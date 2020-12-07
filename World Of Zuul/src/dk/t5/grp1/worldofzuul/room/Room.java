@@ -25,7 +25,7 @@ public abstract class Room {
     private boolean accessible = true;
     private boolean deadly = false;
 
-    private Item item = new NullItem();
+    private Item item;
     private NPC npc;
     private String description;
     private String name;
@@ -40,6 +40,7 @@ public abstract class Room {
     public Room(String description, String name, List<Assets> assets, NPC npc, String path) {
         this(description, name, npc, path);
         this.assets = assets;
+        this.item = new NullItem();
     }
 
     public Room(String description, String name, Item item, NPC npc, String path) {
@@ -52,6 +53,7 @@ public abstract class Room {
         this.name = name;
         exits = new Room[4];
         this.npc = npc;
+        this.item = new NullItem();
         loadLevel(path);
         createNPCCollision();
     }
@@ -202,7 +204,7 @@ public abstract class Room {
     }
 
     public Item getItem() {
-        return item.getItemType().getItem();
+        return item;
     }
 
     public void setItem(Item item) {
