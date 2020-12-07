@@ -46,7 +46,8 @@ public class Sprite {
     public static final Sprite playerLevel3 = new Sprite(128, 0, 3, SpriteSheet.player);
     public static final Sprite playerLevel4 = new Sprite(256, 2, 0, SpriteSheet.player);
 
-    public static final Sprite item = new Sprite(64, 0xff0BBAB1);
+    public static final Sprite item = new Sprite(64, 4, 1, SpriteSheet.tiles);
+
 
     private SpriteSheet sheet;
 
