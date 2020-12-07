@@ -217,7 +217,9 @@ public class Player {
 
 
         //check if the current room will kill you(only happens in lake)
-        if (currentRoom.isDeadly()) {
+        if (currentRoom.isDeadly())
+        if (currentLevel < 3)
+        {
             die("You drowned in the Lake.");
         }
 
