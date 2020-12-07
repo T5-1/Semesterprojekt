@@ -148,15 +148,6 @@ public class Game extends Application {
 
         player.getInteraction().render(screen);
 
-
-        if (player.getCurrentRoom().getItem().getX() != 0) {
-            for (int y = player.getCurrentRoom().getItem().startInteractionY; y < player.getCurrentRoom().getItem().endInteractionY; y++) {
-                for (int x = player.getCurrentRoom().getItem().startInteractionX; x < player.getCurrentRoom().getItem().endInteractionX; x++) {
-                    screen.getPixels()[x + y * width] = 0xff000000;
-                }
-            }
-        }
-
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), screen.getPixels(), 0, width);
     }
 

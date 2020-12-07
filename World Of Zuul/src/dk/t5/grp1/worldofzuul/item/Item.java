@@ -21,10 +21,7 @@ public abstract class Item {
         this.name = name;
         this.itemType = itemType;
         x = y = 0;
-        this.startInteractionX = x - 32;
-        this.startInteractionY = y - 32;
-        this.endInteractionX = x + 32;
-        this.endInteractionY = y + 32;
+        startInteractionX = startInteractionY = endInteractionX = endInteractionY = 0;
     }
 
     public int getX() {
