@@ -8,10 +8,7 @@ import dk.t5.grp1.worldofzuul.graphics.Screen;
 import dk.t5.grp1.worldofzuul.graphics.Sprite;
 import dk.t5.grp1.worldofzuul.input.Keyboard;
 import dk.t5.grp1.worldofzuul.interaction.Interaction;
-import dk.t5.grp1.worldofzuul.item.ItemType;
-import dk.t5.grp1.worldofzuul.item.NullItem;
-import dk.t5.grp1.worldofzuul.item.Sun;
-import dk.t5.grp1.worldofzuul.item.Water;
+import dk.t5.grp1.worldofzuul.item.*;
 import dk.t5.grp1.worldofzuul.question.QuestionManager;
 import dk.t5.grp1.worldofzuul.room.Room;
 import javafx.scene.canvas.Canvas;
@@ -21,7 +18,7 @@ public class Player {
     private int x, y;
     private int[] xBoundaryOffset = new int[5];
     private int[] yBoundaryOffset = new int[5];
-    private int speed = 20;
+    private int speed = 4;
 
     private int startInteractionX, startInteractionY, endInteractionX, endInteractionY;
 
@@ -160,22 +157,24 @@ public class Player {
         endInteractionX = x + sprite[currentLevel].SIZE + sprite[currentLevel].SIZE / 2;
         endInteractionY = y + sprite[currentLevel].SIZE + sprite[currentLevel].SIZE / 2;
 
-        if (npcInteractionOverlap() && currentRoom.getNpc().isEventNpc()) {
-            interaction.setType("event");
-        }
-        else if (npcInteractionOverlap()) {
-            interaction.setNpc(currentRoom.getNpc());
-            interaction.setType("npc");
-        }
-        else if (itemInteractionOverlap()) {
-            interaction.setItem(currentRoom.getItem());
-            interaction.setType("item");
-        }
-        else if (inventory.getSunCount() > 0 && inventory.getWaterCount() > 0) {
-            interaction.setType("consume");
-        }
-        else {
-            interaction.setType("null");
+        if (!interaction.isInteracting()) {
+            if (npcInteractionOverlap() && currentRoom.getNpc().isEventNpc()) {
+                interaction.setType("event");
+            }
+            else if (npcInteractionOverlap()) {
+                interaction.setNpc(currentRoom.getNpc());
+                interaction.setType("npc");
+            }
+            else if (itemInteractionOverlap()) {
+                interaction.setItem(currentRoom.getItem());
+                interaction.setType("item");
+            }
+            else if (inventory.getSunCount() > 0 && inventory.getWaterCount() > 0) {
+                interaction.setType("consume");
+            }
+            else {
+                interaction.setType("null");
+            }
         }
 
         //Check if the player isn't currently doing an interaction
@@ -237,15 +236,15 @@ public class Player {
         //check if the current room will kill you(only happens in lake)
         if (currentRoom.isDeadly()) {
             if (currentLevel < 3) {
-                die("You drowned in the Lake.");
+                die("You drowned in the Lake. You are dead,");
             }
         }
 
         //Check if you've collected too much of either water or sun
         if (inventory.getWaterCount() > xpNeededForNextLvl) {
-            die("You gathered too much water, and drowned yourself.");
+            die("You gathered too much water, and drowned yourself. You are dead,");
         } else if (inventory.getSunCount() > xpNeededForNextLvl) {
-            die("You gathered too much sun, and dried out.");
+            die("You gathered too much sun, and dried out. You are dead,");
         }
         //check if you've consumed enough items to level up, and checks if you are under level 3
         if (xp >= xpNeededForNextLvl && currentLevel < 3) {
@@ -335,7 +334,7 @@ public class Player {
         alive = false;
         interaction.setInteracting(true);
         interaction.setType("die");
-        this.deathMessage = deathMessage + " You are dead, do you want to restart the game?";
+        this.deathMessage = deathMessage + " do you want to restart the game?";
     }
 
     public void gather() {
@@ -433,5 +432,9 @@ public class Player {
 
     public String getDeathMessage() {
         return deathMessage;
+    }
+
+    public void setDeathMessage(String deathMessage) {
+        this.deathMessage = deathMessage;
     }
 }

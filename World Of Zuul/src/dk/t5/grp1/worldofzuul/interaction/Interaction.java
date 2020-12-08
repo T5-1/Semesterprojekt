@@ -5,6 +5,7 @@ import dk.t5.grp1.worldofzuul.event.EventManager;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
 import dk.t5.grp1.worldofzuul.input.Keyboard;
 import dk.t5.grp1.worldofzuul.item.Item;
+import dk.t5.grp1.worldofzuul.item.Seed;
 import dk.t5.grp1.worldofzuul.npc.NPC;
 import dk.t5.grp1.worldofzuul.player.Player;
 import javafx.scene.canvas.Canvas;
@@ -40,7 +41,6 @@ public class Interaction {
     boolean eventStart = true;
 
     public void update(Keyboard key, String type, Player player) {
-        System.out.println(type);
         this.type = type;
 
         if (!interacting) {
@@ -58,7 +58,7 @@ public class Interaction {
                 interactionLine++;
             }
             else if (type.equals("npc")) {
-                if (player.getNpcsReactedWith() >= player.getNpcsNeededReactionWith() && player.getCurrentRoom().getNpc().getName() != "Old Tutorial Tree" && interactionLine > 0) {
+                if (player.getNpcsReactedWith() >= player.getNpcsNeededReactionWith() && !player.getCurrentRoom().getNpc().getName().equals("Old Tutorial Tree") && interactionLine > 0) {
                     interacting = false;
                     interactionLine = 0;
                     setType("null");
@@ -136,10 +136,10 @@ public class Interaction {
                 }
 
             }
-            else if (eventManager.isEventRunning() && eventStart && interactionLine > 0) {
+            else if (eventManager.isEventRunning() && eventStart && interactionLine > 0 && type.equals("eventStart")) {
                 for (int i = 0; i < Game.questionManager.getQuestions().length; i++) {
                     if (Game.questionManager.getQuestions()[i].isAvailable()) {
-                        System.out.println("test");
+                        Game.questionManager.getQuestions()[i].setAvailable(false);
                         questionIndex = i;
                         break;
                     }
@@ -156,9 +156,25 @@ public class Interaction {
             }
             else if (type.equals("rightAnswer") && interactionLine > 0) {
                 interacting = false;
+                eventStart = true;
                 interactionLine = 0;
                 setType("null");
                 eventManager.endEvent(player);
+                if (eventManager.getCurrentEvent() == eventManager.getLakeEvent()) {
+                    for (int i = 0; i < eventManager.getCurrentEvent().getSeedReward(); i++) {
+                        player.getInventory().add(new Seed());
+                    }
+                    setType("level");
+                }
+                else if (eventManager.getCurrentEvent() != eventManager.getFinalEvent()) {
+                    for (int i = 0; i < eventManager.getCurrentEvent().getSeedReward(); i++) {
+                        player.getInventory().add(new Seed());
+                    }
+                }
+                else {
+                    player.setDeathMessage("You won the game!");
+                    setType("die");
+                }
             }
             else if (!player.isAlive()) {
                 if (selectedOption > 0 && key.up && !directionalKeysPressed) {
@@ -252,14 +268,21 @@ public class Interaction {
                     graphicsContext.fillText("You have already answered my question!", 310, Game.height - 180);
                 }
             }
-            else if (eventManager.isEventRunning() && eventStart) {
+            else if (eventManager.isEventRunning() && eventStart && type.equals("eventStart")) {
                 graphicsContext.fillText(eventManager.getCurrentEvent().getDescription(), 310, Game.height - 200);
             }
             else if (type.equals("wrongAnswer")) {
                 graphicsContext.fillText("That is wrong!", 310, Game.height - 200);
             }
             else if (type.equals("rightAnswer")) {
-                graphicsContext.fillText("That is right!", 310, Game.height - 200);
+                if (eventManager.getCurrentEvent() != eventManager.getFinalEvent()) {
+                    graphicsContext.fillText("That is right! Take " + eventManager.getCurrentEvent().getSeedReward() + " seed(s)!", 310, Game.height - 200);
+                }
+                else {
+                    graphicsContext.fillText("Dang it grandson, you saw through my cunning ruse, and defeated me!", 310, Game.height - 200);
+                    graphicsContext.fillText("Well you got it as you wanted it, you saved the forest.", 310, Game.height - 180);
+                    graphicsContext.fillText("But beware, next time it won't be this easy...", 310, Game.height - 160);
+                }
             }
             else if (type.equals("die")) {
                 graphicsContext.fillText(player.getDeathMessage(), 310, Game.height - 180);
@@ -267,7 +290,7 @@ public class Interaction {
                 graphicsContext.fillText("No!", 310, Game.height - 125);
                 screen.renderHollowBox(310, Game.height - 160 + (20 * selectedOption), Game.width - 310, Game.height - 140 + (20 * selectedOption));
             }
-            else if (type.equals("null")) {
+            else {
                 graphicsContext.fillText("You found an error, press enter to try and continue!", 310, Game.height - 180);
             }
         }

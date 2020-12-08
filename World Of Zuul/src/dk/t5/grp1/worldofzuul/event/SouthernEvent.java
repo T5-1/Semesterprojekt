@@ -8,7 +8,7 @@ import dk.t5.grp1.worldofzuul.room.Room;
 public class SouthernEvent extends Event {
 
     public SouthernEvent(Room room) {
-        super("Oh no! There is an uncontrollable Forest Fire at the Southern Entrance! Hurry!", room);
+        super("Oh no! There is an uncontrollable Forest Fire at the Southern Entrance! Hurry!", room, 1);
     }
 
     @Override

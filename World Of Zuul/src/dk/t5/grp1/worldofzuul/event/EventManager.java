@@ -29,11 +29,10 @@ public class EventManager {
 
     boolean startPlayed = false;
     public void update(Player player, Interaction interaction) {
-        System.out.println(eventRunning);
         //check if an event is currently running, else try to start an event
         if (eventRunning) {
             if (!startPlayed) {
-                interaction.setType("");
+                interaction.setType("eventStart");
                 event.start(player, this, interaction);
                 startPlayed = true;
             }
@@ -98,36 +97,12 @@ public class EventManager {
         }
     }
 
-    public boolean isFinalEventPlayed() {
-        return finalEventPlayed;
+    public Event getFinalEvent() {
+        return finalEvent;
     }
 
-    public void setFinalEventPlayed(boolean finalEventPlayed) {
-        this.finalEventPlayed = finalEventPlayed;
-    }
-
-    public boolean isNorthernEventPlayed() {
-        return northernEventPlayed;
-    }
-
-    public void setNorthernEventPlayed(boolean northernEventPlayed) {
-        this.northernEventPlayed = northernEventPlayed;
-    }
-
-    public boolean isSouthernEventPlayed() {
-        return southernEventPlayed;
-    }
-
-    public void setSouthernEventPlayed(boolean southernEventPlayed) {
-        this.southernEventPlayed = southernEventPlayed;
-    }
-
-    public boolean isLakeEventPlayed() {
-        return lakeEventPlayed;
-    }
-
-    public void setLakeEventPlayed(boolean lakeEventPlayed) {
-        this.lakeEventPlayed = lakeEventPlayed;
+    public Event getLakeEvent() {
+        return lakeEvent;
     }
 
     public boolean isEventRunning() {

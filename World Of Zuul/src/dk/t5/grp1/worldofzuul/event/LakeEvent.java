@@ -7,7 +7,7 @@ import dk.t5.grp1.worldofzuul.room.Room;
 public class LakeEvent extends Event {
 
     public LakeEvent(Room room) {
-        super("You consume the water & sun, but nothing happens? Maybe try going to the lake, to get enough water", room);
+        super("You consume the water & sun, but nothing happens? Maybe try going to the lake, to get enough water", room, 2);
     }
 
     @Override

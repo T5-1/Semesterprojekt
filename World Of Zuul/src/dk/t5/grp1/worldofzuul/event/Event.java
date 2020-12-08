@@ -13,18 +13,17 @@ public abstract class Event {
     private boolean answered = false;
     private int answer = -1;
     private int correctAnswer = -1;
+    int seedReward;
 
     private Room room;
 
-    public Event(String description, Room room){
+    public Event(String description, Room room, int seedReward){
         this.description = description;
         this.room = room;
+        this.seedReward = seedReward;
     }
 
     public void update() {
-        if (answer == correctAnswer) {
-            answered = true;
-        }
     }
 
     public String getDescription() {
@@ -57,6 +56,10 @@ public abstract class Event {
 
     public void setAnswer(int answer) {
         this.answer = answer;
+    }
+
+    public int getSeedReward() {
+        return seedReward;
     }
 
     public abstract void start(Player player, EventManager eventManager, Interaction interaction);
