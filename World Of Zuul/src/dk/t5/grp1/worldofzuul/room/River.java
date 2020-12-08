@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class River extends Room{
     public River(String description, String name) {
-        super(description, name, new Water(880, 400), new ArrayList<>(),new Troll(880, 200), "/textures/rooms/river.png");
+        super(description, name, new Water(950, 550), new ArrayList<>(),new Troll(880, 200), "/textures/rooms/river.png");
 
         super.assets.add(new Bridge(800, 480));
     }
