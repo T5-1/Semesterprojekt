@@ -7,4 +7,8 @@ public class Orangutan extends NPC {
         super("Pongo the orangutan", "res/text/dialogue/orangutan.txt", x, y, Sprite.npcOrangutan, x - 90, y - 80, x + 90, y + 120);
     }
 
+    @Override
+    public boolean isEventNpc() {
+        return true;
+    }
 }

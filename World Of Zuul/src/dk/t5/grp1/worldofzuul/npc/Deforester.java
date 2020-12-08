@@ -7,6 +7,9 @@ public class Deforester extends NPC {
         super("De-forester Dennis", "res/text/dialogue/deforester.txt", x, y, Sprite.npcDeforester, x - 70, y - 50, x + 40, y + 120);
     }
 
-
+    @Override
+    public boolean isEventNpc() {
+        return true;
+    }
 }
 

@@ -4,6 +4,7 @@ import dk.t5.grp1.worldofzuul.event.EventManager;
 import dk.t5.grp1.worldofzuul.graphics.HUD;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
 import dk.t5.grp1.worldofzuul.player.Player;
+import dk.t5.grp1.worldofzuul.question.QuestionManager;
 import dk.t5.grp1.worldofzuul.room.*;
 import dk.t5.grp1.worldofzuul.input.Keyboard;
 import javafx.animation.AnimationTimer;
@@ -23,6 +24,9 @@ public class Game extends Application {
     public static final int width = 1616;
     public static final int height = 935;
 
+    public static boolean exit = false;
+    public static boolean restart = false;
+
     private String title = "Game Title";
 
     private WritableImage writableImage = new WritableImage(width, height);
@@ -32,6 +36,7 @@ public class Game extends Application {
 
     private Screen screen = new Screen(width, height);
     private Keyboard key;
+    public static final QuestionManager questionManager = new QuestionManager();
 
     private Player player;
     private HUD hud;
@@ -128,6 +133,16 @@ public class Game extends Application {
                 canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
                 update();
                 render();
+                if (exit) {
+                    stage.close();
+                }
+                else if (restart) {
+                    createRooms();
+                    eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
+                    player = new Player(spawn, eventManager, width / 2, height / 2 + 150, graphicsContext);
+                    hud = new HUD(player, graphicsContext);
+                    restart = false;
+                }
                 stage.setTitle(title + "  |  " + player.getCurrentRoom().getName());
             }
         };
@@ -139,6 +154,8 @@ public class Game extends Application {
         key.update();
         player.update(key);
         player.getCurrentRoom().getNpc().update();
+        eventManager.update(player, player.getInteraction());
+        player.getInteraction().update(key, player.getInteraction().getType(), player);
     }
 
     public void render() {

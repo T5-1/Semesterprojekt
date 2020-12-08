@@ -1,6 +1,7 @@
 package dk.t5.grp1.worldofzuul.interaction;
 
 import dk.t5.grp1.worldofzuul.Game;
+import dk.t5.grp1.worldofzuul.event.EventManager;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
 import dk.t5.grp1.worldofzuul.input.Keyboard;
 import dk.t5.grp1.worldofzuul.item.Item;
@@ -18,62 +19,173 @@ public class Interaction {
     private NPC npc;
     private Item item;
 
-    private String type;
+    private String type = "";
 
-    public Interaction(GraphicsContext graphicsContext, NPC npc, Item item) {
+    private EventManager eventManager;
+
+    public Interaction(GraphicsContext graphicsContext, NPC npc, Item item, EventManager eventManager) {
         interacting = false;
         this.graphicsContext = graphicsContext;
         this.npc = npc;
         this.item = item;
+        this.eventManager = eventManager;
     }
 
     int interactionLine = 0;
+    int selectedOption = 0;
+    int questionIndex = 0;
 
+    boolean directionalKeysPressed = false;
     boolean pressed = false;
+    boolean eventStart = true;
 
     public void update(Keyboard key, String type, Player player) {
+        System.out.println(type);
         this.type = type;
 
         if (!interacting) {
             if (key.interact && !pressed) {
                 interacting = true;
                 pressed = true;
-            } else if (!key.interact) {
+            }
+            else if (!key.interact) {
                 pressed = false;
             }
-        } else {
+        }
+        else {
             if (key.interact && !pressed) {
                 pressed = true;
                 interactionLine++;
-            } else if (!key.interact) {
-                pressed = false;
-            } else if (type.equals("npc")) {
-                if (player.getNpcsReactedWith() >= player.getNpcsNeededReactionWith() && interactionLine > 0) {
+            }
+            else if (type.equals("npc")) {
+                if (player.getNpcsReactedWith() >= player.getNpcsNeededReactionWith() && player.getCurrentRoom().getNpc().getName() != "Old Tutorial Tree" && interactionLine > 0) {
                     interacting = false;
+                    interactionLine = 0;
+                    setType("null");
                 }
                 else {
                     if (npc.getInfo().length < 5 && interactionLine > 0) {
                         interactionLine = 0;
+                        setType("null");
                         player.interact();
                         interacting = false;
-                    } else if (interactionLine + 5 > npc.getInfo().length && npc.getInfo().length >= 5) {
+                    }
+                    else if (interactionLine + 5 > npc.getInfo().length && npc.getInfo().length >= 5) {
                         interactionLine = 0;
+                        setType("null");
                         player.interact();
                         interacting = false;
                     }
                 }
-            } else if (type.equals("item") && interactionLine > 0) {
+            }
+            else if (type.equals("item") && interactionLine > 0) {
                 interactionLine = 0;
+                setType("null");
                 player.gather();
                 interacting = false;
-            } else if (type.equals("consume") && interactionLine > 0) {
+            }
+            else if (type.equals("consume") && interactionLine > 0) {
                 interactionLine = 0;
+                setType("null");
                 player.consume();
                 interacting = false;
-            } else if (type.equals("level") && interactionLine > 0) {
+            }
+            else if (type.equals("level") && interactionLine > 0) {
                 interactionLine = 0;
+                setType("null");
                 player.levelUp();
                 interacting = false;
+            }
+            else if (type.equals("event")) {
+                player.setCanLevelUp(true);
+                npc = eventManager.getCurrentEvent().getRoom().getNpc();
+                eventManager.getCurrentEvent().update();
+
+                if (eventManager.getCurrentEvent().isAnswered()) {
+                    eventStart = true;
+                    interacting = false;
+                }
+
+                if (!eventManager.getCurrentEvent().isAnswered()) {
+                    if (selectedOption > 0 && key.up && !directionalKeysPressed) {
+                        selectedOption--;
+                        directionalKeysPressed = true;
+                    } else if (selectedOption < 2 && key.down && !directionalKeysPressed) {
+                        selectedOption++;
+                        directionalKeysPressed = true;
+                    } else if (!key.down && !key.up) {
+                        directionalKeysPressed = false;
+                    }
+
+                    if (key.interact && interactionLine > 0) {
+                        eventManager.getCurrentEvent().setAnswer(selectedOption);
+                        if (eventManager.getCurrentEvent().getCorrectAnswer() != selectedOption) {
+                            setType("wrongAnswer");
+                        }
+                        if (eventManager.getCurrentEvent().getCorrectAnswer() == selectedOption) {
+                            setType("rightAnswer");
+                        }
+                        interactionLine = 0;
+                    }
+
+                }
+                else if (interactionLine > 0) {
+                    interactionLine = 0;
+                    setType("null");
+                    interacting = false;
+                }
+
+            }
+            else if (eventManager.isEventRunning() && eventStart && interactionLine > 0) {
+                for (int i = 0; i < Game.questionManager.getQuestions().length; i++) {
+                    if (Game.questionManager.getQuestions()[i].isAvailable()) {
+                        System.out.println("test");
+                        questionIndex = i;
+                        break;
+                    }
+                }
+                eventManager.getCurrentEvent().setCorrectAnswer(Game.questionManager.getQuestions()[questionIndex].getCorrectAnswer());
+                interactionLine = 0;
+                setType("null");
+                interacting = false;
+                eventStart = false;
+            }
+            else if (type.equals("wrongAnswer") && interactionLine > 0) {
+                interactionLine = 0;
+                setType("event");
+            }
+            else if (type.equals("rightAnswer") && interactionLine > 0) {
+                interacting = false;
+                interactionLine = 0;
+                setType("null");
+                eventManager.endEvent(player);
+            }
+            else if (!player.isAlive()) {
+                if (selectedOption > 0 && key.up && !directionalKeysPressed) {
+                    selectedOption--;
+                    directionalKeysPressed = true;
+                } else if (selectedOption < 1 && key.down && !directionalKeysPressed) {
+                    selectedOption++;
+                    directionalKeysPressed = true;
+                } else if (!key.down && !key.up) {
+                    directionalKeysPressed = false;
+                }
+
+                if (key.interact && interactionLine > 0) {
+                    if (selectedOption == 0) {
+                        Game.restart = true;
+                    }
+                    if (selectedOption == 1) {
+                        Game.exit = true;
+                    }
+                }
+            }
+            else if (type.equals("") || type.equals("null")) {
+                interacting = false;
+            }
+
+            if (!key.interact) {
+                pressed = false;
             }
         }
     }
@@ -83,7 +195,7 @@ public class Interaction {
             screen.renderBox(300, Game.height - 220, Game.width - 300, Game.height - 80);
             graphicsContext.setFill(Color.rgb(198, 198, 198));
             if (type.equals("npc")) {
-                if (player.getNpcsReactedWith() >= player.getNpcsNeededReactionWith()) {
+                if (player.getNpcsReactedWith() >= player.getNpcsNeededReactionWith() && player.getCurrentRoom().getNpc().getName() != "Old Tutorial Tree") {
                     graphicsContext.fillText("You can't gather more information right now, you should try evolving", 310, Game.height - 200, Game.width - 620);
                 } else {
                     graphicsContext.setFill(Color.rgb(87, 255, 81));
@@ -108,17 +220,55 @@ public class Interaction {
                     if (player.isCanLevelUp() || player.getCurrentLevel() == 3) {
                         if (player.getInventory().getSunCount() >= player.getInventory().getSunCount()) {
                             graphicsContext.fillText("You consumed " + (player.getInventory().getSunCount()) + " Water & Sun", 310, Game.height - 200, Game.width - 620);
-                        } else {
+                        }
+                        else {
                             graphicsContext.fillText("You consumed " + (player.getInventory().getWaterCount()) + " Water & Sun", 310, Game.height - 200, Game.width - 620);
                         }
-                    } else {
+                    }
+                    else {
                         graphicsContext.fillText("Somethings missing but you don't quite know what hmm... try wandering around a bit", 310, Game.height - 200, Game.width - 620);
                     }
-                } else {
+                }
+                else {
                     graphicsContext.fillText("You need more information to consume, try talking with someone", 310, Game.height - 200, Game.width - 620);
                 }
-            } else if (type.equals("level")) {
+            }
+            else if (type.equals("level")) {
                 graphicsContext.fillText("You are now a " + player.getEvolution()[player.getCurrentLevel() + 1], 310, Game.height - 200, Game.width - 620);
+            }
+            else if (type.equals("event")) {
+                graphicsContext.setFill(Color.rgb(87, 255, 81));
+                graphicsContext.fillText(npc.getName(), 310, Game.height - 200);
+                graphicsContext.setFill(Color.rgb(198, 198, 198));
+
+                if (!eventManager.getCurrentEvent().isAnswered()) {
+                    graphicsContext.fillText(Game.questionManager.getQuestions()[questionIndex].getQuestion(), 310, Game.height - 180);
+                    graphicsContext.fillText(Game.questionManager.getQuestions()[questionIndex].getAnswers()[0], 310, Game.height - 145);
+                    graphicsContext.fillText(Game.questionManager.getQuestions()[questionIndex].getAnswers()[1], 310, Game.height - 125);
+                    graphicsContext.fillText(Game.questionManager.getQuestions()[questionIndex].getAnswers()[2], 310, Game.height - 105);
+                    screen.renderHollowBox(310, Game.height - 160 + (20 * selectedOption), Game.width - 310, Game.height - 140 + (20 * selectedOption));
+                }
+                else {
+                    graphicsContext.fillText("You have already answered my question!", 310, Game.height - 180);
+                }
+            }
+            else if (eventManager.isEventRunning() && eventStart) {
+                graphicsContext.fillText(eventManager.getCurrentEvent().getDescription(), 310, Game.height - 200);
+            }
+            else if (type.equals("wrongAnswer")) {
+                graphicsContext.fillText("That is wrong!", 310, Game.height - 200);
+            }
+            else if (type.equals("rightAnswer")) {
+                graphicsContext.fillText("That is right!", 310, Game.height - 200);
+            }
+            else if (type.equals("die")) {
+                graphicsContext.fillText(player.getDeathMessage(), 310, Game.height - 180);
+                graphicsContext.fillText("Yes!", 310, Game.height - 145);
+                graphicsContext.fillText("No!", 310, Game.height - 125);
+                screen.renderHollowBox(310, Game.height - 160 + (20 * selectedOption), Game.width - 310, Game.height - 140 + (20 * selectedOption));
+            }
+            else if (type.equals("null")) {
+                graphicsContext.fillText("You found an error, press enter to try and continue!", 310, Game.height - 180);
             }
         }
     }
@@ -143,4 +293,7 @@ public class Interaction {
         return type;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
 }

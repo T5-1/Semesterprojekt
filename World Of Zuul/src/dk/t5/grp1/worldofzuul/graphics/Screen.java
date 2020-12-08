@@ -33,7 +33,7 @@ public class Screen {
     public void renderMob(int xp, int yp, Sprite sprite) {
         for (int y = 0; y < sprite.SIZE; y++) {
             for (int x = 0; x < sprite.SIZE; x++) {
-                if (yp - 16 < 0 || yp + 16 > height || xp - 16 < 0 || xp + 16 > width) break;
+                if (yp - sprite.SIZE / 2 < 0 || yp + sprite.SIZE / 2 > height || xp - sprite.SIZE / 2 < 0 || xp + sprite.SIZE / 2 > width) break;
                 if (sprite.getPixels()[x + y * sprite.SIZE] != 0xffff00ff) {
                     pixels[(x + xp - sprite.SIZE / 2) + (y + yp - sprite.SIZE / 2) * width] = sprite.getPixels()[x + y * sprite.SIZE];
                 }
@@ -53,6 +53,32 @@ public class Screen {
                 b *= 0.25;
 
                 pixels[x + y * width] = 0xff000000 + (r << 16) + (g << 8) + b;
+            }
+        }
+    }
+
+    public void renderHollowBox(int x0, int y0, int x1, int y1) {
+        for (int y = y0 - 2; y < y0; y++) {
+            for (int x = x0; x < x1; x++) {
+                pixels[x + y * width] = 0xffffffff;
+            }
+        }
+
+        for (int y = y1; y < y1 + 2; y++) {
+            for (int x = x0; x < x1; x++) {
+                pixels[x + y * width] = 0xffffffff;
+            }
+        }
+
+        for (int y = y0; y < y1; y++) {
+            for (int x = x0 - 2; x < x0; x++) {
+                pixels[x + y * width] = 0xffffffff;
+            }
+        }
+
+        for (int y = y0; y < y1; y++) {
+            for (int x = x1; x < x1 + 2; x++) {
+                pixels[x + y * width] = 0xffffffff;
             }
         }
     }

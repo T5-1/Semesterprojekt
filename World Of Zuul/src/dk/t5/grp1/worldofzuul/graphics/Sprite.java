@@ -40,7 +40,7 @@ public class Sprite {
     public static final Sprite npcFlower = new Sprite(256, 4, 1, SpriteSheet.npc);
     public static final Sprite npcTucan = new Sprite(256, 4, 2, SpriteSheet.npc);
     public static final Sprite npcTutorialTree = new Sprite(512, 0, 2, SpriteSheet.npc);
-    public static final Sprite npcVoidSprite = new Sprite(32, 0xFFFFFF);
+    public static final Sprite npcEvilTree = new Sprite(512, 2, 2, SpriteSheet.npc);
 
     public static final Sprite playerLevel0 = new Sprite(64, 0, 0, SpriteSheet.player);
     public static final Sprite playerLevel1 = new Sprite(64, 1, 0, SpriteSheet.player);

@@ -12,6 +12,7 @@ import dk.t5.grp1.worldofzuul.item.ItemType;
 import dk.t5.grp1.worldofzuul.item.NullItem;
 import dk.t5.grp1.worldofzuul.item.Sun;
 import dk.t5.grp1.worldofzuul.item.Water;
+import dk.t5.grp1.worldofzuul.question.QuestionManager;
 import dk.t5.grp1.worldofzuul.room.Room;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -20,13 +21,15 @@ public class Player {
     private int x, y;
     private int[] xBoundaryOffset = new int[5];
     private int[] yBoundaryOffset = new int[5];
-    private int speed = 4;
+    private int speed = 20;
 
     private int startInteractionX, startInteractionY, endInteractionX, endInteractionY;
 
     private int xp, xpNeededForNextLvl, currentLevel, npcsReactedWith, npcsNeededReactionWith;
     private final int MAX_LEVEL = 4;
     private boolean alive, restartGame, readyForFinalLevel, commandAvailable, seedsPlanted, canLevelUp;
+
+    private String deathMessage = "";
     private String[] evolution = {"Seed", "Sprout", "Seedling", "Sapling", "Mature Tree"};
 
     private Room currentRoom;
@@ -54,7 +57,7 @@ public class Player {
         parser = new Parser();
         inventory = new Inventory();
         this.eventManager = eventManager;
-        interaction = new Interaction(graphicsContext, currentRoom.getNpc(), currentRoom.getItem());
+        this.interaction = new Interaction(graphicsContext, currentRoom.getNpc(), currentRoom.getItem(), this.eventManager);
 
         sprite[0] = Sprite.playerLevel0;
         sprite[1] = Sprite.playerLevel1;
@@ -71,18 +74,20 @@ public class Player {
         //level 4    : x = -112, y = -89
         xBoundaryOffset[4] = -112;
         yBoundaryOffset[4] = -89;
+        interaction.setInteracting(true);
+        interaction.setType("npc");
     }
 
     //Check for collision on the top side of the player
     public boolean topCollision() {
         boolean collision = false;
-        for (int i = 0; i < sprite[currentLevel].SIZE; i++) {
-            if (y - sprite[currentLevel].SIZE / 2 + 1 < 0) continue;
-            if (currentRoom.getCollisionMap()[x - sprite[currentLevel].SIZE / 2 + i + (y - sprite[currentLevel].SIZE / 2 - 1) * Game.width]) {
+        for (int i = 0; i < sprite[0].SIZE; i++) {
+            if (y - sprite[0].SIZE / 2 + 1 < 0) continue;
+            if (currentRoom.getCollisionMap()[x - sprite[0].SIZE / 2 + i + (y - sprite[0].SIZE / 2 - 1) * Game.width]) {
                 collision = true;
             }
         }
-        if (currentRoom.getCollisionMap()[x + (y - sprite[currentLevel].SIZE / 2) * Game.width]) {
+        if (currentRoom.getCollisionMap()[x + (y - sprite[0].SIZE / 2) * Game.width]) {
             y++;
         }
         return collision;
@@ -91,13 +96,13 @@ public class Player {
     //Check for collision on the bottom side of the player
     public boolean bottomCollision() {
         boolean collision = false;
-        for (int i = 0; i < sprite[currentLevel].SIZE; i++) {
-            if (y + sprite[currentLevel].SIZE + 1 > Game.height) continue;
-            if (currentRoom.getCollisionMap()[x - sprite[currentLevel].SIZE / 2 + i + (y + sprite[currentLevel].SIZE / 2 + 1) * Game.width]) {
+        for (int i = 0; i < sprite[0].SIZE; i++) {
+            if (y + sprite[0].SIZE + 1 > Game.height) continue;
+            if (currentRoom.getCollisionMap()[x - sprite[0].SIZE / 2 + i + (y + sprite[0].SIZE / 2 + 1) * Game.width]) {
                 collision = true;
             }
         }
-        if (currentRoom.getCollisionMap()[x + (y + sprite[currentLevel].SIZE / 2) * Game.width]) {
+        if (currentRoom.getCollisionMap()[x + (y + sprite[0].SIZE / 2) * Game.width]) {
             y--;
         }
         return collision;
@@ -106,13 +111,13 @@ public class Player {
     //Check for collision on the left side of the player
     public boolean leftCollision() {
         boolean collision = false;
-        for (int i = 0; i < sprite[currentLevel].SIZE; i++) {
-            if (x - sprite[currentLevel].SIZE / 2 + 1 < 0 || y - sprite[currentLevel].SIZE / 2 - 1 < 0) continue;
-            if (currentRoom.getCollisionMap()[x - sprite[currentLevel].SIZE / 2 + 1 + (y - sprite[currentLevel].SIZE / 2 + i) * Game.width]) {
+        for (int i = 0; i < sprite[0].SIZE; i++) {
+            if (x - sprite[0].SIZE / 2 + 1 < 0 || y - sprite[0].SIZE / 2 - 1 < 0) continue;
+            if (currentRoom.getCollisionMap()[x - sprite[0].SIZE / 2 + 1 + (y - sprite[0].SIZE / 2 + i) * Game.width]) {
                 collision = true;
             }
         }
-        if (currentRoom.getCollisionMap()[x - sprite[currentLevel].SIZE / 2 + y * Game.width]) {
+        if (currentRoom.getCollisionMap()[x - sprite[0].SIZE / 2 + y * Game.width]) {
             x++;
         }
         return collision;
@@ -121,14 +126,14 @@ public class Player {
     //Check for collision on the right side of the player
     public boolean rightCollision() {
         boolean collision = false;
-        for (int i = 0; i < sprite[currentLevel].SIZE; i++) {
-            if (x + sprite[currentLevel].SIZE / 2 + 1 > Game.width || y - sprite[currentLevel].SIZE / 2 - 1 < 0)
+        for (int i = 0; i < sprite[0].SIZE; i++) {
+            if (x + sprite[0].SIZE / 2 + 1 > Game.width || y - sprite[0].SIZE / 2 - 1 < 0)
                 continue;
-            if (currentRoom.getCollisionMap()[x + sprite[currentLevel].SIZE / 2 + 1 + (y - sprite[currentLevel].SIZE / 2 + i) * Game.width]) {
+            if (currentRoom.getCollisionMap()[x + sprite[0].SIZE / 2 + 1 + (y - sprite[0].SIZE / 2 + i) * Game.width]) {
                 collision = true;
             }
         }
-        if (currentRoom.getCollisionMap()[x + sprite[currentLevel].SIZE / 2 + y * Game.width]) {
+        if (currentRoom.getCollisionMap()[x + sprite[0].SIZE / 2 + y * Game.width]) {
             x--;
         }
         return collision;
@@ -155,16 +160,26 @@ public class Player {
         endInteractionX = x + sprite[currentLevel].SIZE + sprite[currentLevel].SIZE / 2;
         endInteractionY = y + sprite[currentLevel].SIZE + sprite[currentLevel].SIZE / 2;
 
-        if (npcInteractionOverlap()) {
-            interaction.update(key, "npc", this);
+        if (npcInteractionOverlap() && currentRoom.getNpc().isEventNpc()) {
+            interaction.setType("event");
+        }
+        else if (npcInteractionOverlap()) {
             interaction.setNpc(currentRoom.getNpc());
-        } else if (itemInteractionOverlap()) {
+            interaction.setType("npc");
+        }
+        else if (itemInteractionOverlap()) {
             interaction.setItem(currentRoom.getItem());
-            interaction.update(key, "item", this);
-        } else if (inventory.getSunCount() > 0 && inventory.getWaterCount() > 0) {
-            interaction.update(key, "consume", this);
+            interaction.setType("item");
+        }
+        else if (inventory.getSunCount() > 0 && inventory.getWaterCount() > 0) {
+            interaction.setType("consume");
+        }
+        else {
+            interaction.setType("null");
         }
 
+        //Check if the player isn't currently doing an interaction
+        //if false lock the players movement
         if (!interaction.isInteracting()) {
             //check if the player is not colliding with a solid tile, and if the directional key is pressed
             //if true add/subtract speed from the players position
@@ -241,8 +256,6 @@ public class Player {
         else if (xp >= xpNeededForNextLvl) {
             readyForFinalLevel = true;
             xp = 0;
-            // command = null;
-            return;
         }
 
         //command = parser.getCommand();
@@ -320,7 +333,9 @@ public class Player {
 
     public void die(String deathMessage) {
         alive = false;
-        System.out.println(deathMessage + " You are dead, do you want to restart the game? (yes/no)");
+        interaction.setInteracting(true);
+        interaction.setType("die");
+        this.deathMessage = deathMessage + " You are dead, do you want to restart the game?";
     }
 
     public void gather() {
@@ -414,5 +429,9 @@ public class Player {
 
     public int getNpcsNeededReactionWith() {
         return npcsNeededReactionWith;
+    }
+
+    public String getDeathMessage() {
+        return deathMessage;
     }
 }
