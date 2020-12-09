@@ -7,7 +7,7 @@ import dk.t5.grp1.worldofzuul.room.Room;
 public class FinalEvent extends Event {
 
     public FinalEvent(Room room) {
-        super("You have planted all of the seeds! Now return to spawn!", room, 0);
+        super("Now that you have planted all of the seeds, return to spawn to plant yourself!", room, 0);
     }
 
     @Override

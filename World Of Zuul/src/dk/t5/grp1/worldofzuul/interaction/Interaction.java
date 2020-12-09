@@ -155,26 +155,37 @@ public class Interaction {
                 setType("event");
             }
             else if (type.equals("rightAnswer") && interactionLine > 0) {
-                interacting = false;
-                eventStart = true;
-                interactionLine = 0;
                 setType("null");
                 eventManager.endEvent(player);
                 if (eventManager.getCurrentEvent() == eventManager.getLakeEvent()) {
                     for (int i = 0; i < eventManager.getCurrentEvent().getSeedReward(); i++) {
                         player.getInventory().add(new Seed());
+                        interacting = false;
+                        eventStart = true;
+                        interactionLine = 0;
+                        setType("null");
                     }
-                    setType("level");
                 }
                 else if (eventManager.getCurrentEvent() != eventManager.getFinalEvent()) {
                     for (int i = 0; i < eventManager.getCurrentEvent().getSeedReward(); i++) {
                         player.getInventory().add(new Seed());
+                        interacting = false;
+                        eventStart = true;
+                        interactionLine = 0;
+                        setType("null");
                     }
                 }
                 else {
-                    player.setDeathMessage("You won the game!");
-                    setType("die");
+                    eventStart = true;
+                    interactionLine = 0;
+                    player.die("You won the game!");
                 }
+            }
+            else if (type.equals("plant") && interactionLine > 0) {
+                interactionLine = 0;
+                interacting = false;
+                player.plant();
+                setType("null");
             }
             else if (!player.isAlive()) {
                 if (selectedOption > 0 && key.up && !directionalKeysPressed) {
@@ -204,6 +215,7 @@ public class Interaction {
                 pressed = false;
             }
         }
+        System.out.println(type);
     }
 
     public void render(Screen screen, Player player) {
@@ -290,8 +302,11 @@ public class Interaction {
                 graphicsContext.fillText("No!", 310, Game.height - 125);
                 screen.renderHollowBox(310, Game.height - 160 + (20 * selectedOption), Game.width - 310, Game.height - 140 + (20 * selectedOption));
             }
+            else if (type.equals("plant")) {
+                graphicsContext.fillText("You have planted all the seeds!", 310, Game.height - 200);
+            }
             else {
-                graphicsContext.fillText("You found an error, press enter to try and continue!", 310, Game.height - 180);
+                graphicsContext.fillText("You found an error, press enter to try and continue!", 310, Game.height - 200);
             }
         }
     }

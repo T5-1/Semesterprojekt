@@ -113,6 +113,14 @@ public class EventManager {
         return event;
     }
 
+    public boolean isLakeEventPlayed() {
+        return lakeEventPlayed;
+    }
+
+    public boolean isFinalEventPlayed() {
+        return finalEventPlayed;
+    }
+
     public boolean isStartPlayed() {
         return startPlayed;
     }

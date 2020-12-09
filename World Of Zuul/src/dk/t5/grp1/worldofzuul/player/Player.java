@@ -18,7 +18,7 @@ public class Player {
     private int x, y;
     private int[] xBoundaryOffset = new int[5];
     private int[] yBoundaryOffset = new int[5];
-    private int speed = 4;
+    private int speed = 30;
 
     private int startInteractionX, startInteractionY, endInteractionX, endInteractionY;
 
@@ -157,7 +157,7 @@ public class Player {
         endInteractionX = x + sprite[currentLevel].SIZE + sprite[currentLevel].SIZE / 2;
         endInteractionY = y + sprite[currentLevel].SIZE + sprite[currentLevel].SIZE / 2;
 
-        if (!interaction.isInteracting()) {
+        if (!interaction.isInteracting() && !eventManager.isFinalEventPlayed()) {
             if (npcInteractionOverlap() && currentRoom.getNpc().isEventNpc()) {
                 interaction.setType("event");
             }
@@ -168,6 +168,9 @@ public class Player {
             else if (itemInteractionOverlap()) {
                 interaction.setItem(currentRoom.getItem());
                 interaction.setType("item");
+            }
+            else if (currentLevel >= 4 && inventory.getSeedCount() >= 8) {
+                interaction.setType("plant");
             }
             else if (inventory.getSunCount() > 0 && inventory.getWaterCount() > 0) {
                 interaction.setType("consume");
@@ -249,15 +252,17 @@ public class Player {
         //check if you've consumed enough items to level up, and checks if you are under level 3
         if (xp >= xpNeededForNextLvl && currentLevel < 3) {
             interaction.setInteracting(true);
-            interaction.update(key, "level", this);
+            interaction.setType("level");
+        }
+        else if (currentLevel == 3 && eventManager.isLakeEventPlayed()) {
+            interaction.setInteracting(true);
+            interaction.setType("level");
         }
         //checks if you have enough xp to start lake event, when in level 3
         else if (xp >= xpNeededForNextLvl) {
             readyForFinalLevel = true;
             xp = 0;
         }
-
-        //command = parser.getCommand();
     }
 
     public void render(Screen screen) {
@@ -265,23 +270,13 @@ public class Player {
     }
 
     public void plant() {
-        //check if the command is available for use
-        if (commandAvailable) {
-            //check if you have 8 seeds in inventory
-            if (inventory.getSeedCount() >= 8) {
-                if (currentLevel == MAX_LEVEL) {
-                    // plant all of the seeds except yourself.
-                    System.out.println("you have now planted all of the seeds, go to spawn and plant " +
-                            "yourself to complete the forest");
-                    // we need to "disable" the other Rooms. You can enter the rooms, but you can't interact or gather.
-                    //boolean in player "command availabe", when everything is ready CommandAvailabe=false.
-                    commandAvailable = false;
-                    seedsPlanted = true;
-                } else {
-                    System.out.println("You aren't big enough");
+        //check if you have 8 seeds in inventory
+        if (inventory.getSeedCount() >= 8) {
+            if (currentLevel == MAX_LEVEL) {
+                for (int i = 0; i < inventory.getSeedCount(); i++) {
+                    inventory.remove(ItemType.SEED);
                 }
-            } else {
-                System.out.println("You need 8 seeds to plant, and you need to be a mature tree.");
+                seedsPlanted = true;
             }
         }
     }

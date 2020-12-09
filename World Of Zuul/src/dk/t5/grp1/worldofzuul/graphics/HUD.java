@@ -25,7 +25,11 @@ public class HUD {
         graphics.fillText("Sun:    " + player.getInventory().getSunCount(), 15, 35);
         graphics.fillText("Water: " + player.getInventory().getWaterCount(), 15, 65);
         graphics.fillText("Seed:  " + player.getInventory().getSeedCount(), 15, 95);
-        if (player.getInventory().getWaterCount() > 0 && player.getInventory().getSunCount() > 0) {
+        if (player.getCurrentLevel() >= 4 && player.getInventory().getSeedCount() >= 8) {
+            graphics.setFill(Color.rgb(87, 255, 81));
+            graphics.fillText("Press Interact \nto plant", 15, 125);
+        }
+        else if (player.getInventory().getWaterCount() > 0 && player.getInventory().getSunCount() > 0) {
             graphics.setFill(Color.rgb(87, 255, 81));
             graphics.fillText("Press Interact \nto consume", 15, 125);
         }
