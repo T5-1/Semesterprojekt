@@ -6,7 +6,7 @@ public class Tree extends NPC{
 
 
     public Tree(int x, int y) {
-        super("Old Tutorial Tree", "res/text/dialogue/tutorialTree.txt", x, y, Sprite.npcTutorialTree, x - 110, y + 160, x + 100, y + 260);
+        super("Old Tutorial Tree", "text/dialogue/tutorialTree.txt", x, y, Sprite.npcTutorialTree, x - 110, y + 160, x + 100, y + 260);
     }
 
     @Override

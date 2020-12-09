@@ -215,7 +215,6 @@ public class Interaction {
                 pressed = false;
             }
         }
-        System.out.println(type);
     }
 
     public void render(Screen screen, Player player) {

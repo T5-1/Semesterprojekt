@@ -1,8 +1,7 @@
 package dk.t5.grp1.worldofzuul.question;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public abstract class Question {
 
@@ -21,7 +20,8 @@ public abstract class Question {
 
     public String loadText(String path) {
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+            InputStream is = getClass().getClassLoader().getResourceAsStream(path);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             return bufferedReader.readLine();
         } catch (IOException e) {
             e.printStackTrace();

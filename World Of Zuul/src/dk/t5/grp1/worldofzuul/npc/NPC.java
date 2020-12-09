@@ -5,9 +5,8 @@ import dk.t5.grp1.worldofzuul.graphics.Screen;
 import dk.t5.grp1.worldofzuul.graphics.Sprite;
 import dk.t5.grp1.worldofzuul.question.QuestionManager;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +58,8 @@ public abstract class NPC {
         String currentLine;
         List<String> npcInfo = new ArrayList<>();
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+            InputStream is = getClass().getClassLoader().getResourceAsStream(path);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));//getClass().getClassLoader().(path);
             do {
                 currentLine = bufferedReader.readLine();
                 npcInfo.add(currentLine);
