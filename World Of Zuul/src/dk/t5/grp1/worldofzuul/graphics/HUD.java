@@ -24,6 +24,7 @@ public class HUD {
         screen.renderBox(10, 10, 150, 185);
         screen.renderBox(Game.width - 285, Game.height - 235, Game.width, Game.height);
         screen.renderMob(Game.width - 150, Game.height - 175, Sprite.map);
+        screen.renderHollowBox(1270 + 64 * player.getCurrentLevel(), 10, 1334 + 64 * player.getCurrentLevel(), 74);
         screen.renderMob(1270 + Sprite.evolution1.SIZE / 2, 10 + Sprite.evolution1.SIZE / 2, Sprite.evolution1);
         screen.renderMob(1270 + Sprite.evolution2.SIZE / 2 + 64, 10 + Sprite.evolution2.SIZE / 2, Sprite.evolution2);
         screen.renderMob(1270 + Sprite.evolution3.SIZE / 2+ 64+ 64, 10 + Sprite.evolution3.SIZE / 2, Sprite.evolution3);
