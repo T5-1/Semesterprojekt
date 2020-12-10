@@ -75,7 +75,7 @@ public class Player {
         xBoundaryOffset[4] = -112;
         yBoundaryOffset[4] = -89;
         interaction.setInteracting(true);
-        interaction.setType("npc");
+        interaction.setType("start");
     }
 
     //Check for collision on the top side of the player
