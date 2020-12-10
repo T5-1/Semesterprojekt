@@ -2,8 +2,11 @@ Grandson! Finally you are here! The Forest is in dire need of your help!
 You have to go on a Quest to gather seeds and plant them around every corner of the forest.
 On your way, you will meet many different species that will guide you towards the rebirth of the flora.
 You will also meet different dangers and riddles. To overcome these, you must remember what the different species tell you.
+(press space or enter to continue)
 
 First you need to learn to move around. To move around use the arrow keys, or the WASD keys.
 You can also interact with the different strangers you meet in the forest. To interact with others, use the 'Space' or 'Enter' key.
 
 Good luck Grandson! I put the life of the forest in your hands.
+
+
