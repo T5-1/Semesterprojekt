@@ -248,10 +248,10 @@ public class Interaction {
                 if (player.getNpcsReactedWith() >= player.getNpcsNeededReactionWith()) {
                     if (player.isCanLevelUp() || player.getCurrentLevel() == 3) {
                         if (player.getInventory().getSunCount() >= player.getInventory().getSunCount()) {
-                            graphicsContext.fillText("You consumed " + (player.getInventory().getSunCount()) + " Water & Sun", 310, Game.height - 200, Game.width - 620);
+                            graphicsContext.fillText("You consumed " + (player.getInventory().getWaterCount()) + " Water & " + (player.getInventory().getSunCount()) + " Sun", 310, Game.height - 200, Game.width - 620);
                         }
                         else {
-                            graphicsContext.fillText("You consumed " + (player.getInventory().getWaterCount()) + " Water & Sun", 310, Game.height - 200, Game.width - 620);
+                            graphicsContext.fillText("You consumed " + (player.getInventory().getWaterCount()) + " Water & " + (player.getInventory().getSunCount()) + " Sun", 310, Game.height - 200, Game.width - 620);
                         }
                     }
                     else {

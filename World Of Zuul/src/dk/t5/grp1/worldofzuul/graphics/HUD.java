@@ -31,10 +31,10 @@ public class HUD {
         screen.renderMob(1270 + Sprite.evolution5.SIZE / 2+ 64+ 64+ 64+ 64, 10 + Sprite.evolution5.SIZE / 2, Sprite.evolution5);
 
         graphics.setFill(Color.rgb(198, 198, 198));
-        graphics.fillText("Sun:    " + player.getInventory().getSunCount() + "/" + player.getItemsNeededForNextLvl(), 15, 35);
-        graphics.fillText("Water: " + player.getInventory().getWaterCount() + "/" + player.getItemsNeededForNextLvl(), 15, 65);
-        graphics.fillText("Seed:  " + player.getInventory().getSeedCount(), 15, 95);
-        graphics.fillText("XP:    " + player.getXp() + "/" + player.getXpNeededForNextLvl(), 15, 125);
+        graphics.fillText("Sun:         " + player.getInventory().getSunCount() + "/" + player.getItemsNeededForNextLvl(), 15, 35);
+        graphics.fillText("Water:      " + player.getInventory().getWaterCount() + "/" + player.getItemsNeededForNextLvl(), 15, 65);
+        graphics.fillText("Seed:       " + player.getInventory().getSeedCount() + "/8", 15, 95);
+        graphics.fillText("Evolution: " + player.getCurrentLevel() + "/4", 15, 125);
         if (player.getCurrentLevel() >= 4 && player.getInventory().getSeedCount() >= 8) {
             graphics.setFill(Color.rgb(87, 255, 81));
             graphics.fillText("Press Interact \nto plant", 15, 155);
