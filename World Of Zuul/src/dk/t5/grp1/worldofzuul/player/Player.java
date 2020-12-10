@@ -18,7 +18,7 @@ public class Player {
     private int x, y;
     private int[] xBoundaryOffset = new int[5];
     private int[] yBoundaryOffset = new int[5];
-    private int speed = 4;
+    private int speed = 15;
 
     private int startInteractionX, startInteractionY, endInteractionX, endInteractionY;
 
