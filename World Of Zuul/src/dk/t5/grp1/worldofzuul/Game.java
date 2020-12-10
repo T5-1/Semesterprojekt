@@ -35,7 +35,6 @@ public class Game extends Application {
     private Screen screen = new Screen(width, height);
     private Keyboard key;
     public static final QuestionManager questionManager = new QuestionManager();
-    private Image image;
 
     private Player player;
     private HUD hud;
@@ -102,7 +101,6 @@ public class Game extends Application {
     @Override
     public void start(Stage stage) {
         ImageView game = new ImageView(writableImage);
-        ImageView screens = new ImageView(image);
         Group root = new Group(game);
         Scene scene = new Scene(root, width, height);
         key = new Keyboard(scene);
@@ -115,7 +113,6 @@ public class Game extends Application {
 
         graphicsContext.setFont(Font.font("Verdana", 16));
 
-        root.getChildren().add(screens);
         root.getChildren().add(canvas);
 
         stage.setTitle(title);
@@ -194,54 +191,6 @@ public class Game extends Application {
         player.getInteraction().render(screen, player);
 
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), screen.getPixels(), 0, width);
-    }
-
-    /*public void play() {
-        printWelcome();
-        System.out.println("Current level: " + player.getEvolution()[player.getCurrentLevel()]);
-
-        boolean finished = false;
-        while (!finished) {
-            if (player.isAlive()) {
-                if (!eventManager.isFinalEventPlayed()) {
-                    eventManager.update(player);
-                    if (eventManager.isFinalEventPlayed()) {
-                        continue;
-                    }
-                    player.update();
-                    if (player.getCommand() != null) {
-                        finished = player.getCommand().processCommand(player.getCommand(), player);
-                    }
-                } else {
-                    eventManager.update(player);
-                    printEnd();
-                    finished = true;
-                }
-            } else {
-                if (player.isRestartGame()) {
-                    createRooms();
-                    eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
-                    player = new Player(spawn, eventManager, width / 2, height / 2);
-                    printWelcome();
-                } else {
-                    finished = true;
-                }
-            }
-        }
-    }
-
-    private void printWelcome() {
-        System.out.println();
-        System.out.println("Welcome to **insert game name**!");
-        System.out.println("In this game you are going to learn about the forest while saving it!");
-        System.out.println("To find out what you need to do, go talk to the Old Tutorial Tree!");
-        System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
-        System.out.println();
-        System.out.println(player.getCurrentRoom().getLongDescription(player));
-    }*/
-
-    public void printEnd() {
-
     }
 
     public static void main(String[] args) {
