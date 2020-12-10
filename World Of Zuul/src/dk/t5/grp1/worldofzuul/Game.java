@@ -1,6 +1,7 @@
 package dk.t5.grp1.worldofzuul;
 
 import dk.t5.grp1.worldofzuul.event.EventManager;
+import dk.t5.grp1.worldofzuul.graphics.Background;
 import dk.t5.grp1.worldofzuul.graphics.HUD;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
 import dk.t5.grp1.worldofzuul.player.Player;
@@ -13,10 +14,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelFormat;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
+import javafx.scene.image.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -27,7 +25,7 @@ public class Game extends Application {
     public static boolean exit = false;
     public static boolean restart = false;
 
-    private String title = "Game Title";
+    private String title = "Need For Tree";
 
     private WritableImage writableImage = new WritableImage(width, height);
     private PixelWriter pixelWriter = writableImage.getPixelWriter();
@@ -37,6 +35,7 @@ public class Game extends Application {
     private Screen screen = new Screen(width, height);
     private Keyboard key;
     public static final QuestionManager questionManager = new QuestionManager();
+    private Image image;
 
     private Player player;
     private HUD hud;
@@ -102,8 +101,9 @@ public class Game extends Application {
 
     @Override
     public void start(Stage stage) {
-        ImageView imageView = new ImageView(writableImage);
-        Group root = new Group(imageView);
+        ImageView game = new ImageView(writableImage);
+        ImageView screens = new ImageView(image);
+        Group root = new Group(game);
         Scene scene = new Scene(root, width, height);
         key = new Keyboard(scene);
 
@@ -115,6 +115,7 @@ public class Game extends Application {
 
         graphicsContext.setFont(Font.font("Verdana", 16));
 
+        root.getChildren().add(screens);
         root.getChildren().add(canvas);
 
         stage.setTitle(title);
@@ -143,6 +144,7 @@ public class Game extends Application {
                     hud = new HUD(player, graphicsContext);
                     restart = false;
                 }
+
                 stage.setTitle(title + "  |  " + player.getCurrentRoom().getName());
             }
         };
@@ -171,9 +173,25 @@ public class Game extends Application {
             player.getCurrentRoom().getNpc().render(screen);
         }
 
-        player.getInteraction().render(screen, player);
-
         hud.render(screen);
+
+        if (player.getInteraction().getType().equals("start")) {
+            for (int i = 0; i < screen.getPixels().length; i++) {
+                screen.getPixels()[i] = Background.start.getPixels()[i];
+            }
+        }
+        else if (eventManager.isFinalEventPlayed()) {
+            for (int i = 0; i < screen.getPixels().length; i++) {
+                screen.getPixels()[i] = Background.win.getPixels()[i];
+            }
+        }
+        else if (!player.isAlive()) {
+            for (int i = 0; i < screen.getPixels().length; i++) {
+                screen.getPixels()[i] = Background.die.getPixels()[i];
+            }
+        }
+
+        player.getInteraction().render(screen, player);
 
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), screen.getPixels(), 0, width);
     }

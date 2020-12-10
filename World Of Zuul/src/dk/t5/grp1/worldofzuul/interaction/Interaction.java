@@ -209,6 +209,10 @@ public class Interaction {
                     }
                 }
             }
+            else if (type.equals("start") && interactionLine > 0) {
+                interactionLine = 0;
+                setType("npc");
+            }
             else if (type.equals("") || type.equals("null")) {
                 interacting = false;
             }
@@ -305,6 +309,10 @@ public class Interaction {
             }
             else if (type.equals("plant")) {
                 graphicsContext.fillText("You have planted all the seeds!", 310, Game.height - 200);
+            }
+            else if (type.equals("start")) {
+                graphicsContext.fillText("Welcome to Need For Tree", 310, Game.height - 200);
+                graphicsContext.fillText("Press 'Enter' to start", 310, Game.height - 180);
             }
             else {
                 graphicsContext.fillText("You found an error, press enter to try and continue!", 310, Game.height - 200);
