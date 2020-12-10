@@ -8,5 +8,4 @@ public class Flower extends NPC {
     public Flower(int x, int y) {
         super("Daisy the flower", "text/dialogue/flower.txt", x, y, Sprite.npcFlower, x - 100, y - 80, x + 100, y + 100, 3);
     }
-
 }

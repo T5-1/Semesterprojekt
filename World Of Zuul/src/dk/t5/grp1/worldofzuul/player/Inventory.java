@@ -56,22 +56,6 @@ public class Inventory {
         }
     }
 
-    public void printInventory() {
-        if (sunCount < 2) {
-            System.out.println("You have " + sunCount + "x Sun");
-        }
-        else {
-            System.out.println("You have " + sunCount + "x Suns");
-        }
-        if (sunCount < 2) {
-            System.out.println("You have " + waterCount + "x Water");
-        }
-        else {
-            System.out.println("You have " + waterCount + "x Waters");
-        }
-        System.out.println("You have " + seedCount + "x Seeds");
-    }
-
     public int getSunCount() {
         return sunCount;
     }

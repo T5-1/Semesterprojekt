@@ -1,17 +1,13 @@
 package dk.t5.grp1.worldofzuul.player;
 
 import dk.t5.grp1.worldofzuul.Game;
-import dk.t5.grp1.worldofzuul.command.Command;
-import dk.t5.grp1.worldofzuul.command.Parser;
 import dk.t5.grp1.worldofzuul.event.EventManager;
 import dk.t5.grp1.worldofzuul.graphics.Screen;
 import dk.t5.grp1.worldofzuul.graphics.Sprite;
 import dk.t5.grp1.worldofzuul.input.Keyboard;
 import dk.t5.grp1.worldofzuul.interaction.Interaction;
 import dk.t5.grp1.worldofzuul.item.*;
-import dk.t5.grp1.worldofzuul.question.QuestionManager;
 import dk.t5.grp1.worldofzuul.room.Room;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 public class Player {
@@ -24,7 +20,7 @@ public class Player {
 
     private int xp, xpNeededForNextLvl, currentLevel, npcsReactedWith, npcsNeededReactionWith;
     private final int MAX_LEVEL = 4;
-    private boolean alive, restartGame, readyForFinalLevel, commandAvailable, seedsPlanted, canLevelUp;
+    private boolean alive, restartGame, readyForFinalLevel, seedsPlanted, canLevelUp;
 
     private int itemsNeededForNextLvl;
 
@@ -32,8 +28,6 @@ public class Player {
     private String[] evolution = {"Seed", "Sprout", "Seedling", "Sapling", "Mature Tree"};
 
     private Room currentRoom;
-    private Command command;
-    private Parser parser;
     private Inventory inventory;
     private EventManager eventManager;
     private Interaction interaction;
@@ -49,12 +43,11 @@ public class Player {
         xpNeededForNextLvl = currentLevel + 1;
         itemsNeededForNextLvl = currentLevel + 1;
 
-        alive = commandAvailable = true;
+        alive = true;
         restartGame = readyForFinalLevel = seedsPlanted = false;
         canLevelUp = true;
 
         currentRoom = spawn;
-        parser = new Parser();
         inventory = new Inventory();
         this.eventManager = eventManager;
         this.interaction = new Interaction(graphicsContext, currentRoom.getNpc(), currentRoom.getItem(), this.eventManager);
@@ -78,80 +71,7 @@ public class Player {
         interaction.setType("start");
     }
 
-    //Check for collision on the top side of the player
-    public boolean topCollision() {
-        boolean collision = false;
-        for (int i = 0; i < sprite[0].SIZE; i++) {
-            if (y - sprite[0].SIZE / 2 + 1 < 0) continue;
-            if (currentRoom.getCollisionMap()[x - sprite[0].SIZE / 2 + i + (y - sprite[0].SIZE / 2 - 1) * Game.width]) {
-                collision = true;
-            }
-        }
-        if (currentRoom.getCollisionMap()[x + (y - sprite[0].SIZE / 2) * Game.width]) {
-            y++;
-        }
-        return collision;
-    }
 
-    //Check for collision on the bottom side of the player
-    public boolean bottomCollision() {
-        boolean collision = false;
-        for (int i = 0; i < sprite[0].SIZE; i++) {
-            if (y + sprite[0].SIZE + 1 > Game.height) continue;
-            if (currentRoom.getCollisionMap()[x - sprite[0].SIZE / 2 + i + (y + sprite[0].SIZE / 2 + 1) * Game.width]) {
-                collision = true;
-            }
-        }
-        if (currentRoom.getCollisionMap()[x + (y + sprite[0].SIZE / 2) * Game.width]) {
-            y--;
-        }
-        return collision;
-    }
-
-    //Check for collision on the left side of the player
-    public boolean leftCollision() {
-        boolean collision = false;
-        for (int i = 0; i < sprite[0].SIZE; i++) {
-            if (x - sprite[0].SIZE / 2 + 1 < 0 || y - sprite[0].SIZE / 2 - 1 < 0) continue;
-            if (currentRoom.getCollisionMap()[x - sprite[0].SIZE / 2 + 1 + (y - sprite[0].SIZE / 2 + i) * Game.width]) {
-                collision = true;
-            }
-        }
-        if (currentRoom.getCollisionMap()[x - sprite[0].SIZE / 2 + y * Game.width]) {
-            x++;
-        }
-        return collision;
-    }
-
-    //Check for collision on the right side of the player
-    public boolean rightCollision() {
-        boolean collision = false;
-        for (int i = 0; i < sprite[0].SIZE; i++) {
-            if (x + sprite[0].SIZE / 2 + 1 > Game.width || y - sprite[0].SIZE / 2 - 1 < 0)
-                continue;
-            if (currentRoom.getCollisionMap()[x + sprite[0].SIZE / 2 + 1 + (y - sprite[0].SIZE / 2 + i) * Game.width]) {
-                collision = true;
-            }
-        }
-        if (currentRoom.getCollisionMap()[x + sprite[0].SIZE / 2 + y * Game.width]) {
-            x--;
-        }
-        return collision;
-    }
-
-    private boolean npcInteractionOverlap() {
-        return (startInteractionX < currentRoom.getNpc().endInteractionX) &&
-                (currentRoom.getNpc().startInteractionX < endInteractionX) &&
-                (startInteractionY < currentRoom.getNpc().endInteractionY) &&
-                (currentRoom.getNpc().startInteractionY < endInteractionY);
-    }
-
-    private boolean itemInteractionOverlap() {
-        return (startInteractionX < currentRoom.getItem().endInteractionX) &&
-                (currentRoom.getItem().startInteractionX < endInteractionX) &&
-                (startInteractionY < currentRoom.getItem().endInteractionY) &&
-                (currentRoom.getItem().startInteractionY < endInteractionY);
-    }
 
     public void update(Keyboard key) {
 
@@ -272,6 +192,81 @@ public class Player {
         screen.renderMob(x, y, sprite[currentLevel]);
     }
 
+    private boolean npcInteractionOverlap() {
+        return (startInteractionX < currentRoom.getNpc().endInteractionX) &&
+                (currentRoom.getNpc().startInteractionX < endInteractionX) &&
+                (startInteractionY < currentRoom.getNpc().endInteractionY) &&
+                (currentRoom.getNpc().startInteractionY < endInteractionY);
+    }
+
+    private boolean itemInteractionOverlap() {
+        return (startInteractionX < currentRoom.getItem().endInteractionX) &&
+                (currentRoom.getItem().startInteractionX < endInteractionX) &&
+                (startInteractionY < currentRoom.getItem().endInteractionY) &&
+                (currentRoom.getItem().startInteractionY < endInteractionY);
+    }
+
+    //Check for collision on the top side of the player
+    public boolean topCollision() {
+        boolean collision = false;
+        for (int i = 0; i < sprite[0].SIZE; i++) {
+            if (y - sprite[0].SIZE / 2 + 1 < 0) continue;
+            if (currentRoom.getCollisionMap()[x - sprite[0].SIZE / 2 + i + (y - sprite[0].SIZE / 2 - 1) * Game.width]) {
+                collision = true;
+            }
+        }
+        if (currentRoom.getCollisionMap()[x + (y - sprite[0].SIZE / 2) * Game.width]) {
+            y++;
+        }
+        return collision;
+    }
+
+    //Check for collision on the bottom side of the player
+    public boolean bottomCollision() {
+        boolean collision = false;
+        for (int i = 0; i < sprite[0].SIZE; i++) {
+            if (y + sprite[0].SIZE + 1 > Game.height) continue;
+            if (currentRoom.getCollisionMap()[x - sprite[0].SIZE / 2 + i + (y + sprite[0].SIZE / 2 + 1) * Game.width]) {
+                collision = true;
+            }
+        }
+        if (currentRoom.getCollisionMap()[x + (y + sprite[0].SIZE / 2) * Game.width]) {
+            y--;
+        }
+        return collision;
+    }
+
+    //Check for collision on the left side of the player
+    public boolean leftCollision() {
+        boolean collision = false;
+        for (int i = 0; i < sprite[0].SIZE; i++) {
+            if (x - sprite[0].SIZE / 2 + 1 < 0 || y - sprite[0].SIZE / 2 - 1 < 0) continue;
+            if (currentRoom.getCollisionMap()[x - sprite[0].SIZE / 2 + 1 + (y - sprite[0].SIZE / 2 + i) * Game.width]) {
+                collision = true;
+            }
+        }
+        if (currentRoom.getCollisionMap()[x - sprite[0].SIZE / 2 + y * Game.width]) {
+            x++;
+        }
+        return collision;
+    }
+
+    //Check for collision on the right side of the player
+    public boolean rightCollision() {
+        boolean collision = false;
+        for (int i = 0; i < sprite[0].SIZE; i++) {
+            if (x + sprite[0].SIZE / 2 + 1 > Game.width || y - sprite[0].SIZE / 2 - 1 < 0)
+                continue;
+            if (currentRoom.getCollisionMap()[x + sprite[0].SIZE / 2 + 1 + (y - sprite[0].SIZE / 2 + i) * Game.width]) {
+                collision = true;
+            }
+        }
+        if (currentRoom.getCollisionMap()[x + sprite[0].SIZE / 2 + y * Game.width]) {
+            x--;
+        }
+        return collision;
+    }
+
     public void plant() {
         //check if you have 8 seeds in inventory
         if (inventory.getSeedCount() >= 8) {
@@ -282,50 +277,6 @@ public class Player {
                 seedsPlanted = true;
             }
         }
-    }
-
-    public boolean isCommandAvailable() {
-        return commandAvailable;
-    }
-
-    public boolean isReadyForFinalLevel() {
-        return readyForFinalLevel;
-    }
-
-    public int getCurrentLevel() {
-        return currentLevel;
-    }
-
-    public Room getCurrentRoom() {
-        return currentRoom;
-    }
-
-    public void setCurrentRoom(Room room) {
-        currentRoom = room;
-    }
-
-    public Command getCommand() {
-        return command;
-    }
-
-    public Parser getParser() {
-        return parser;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public boolean isAlive() {
-        return alive;
-    }
-
-    public boolean isRestartGame() {
-        return restartGame;
-    }
-
-    public void setRestartGame(boolean restartGame) {
-        this.restartGame = restartGame;
     }
 
     public void die(String deathMessage) {
@@ -390,6 +341,28 @@ public class Player {
         canLevelUp = false;
     }
 
+
+
+    public boolean isReadyForFinalLevel() {
+        return readyForFinalLevel;
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
     public boolean isSeedsPlanted() {
         return seedsPlanted;
     }
@@ -414,10 +387,6 @@ public class Player {
         return interaction;
     }
 
-    public void setXp(int xp) {
-        this.xp = xp;
-    }
-
     public boolean isCanLevelUp() {
         return canLevelUp;
     }
@@ -436,13 +405,5 @@ public class Player {
 
     public int getItemsNeededForNextLvl() {
         return itemsNeededForNextLvl;
-    }
-
-    public int getXp() {
-        return xp;
-    }
-
-    public int getXpNeededForNextLvl() {
-        return xpNeededForNextLvl;
     }
 }

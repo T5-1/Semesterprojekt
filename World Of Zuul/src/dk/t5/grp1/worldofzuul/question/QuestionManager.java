@@ -15,10 +15,6 @@ public class QuestionManager {
         questions[7] = new Question8();
     }
 
-    public void update() {
-
-    }
-
     public Question[] getQuestions() {
         return questions;
     }

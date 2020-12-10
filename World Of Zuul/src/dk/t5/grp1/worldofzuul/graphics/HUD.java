@@ -15,10 +15,6 @@ public class HUD {
         this.graphics = graphics;
     }
 
-    public void update() {
-
-    }
-
     public void render(Screen screen) {
         screen.renderBox(1270, 10, 1590, 74);
         screen.renderBox(10, 10, 150, 185);

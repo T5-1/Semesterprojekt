@@ -11,7 +11,6 @@ public abstract class Event {
     private String description;
 
     private boolean answered = false;
-    private int answer = -1;
     private int correctAnswer = -1;
     int seedReward;
 
@@ -22,6 +21,8 @@ public abstract class Event {
         this.room = room;
         this.seedReward = seedReward;
     }
+
+    public abstract void start(Player player, EventManager eventManager, Interaction interaction);
 
     public void update() {
     }
@@ -50,17 +51,7 @@ public abstract class Event {
         this.correctAnswer = correctAnswer;
     }
 
-    public int getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(int answer) {
-        this.answer = answer;
-    }
-
     public int getSeedReward() {
         return seedReward;
     }
-
-    public abstract void start(Player player, EventManager eventManager, Interaction interaction);
 }

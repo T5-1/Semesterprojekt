@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class EventManager {
 
-    private Room spawn, lake, northernEntrance, southernEntrance;
+    private Room lake, northernEntrance, southernEntrance;
     private Random random = new Random();
     private Event event;
     private Event southernEvent, northernEvent, lakeEvent, finalEvent;
@@ -17,7 +17,6 @@ public class EventManager {
 
     public EventManager(Room spawn, Room lake, Room northernEntrance, Room southernEntrance) {
         lakeEventPlayed = finalEventPlayed = northernEventPlayed = southernEventPlayed = false;
-        this.spawn = spawn;
         this.lake = lake;
         this.northernEntrance = northernEntrance;
         this.southernEntrance = southernEntrance;
@@ -36,12 +35,6 @@ public class EventManager {
                 event.start(player, this, interaction);
                 startPlayed = true;
             }
-
-            //check if the player has anymore actions left
-            /*else if (event.getActionsLeft() < 1 && event.getActionsLeft() > -1) {
-                eventRunning = false;
-                player.die("You didn't get to the " + event.getRoom().getName() + " in time, and the forrest is now dead.");
-            }*/
         } else {
             //call random event method
             if (!interaction.isInteracting()) {
@@ -64,13 +57,13 @@ public class EventManager {
     }
 
     public void randomEvent(Player player, Interaction interaction) {
-        //5% chance of starting a random event if the player is a sprout
+        //1% chance of starting a random event if the player is a sprout
         if (player.getCurrentLevel() == 1 && random.nextInt(100) <= 1 && !southernEventPlayed) {
             event = southernEvent;
             southernEntrance.setAccessible(true);
             eventRunning = true;
         }
-        //5% chance of starting a random event if the player is a seedling
+        //1% chance of starting a random event if the player is a seedling
         else if (player.getCurrentLevel() == 2 && random.nextInt(100) <= 1 && !northernEventPlayed) {
             event = northernEvent;
             northernEntrance.setAccessible(true);
@@ -98,14 +91,6 @@ public class EventManager {
         }
     }
 
-    public Event getFinalEvent() {
-        return finalEvent;
-    }
-
-    public Event getLakeEvent() {
-        return lakeEvent;
-    }
-
     public boolean isEventRunning() {
         return eventRunning;
     }
@@ -114,15 +99,19 @@ public class EventManager {
         return event;
     }
 
+    public Event getLakeEvent() {
+        return lakeEvent;
+    }
+
+    public Event getFinalEvent() {
+        return finalEvent;
+    }
+
     public boolean isLakeEventPlayed() {
         return lakeEventPlayed;
     }
 
     public boolean isFinalEventPlayed() {
         return finalEventPlayed;
-    }
-
-    public boolean isStartPlayed() {
-        return startPlayed;
     }
 }

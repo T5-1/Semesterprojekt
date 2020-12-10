@@ -123,7 +123,6 @@ public class Interaction {
                     }
 
                     if (key.interact && interactionLine > 0) {
-                        eventManager.getCurrentEvent().setAnswer(selectedOption);
                         if (eventManager.getCurrentEvent().getCorrectAnswer() != selectedOption) {
                             setType("wrongAnswer");
                         }
