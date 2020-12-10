@@ -13,6 +13,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class Interaction {
 
     private boolean interacting;
@@ -138,13 +142,17 @@ public class Interaction {
 
             }
             else if (eventManager.isEventRunning() && eventStart && interactionLine > 0 && type.equals("eventStart")) {
+                List<Integer> availableQuestions = new ArrayList<>();
                 for (int i = 0; i < Game.questionManager.getQuestions().length; i++) {
                     if (Game.questionManager.getQuestions()[i].isAvailable()) {
-                        Game.questionManager.getQuestions()[i].setAvailable(false);
-                        questionIndex = i;
-                        break;
+                        availableQuestions.add(i);
                     }
                 }
+                Random random = new Random();
+                int randomQuestion = random.nextInt(availableQuestions.size() - 1);
+                questionIndex = availableQuestions.get(randomQuestion);
+                Game.questionManager.getQuestions()[availableQuestions.get(randomQuestion)].setAvailable(false);
+
                 eventManager.getCurrentEvent().setCorrectAnswer(Game.questionManager.getQuestions()[questionIndex].getCorrectAnswer());
                 interactionLine = 0;
                 setType("null");

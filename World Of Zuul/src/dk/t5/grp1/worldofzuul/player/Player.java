@@ -18,7 +18,7 @@ public class Player {
     private int x, y;
     private int[] xBoundaryOffset = new int[5];
     private int[] yBoundaryOffset = new int[5];
-    private int speed = 15;
+    private int speed = 4;
 
     private int startInteractionX, startInteractionY, endInteractionX, endInteractionY;
 
@@ -43,7 +43,7 @@ public class Player {
         this.x = x;
         this.y = y;
         xp = 0;
-        currentLevel = 4;
+        currentLevel = 0;
         npcsReactedWith = 0;
         npcsNeededReactionWith = 3;
         xpNeededForNextLvl = currentLevel + 1;
@@ -76,10 +76,6 @@ public class Player {
         yBoundaryOffset[4] = -89;
         interaction.setInteracting(true);
         interaction.setType("start");
-
-        for (int i = 0; i < 8; i++) {
-            inventory.add(new Seed());
-        }
     }
 
     //Check for collision on the top side of the player
