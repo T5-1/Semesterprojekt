@@ -43,7 +43,7 @@ public class Player {
         this.x = x;
         this.y = y;
         xp = 0;
-        currentLevel = 0;
+        currentLevel = 4;
         npcsReactedWith = 0;
         npcsNeededReactionWith = 3;
         xpNeededForNextLvl = currentLevel + 1;
@@ -76,6 +76,10 @@ public class Player {
         yBoundaryOffset[4] = -89;
         interaction.setInteracting(true);
         interaction.setType("start");
+
+        for (int i = 0; i < 8; i++) {
+            inventory.add(new Seed());
+        }
     }
 
     //Check for collision on the top side of the player
@@ -276,7 +280,7 @@ public class Player {
         //check if you have 8 seeds in inventory
         if (inventory.getSeedCount() >= 8) {
             if (currentLevel == MAX_LEVEL) {
-                for (int i = 0; i < inventory.getSeedCount(); i++) {
+                for (int i = 0; i < 8; i++) {
                     inventory.remove(ItemType.SEED);
                 }
                 seedsPlanted = true;
