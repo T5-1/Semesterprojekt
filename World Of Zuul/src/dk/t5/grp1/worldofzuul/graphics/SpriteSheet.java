@@ -15,6 +15,7 @@ public class SpriteSheet {
     public static final SpriteSheet tiles = new SpriteSheet("/textures/sheets/tiles.png", 1024, 64);
     public static final SpriteSheet npc = new SpriteSheet("/textures/sheets/npc.png", 1280, 256);
     public static final SpriteSheet player = new SpriteSheet("/textures/sheets/player.png", 384, 64);
+    public static final SpriteSheet evolution = new SpriteSheet("/textures/sheets/evolution.png", 320, 64);
 
     public SpriteSheet(String path, int size, int spriteSize) {
         this.path = path;

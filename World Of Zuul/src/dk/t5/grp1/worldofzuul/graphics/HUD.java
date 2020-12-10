@@ -24,6 +24,12 @@ public class HUD {
         screen.renderBox(10, 10, 150, 185);
         screen.renderBox(Game.width - 285, Game.height - 235, Game.width, Game.height);
         screen.renderMob(Game.width - 150, Game.height - 175, Sprite.map);
+        screen.renderMob(1270 + Sprite.evolution1.SIZE / 2, 10 + Sprite.evolution1.SIZE / 2, Sprite.evolution1);
+        screen.renderMob(1270 + Sprite.evolution2.SIZE / 2 + 64, 10 + Sprite.evolution2.SIZE / 2, Sprite.evolution2);
+        screen.renderMob(1270 + Sprite.evolution3.SIZE / 2+ 64+ 64, 10 + Sprite.evolution3.SIZE / 2, Sprite.evolution3);
+        screen.renderMob(1270 + Sprite.evolution4.SIZE / 2+ 64+ 64+ 64, 10 + Sprite.evolution4.SIZE / 2, Sprite.evolution4);
+        screen.renderMob(1270 + Sprite.evolution5.SIZE / 2+ 64+ 64+ 64+ 64, 10 + Sprite.evolution5.SIZE / 2, Sprite.evolution5);
+
         graphics.setFill(Color.rgb(198, 198, 198));
         graphics.fillText("Sun:    " + player.getInventory().getSunCount() + "/" + player.getItemsNeededForNextLvl(), 15, 35);
         graphics.fillText("Water: " + player.getInventory().getWaterCount() + "/" + player.getItemsNeededForNextLvl(), 15, 65);

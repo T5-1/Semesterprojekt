@@ -23,6 +23,11 @@ public class Sprite {
 
     public static final Sprite item = new Sprite(64, 15, 15, SpriteSheet.tiles);
     public static final Sprite map = new Sprite(256, 11, 12, SpriteSheet.tiles);
+    public static final Sprite evolution1 = new Sprite(64,0,0, SpriteSheet.evolution);
+    public static final Sprite evolution2 = new Sprite(64,1,0, SpriteSheet.evolution);
+    public static final Sprite evolution3 = new Sprite(64,2,0, SpriteSheet.evolution);
+    public static final Sprite evolution4 = new Sprite(64,3,0, SpriteSheet.evolution);
+    public static final Sprite evolution5 = new Sprite(64,4,0, SpriteSheet.evolution);
 
     public static final Sprite assetTent1 = new Sprite(192, 0, 13, SpriteSheet.tiles);
     public static final Sprite assetTent2 = new Sprite(192, 3, 13, SpriteSheet.tiles);
