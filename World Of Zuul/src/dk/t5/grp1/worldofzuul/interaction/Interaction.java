@@ -259,7 +259,7 @@ public class Interaction {
                         }
                     }
                     else {
-                        graphicsContext.fillText("Somethings missing but you don't quite know what hmm... try wandering around a bit", 310, Game.height - 200, Game.width - 620);
+                        graphicsContext.fillText("Something is missing but you don't quite know what hmm... try wandering around a bit", 310, Game.height - 200, Game.width - 620);
                     }
                 }
                 else {
