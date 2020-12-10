@@ -22,6 +22,7 @@ public class HUD {
     public void render(Screen screen) {
         screen.renderBox(1270, 10, 1590, 74);
         screen.renderBox(10, 10, 150, 185);
+        screen.renderBox(Game.width - 285, Game.height - 235, Game.width, Game.height);
         screen.renderMob(Game.width - 150, Game.height - 175, Sprite.map);
         graphics.setFill(Color.rgb(198, 198, 198));
         graphics.fillText("Sun:    " + player.getInventory().getSunCount() + "/" + player.getItemsNeededForNextLvl(), 15, 35);
