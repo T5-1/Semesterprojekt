@@ -22,6 +22,7 @@ public class Sprite {
     public static final Sprite cactus = new Sprite(64, 3, 1, SpriteSheet.tiles);
 
     public static final Sprite item = new Sprite(64, 15, 15, SpriteSheet.tiles);
+    public static final Sprite map = new Sprite(256, 11, 12, SpriteSheet.tiles);
 
     public static final Sprite assetTent1 = new Sprite(192, 0, 13, SpriteSheet.tiles);
     public static final Sprite assetTent2 = new Sprite(192, 3, 13, SpriteSheet.tiles);

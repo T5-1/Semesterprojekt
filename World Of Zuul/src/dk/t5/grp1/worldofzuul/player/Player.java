@@ -26,6 +26,8 @@ public class Player {
     private final int MAX_LEVEL = 4;
     private boolean alive, restartGame, readyForFinalLevel, commandAvailable, seedsPlanted, canLevelUp;
 
+    private int itemsNeededForNextLvl;
+
     private String deathMessage = "";
     private String[] evolution = {"Seed", "Sprout", "Seedling", "Sapling", "Mature Tree"};
 
@@ -45,6 +47,7 @@ public class Player {
         npcsReactedWith = 0;
         npcsNeededReactionWith = 3;
         xpNeededForNextLvl = currentLevel + 1;
+        itemsNeededForNextLvl = currentLevel + 1;
 
         alive = commandAvailable = true;
         restartGame = readyForFinalLevel = seedsPlanted = false;
@@ -354,6 +357,7 @@ public class Player {
                 for (int i = 0; i < minVal; i++) {
                     inventory.remove(ItemType.WATER);
                     inventory.remove(ItemType.SUN);
+                    itemsNeededForNextLvl--;
                     xp++;
                 }
             }
@@ -382,6 +386,7 @@ public class Player {
         } else if (currentLevel == 2) {
             npcsNeededReactionWith += 2;
         }
+        itemsNeededForNextLvl = currentLevel + 1;
         canLevelUp = false;
     }
 
@@ -429,7 +434,15 @@ public class Player {
         return deathMessage;
     }
 
-    public void setDeathMessage(String deathMessage) {
-        this.deathMessage = deathMessage;
+    public int getItemsNeededForNextLvl() {
+        return itemsNeededForNextLvl;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public int getXpNeededForNextLvl() {
+        return xpNeededForNextLvl;
     }
 }

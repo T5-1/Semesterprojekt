@@ -10,6 +10,9 @@ public class Mermaid extends NPC {
 
     @Override
     public boolean isEventNpc() {
-        return true;
+        if (eventNpcUpdated) {
+            return true;
+        }
+        return false;
     }
 }

@@ -51,6 +51,7 @@ public class EventManager {
                     eventRunning = true;
                     event = lakeEvent;
                     lake.setDeadly(false);
+                    getCurrentEvent().getRoom().getNpc().setEventNpcUpdated(true);
                 }
 
                 //check if seeds are planted, and start final event

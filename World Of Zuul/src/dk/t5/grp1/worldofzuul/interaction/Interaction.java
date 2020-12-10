@@ -101,9 +101,10 @@ public class Interaction {
                 npc = eventManager.getCurrentEvent().getRoom().getNpc();
                 eventManager.getCurrentEvent().update();
 
-                if (eventManager.getCurrentEvent().isAnswered()) {
+                if (eventManager.getCurrentEvent().isAnswered() && interactionLine > 0) {
                     eventStart = true;
                     interacting = false;
+                    interactionLine = 0;
                 }
 
                 if (!eventManager.getCurrentEvent().isAnswered()) {
@@ -155,25 +156,26 @@ public class Interaction {
                 setType("event");
             }
             else if (type.equals("rightAnswer") && interactionLine > 0) {
+                eventManager.getCurrentEvent().setAnswered(true);
                 setType("null");
                 eventManager.endEvent(player);
                 if (eventManager.getCurrentEvent() == eventManager.getLakeEvent()) {
                     for (int i = 0; i < eventManager.getCurrentEvent().getSeedReward(); i++) {
                         player.getInventory().add(new Seed());
-                        interacting = false;
-                        eventStart = true;
-                        interactionLine = 0;
-                        setType("null");
                     }
+                    interacting = false;
+                    eventStart = true;
+                    interactionLine = 0;
+                    setType("null");
                 }
                 else if (eventManager.getCurrentEvent() != eventManager.getFinalEvent()) {
                     for (int i = 0; i < eventManager.getCurrentEvent().getSeedReward(); i++) {
                         player.getInventory().add(new Seed());
-                        interacting = false;
-                        eventStart = true;
-                        interactionLine = 0;
-                        setType("null");
                     }
+                    interacting = false;
+                    eventStart = true;
+                    interactionLine = 0;
+                    setType("null");
                 }
                 else {
                     eventStart = true;
