@@ -16,14 +16,14 @@ public class EventManager {
     private boolean lakeEventPlayed, finalEventPlayed, northernEventPlayed, southernEventPlayed;
 
     public EventManager(Room spawn, Room lake, Room northernEntrance, Room southernEntrance) {
-        lakeEventPlayed = finalEventPlayed = northernEventPlayed = southernEventPlayed = false;
+        this.lakeEventPlayed = this.finalEventPlayed = this.northernEventPlayed = this.southernEventPlayed = false;
         this.lake = lake;
         this.northernEntrance = northernEntrance;
         this.southernEntrance = southernEntrance;
-        southernEvent = new SouthernEvent(southernEntrance);
-        northernEvent = new NorthernEvent(northernEntrance);
-        lakeEvent = new LakeEvent(lake);
-        finalEvent = new FinalEvent(spawn);
+        this.southernEvent = new SouthernEvent(southernEntrance);
+        this.northernEvent = new NorthernEvent(northernEntrance);
+        this.lakeEvent = new LakeEvent(lake);
+        this.finalEvent = new FinalEvent(spawn);
     }
 
     boolean startPlayed = false;
@@ -71,12 +71,17 @@ public class EventManager {
         }
     }
 
+    //runs when an event ends
     public void endEvent(Player player) {
+        //stops the event from running, sets the event room inaccessible
         eventRunning = false;
         event.getRoom().setAccessible(false);
+        //resets start played variable for next event
         startPlayed = false;
+        //make the player able to level up
         player.setCanLevelUp(true);
 
+        //check which event just got played, and respectively set the played variable of the event to true
         if (event == southernEvent) {
             southernEventPlayed = true;
         }

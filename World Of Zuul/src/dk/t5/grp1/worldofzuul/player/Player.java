@@ -17,12 +17,15 @@ public class Player {
     private int speed = 4;
 
     private int startInteractionX, startInteractionY, endInteractionX, endInteractionY;
-
-    private int xp, xpNeededForNextLvl, currentLevel, npcsReactedWith, npcsNeededReactionWith;
-    private final int MAX_LEVEL = 4;
-    private boolean alive, restartGame, readyForFinalLevel, seedsPlanted, canLevelUp;
-
+    private int currentLevel;
+    private int xp, xpNeededForNextLvl;
+    private int npcsReactedWith, npcsNeededReactionWith;
     private int itemsNeededForNextLvl;
+    private final int MAX_LEVEL = 4;
+    private boolean alive;
+    private boolean readyForFinalLevel;
+    private boolean seedsPlanted;
+    private boolean canLevelUp;
 
     private String deathMessage = "";
     private String[] evolution = {"Seed", "Sprout", "Seedling", "Sapling", "Mature Tree"};
@@ -36,68 +39,85 @@ public class Player {
     public Player(Room spawn, EventManager eventManager, int x, int y, GraphicsContext graphicsContext) {
         this.x = x;
         this.y = y;
-        xp = 0;
-        currentLevel = 0;
-        npcsReactedWith = 0;
-        npcsNeededReactionWith = 3;
-        xpNeededForNextLvl = currentLevel + 1;
-        itemsNeededForNextLvl = currentLevel + 1;
+        this.xp = 0;
+        this.currentLevel = 0;
+        this.npcsReactedWith = 0;
+        this.npcsNeededReactionWith = 3;
+        this.xpNeededForNextLvl = currentLevel + 1;
+        this.itemsNeededForNextLvl = currentLevel + 1;
 
-        alive = true;
-        restartGame = readyForFinalLevel = seedsPlanted = false;
-        canLevelUp = true;
+        this.alive = true;
+        this.readyForFinalLevel = false;
+        this.seedsPlanted = false;
+        this.canLevelUp = true;
 
-        currentRoom = spawn;
-        inventory = new Inventory();
+        this.currentRoom = spawn;
+        this.inventory = new Inventory();
         this.eventManager = eventManager;
         this.interaction = new Interaction(graphicsContext, currentRoom.getNpc(), currentRoom.getItem(), this.eventManager);
 
-        sprite[0] = Sprite.playerLevel0;
-        sprite[1] = Sprite.playerLevel1;
-        sprite[2] = Sprite.playerLevel2;
-        sprite[3] = Sprite.playerLevel3;
-        sprite[4] = Sprite.playerLevel4;
+        //Assign sprites for different levels
+        this.sprite[0] = Sprite.playerLevel0;
+        this.sprite[1] = Sprite.playerLevel1;
+        this.sprite[2] = Sprite.playerLevel2;
+        this.sprite[3] = Sprite.playerLevel3;
+        this.sprite[4] = Sprite.playerLevel4;
 
+        //Set offset between player and edge of screen for different levels
         //level 0 & 1: x = -16,  y = 7
-        xBoundaryOffset[0] = xBoundaryOffset[1] = -16;
-        yBoundaryOffset[0] = yBoundaryOffset[1] = 7;
+        this.xBoundaryOffset[0] = xBoundaryOffset[1] = -16;
+        this.yBoundaryOffset[0] = yBoundaryOffset[1] = 7;
         //level 2 & 3: x = -48,  y = -25
-        xBoundaryOffset[2] = xBoundaryOffset[3] = -48;
-        yBoundaryOffset[2] = yBoundaryOffset[3] = -25;
+        this.xBoundaryOffset[2] = xBoundaryOffset[3] = -48;
+        this.yBoundaryOffset[2] = yBoundaryOffset[3] = -25;
         //level 4    : x = -112, y = -89
-        xBoundaryOffset[4] = -112;
-        yBoundaryOffset[4] = -89;
-        interaction.setInteracting(true);
-        interaction.setType("start");
+        this.xBoundaryOffset[4] = -112;
+        this.yBoundaryOffset[4] = -89;
+
+        //
+        this.interaction.setInteracting(true);
+        this.interaction.setType("start");
     }
 
 
 
     public void update(Keyboard key) {
-
+        //makes interaction area around player the right size, to keep it consistent between levels
         startInteractionX = x - sprite[currentLevel].SIZE - sprite[currentLevel].SIZE / 2;
         startInteractionY = y - sprite[currentLevel].SIZE - sprite[currentLevel].SIZE / 2;
         endInteractionX = x + sprite[currentLevel].SIZE + sprite[currentLevel].SIZE / 2;
         endInteractionY = y + sprite[currentLevel].SIZE + sprite[currentLevel].SIZE / 2;
 
+        //Check if the player is not interacting and final event isn't played
         if (!interaction.isInteracting() && !eventManager.isFinalEventPlayed()) {
+            //check if the players interaction area is overlapping with the npc's interaction area & if the current NPC is an event NPC
+            //Then set the interaction type to "event"
             if (npcInteractionOverlap() && currentRoom.getNpc().isEventNpc()) {
                 interaction.setType("event");
             }
+            //check if the players interaction area is overlapping with the npc's interaction area
+            //Then set interaction type to "npc"
             else if (npcInteractionOverlap()) {
                 interaction.setNpc(currentRoom.getNpc());
                 interaction.setType("npc");
             }
+            //check if the players interaction area is overlapping with the item's interaction area
+            //Then set interaction type to "item"
             else if (itemInteractionOverlap()) {
                 interaction.setItem(currentRoom.getItem());
                 interaction.setType("item");
             }
+            //check if player is level 4 and if player has 8 seeds
+            //then set interaction type to "plant"
             else if (currentLevel >= 4 && inventory.getSeedCount() >= 8) {
                 interaction.setType("plant");
             }
+            //check if the player has more than 0 sun items and more than 0 water items
+            //then set interaction type to "consume"
             else if (inventory.getSunCount() > 0 && inventory.getWaterCount() > 0) {
                 interaction.setType("consume");
             }
+            //else set interaction type to "null"
             else {
                 interaction.setType("null");
             }
@@ -127,8 +147,9 @@ public class Player {
         }
 
         //check if player is close enough to the edge of the screen, and check if the next room is not null, and if the next room is accessible
-        //if true then set the players current room to the exit, and place the player at the bottom of the screen
+        //if true then set the players current room to the exit, and place the player at the opposite side of the screen
         //if false then check again for being close enough to the edge of the screen, and then check if the room is either null or inaccessible
+        //then add or subtract from the player speed, to keep the player unable to go out of bounds
         //NORTH
         if (y < sprite[currentLevel].SIZE / 2 + 1 && currentRoom.getExit(0) != null && currentRoom.getExit(0).isAccessible()) {
             currentRoom = currentRoom.getExit(0);
@@ -173,10 +194,13 @@ public class Player {
             die("You gathered too much sun, and dried out. You are dead,");
         }
         //check if you've consumed enough items to level up, and checks if you are under level 3
+        //if true, level up
         if (xp >= xpNeededForNextLvl && currentLevel < 3) {
             interaction.setInteracting(true);
             interaction.setType("level");
         }
+        //check if the player is currently level 3 and if the lake event has been played
+        //if true, level up
         else if (currentLevel == 3 && eventManager.isLakeEventPlayed()) {
             interaction.setInteracting(true);
             interaction.setType("level");
@@ -188,10 +212,12 @@ public class Player {
         }
     }
 
+    //Renders the player to the screen
     public void render(Screen screen) {
         screen.renderMob(x, y, sprite[currentLevel]);
     }
 
+    //return true if the players interaction area is overlapping with the npc's interaction area
     private boolean npcInteractionOverlap() {
         return (startInteractionX < currentRoom.getNpc().endInteractionX) &&
                 (currentRoom.getNpc().startInteractionX < endInteractionX) &&
@@ -199,6 +225,7 @@ public class Player {
                 (currentRoom.getNpc().startInteractionY < endInteractionY);
     }
 
+    //return true if the players interaction area is overlapping with the item's interaction area
     private boolean itemInteractionOverlap() {
         return (startInteractionX < currentRoom.getItem().endInteractionX) &&
                 (currentRoom.getItem().startInteractionX < endInteractionX) &&
@@ -268,7 +295,8 @@ public class Player {
     }
 
     public void plant() {
-        //check if you have 8 seeds in inventory
+        //check if you have 8 seeds in inventory && if the player is max level
+        //if true then remove all seeds from the inventory and set seedsPlanted to true
         if (inventory.getSeedCount() >= 8) {
             if (currentLevel == MAX_LEVEL) {
                 for (int i = 0; i < 8; i++) {
@@ -279,6 +307,7 @@ public class Player {
         }
     }
 
+    //kills the player
     public void die(String deathMessage) {
         alive = false;
         interaction.setInteracting(true);
@@ -286,59 +315,85 @@ public class Player {
         this.deathMessage = deathMessage + " do you want to restart the game?";
     }
 
+    //adds items to inventory
     public void gather() {
+        //check if item is a seed
+        //if true add item to inventory, and remove item from room
         if (currentRoom.getItem().getItemType() == ItemType.SEED) {
             inventory.add(currentRoom.getItem());
             currentRoom.setItem(new NullItem());
-        } else if (currentRoom.getItem().getItemType() != ItemType.NULLITEM) {
+        }
+        //else check if item is not null item
+        //if true add item to inventory
+        else if (currentRoom.getItem().getItemType() != ItemType.NULLITEM) {
             inventory.add(currentRoom.getItem());
         }
     }
 
+    //Consumes items from inventory
     public void consume() {
+        //Check if the player has interacted with enough npc's
         if (npcsReactedWith >= npcsNeededReactionWith) {
+            //check if the player can level up or if the player is currently level 3
             if (canLevelUp || currentLevel == 3) {
+                //Find the item with the lowest count and assign to variable
                 int minVal;
                 if (inventory.getSunCount() >= inventory.getWaterCount()) {
                     minVal = inventory.getWaterCount();
                 } else {
                     minVal = inventory.getSunCount();
                 }
-
+                //Remove consumed items from inventory
                 for (int i = 0; i < minVal; i++) {
                     inventory.remove(ItemType.WATER);
                     inventory.remove(ItemType.SUN);
+                    //decrease items needed for next level, if items needed for next level is larger than 0
                     if (itemsNeededForNextLvl < 0) {
                         itemsNeededForNextLvl--;
                     }
+                    //increase xp
                     xp++;
                 }
             }
         }
     }
 
+    //interact with npc's
     public void interact() {
-        if (npcsReactedWith >= npcsNeededReactionWith) {
-        } else if (!currentRoom.getNpc().getName().equals("Old Tutorial Tree")) {
+        //check if the current npc isn't "Old Tutorial Tree"
+        if (!currentRoom.getNpc().getName().equals("Old Tutorial Tree")) {
+            //check if the current npc has already been interacted with
             if (!currentRoom.getNpc().isInteracted()) {
+                //increase the amount of npc's reacted with
                 npcsReactedWith++;
-            } else if (currentRoom.getNpc().isInteracted()) {
             }
+            //set interacted variable of npc to true
             currentRoom.getNpc().setInteracted(true);
         }
     }
 
+    //levels up the player
     public void levelUp() {
+        //reset xp, and increase xp amount for next level
         xp = 0;
         xpNeededForNextLvl++;
+
+        //check if the current level is lower level than max level
         if (currentLevel < MAX_LEVEL) {
+            //increase level
             currentLevel++;
         }
+        //check if current level is 1
         if (currentLevel == 1) {
+            //increase npc's needed reaction with by 3
             npcsNeededReactionWith += 3;
-        } else if (currentLevel == 2) {
+        }
+        //check if current level is 2
+        else if (currentLevel == 2) {
+            //increase npc's needed reaction with by 2
             npcsNeededReactionWith += 2;
         }
+        //increase items needed for next level by current level + 1 and set capability to level up false
         itemsNeededForNextLvl = currentLevel + 1;
         canLevelUp = false;
     }

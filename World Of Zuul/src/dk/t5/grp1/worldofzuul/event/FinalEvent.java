@@ -12,6 +12,7 @@ public class FinalEvent extends Event {
 
     @Override
     public void start(Player player, EventManager eventManager, Interaction interaction) {
+        //update old tutorial tree to be an event npc, when this event starts
         getRoom().getNpc().setEventNpcUpdated(true);
         interaction.setInteracting(true);
     }
