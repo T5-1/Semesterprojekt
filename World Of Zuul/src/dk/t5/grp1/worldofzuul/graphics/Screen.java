@@ -14,12 +14,14 @@ public class Screen {
         pixels = new int[width * height];
     }
 
+    // We draw a black picture and draw on top of that.
     public void clear() {
         for (int i = 0; i < pixels.length; i++) {
             pixels[i] = 0xff000000;
         }
     }
 
+    // renders tiles.
     public void renderTile(int xp, int yp, Tile tile) {
         for (int y = 0; y < tile.sprite.SIZE; y++) {
             int ya = y + yp;
@@ -30,6 +32,7 @@ public class Screen {
         }
     }
 
+    // renders sprite at specified coordinate on screen
     public void renderMob(int xp, int yp, Sprite sprite) {
         for (int y = 0; y < sprite.SIZE; y++) {
             for (int x = 0; x < sprite.SIZE; x++) {
@@ -41,6 +44,7 @@ public class Screen {
         }
     }
 
+    // renders a black/seethrough box on screen
     public void renderBox(int x0, int y0, int x1, int y1) {
         for (int y = y0; y < y1; y++) {
             for (int x = x0; x < x1; x++) {
@@ -57,6 +61,7 @@ public class Screen {
         }
     }
 
+    // renders an "outlined" box. In the game it is used, when choosing an answer to a question and to accentuate the current evolution.
     public void renderHollowBox(int x0, int y0, int x1, int y1) {
         for (int y = y0 - 2; y < y0; y++) {
             for (int x = x0; x < x1; x++) {

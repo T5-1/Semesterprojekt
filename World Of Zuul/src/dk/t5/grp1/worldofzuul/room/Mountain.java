@@ -5,7 +5,7 @@ import dk.t5.grp1.worldofzuul.npc.Goat;
 
 public class Mountain extends Room{
 
-    public Mountain(String description, String name) {
-        super(description, name, new Sun(1300, 650), new Goat(1300, 200), "/textures/rooms/mountain.png");
+    public Mountain(String name) {
+        super(name, new Sun(1300, 650), new Goat(1300, 200), "/textures/rooms/mountain.png");
     }
 }

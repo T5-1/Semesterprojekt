@@ -42,6 +42,7 @@ public abstract class NPC {
         loadText(path);
     }
 
+    // Creates a string telling if you've already learned the information that the npc offers. Does not include starter tree or event npc's.
     public void update() {
         if (interacted && !infoUpdated && !name.equals("Old Tutorial Tree") && !name.equals("Pongo the orangutan") && !name.equals("De-forester Dennis") && !name.equals("Mera the Mermaid")) {
             info[info.length - 1] = "You already know this";
@@ -54,6 +55,7 @@ public abstract class NPC {
         screen.renderMob(x, y, sprite);
     }
 
+    // Loads in the text for NPC and creates a string information required when you talk with a "normal" npc for the first time.
     public void loadText(String path) {
         String currentLine;
         List<String> npcInfo = new ArrayList<>();

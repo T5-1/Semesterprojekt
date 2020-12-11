@@ -8,12 +8,11 @@ import java.util.Scanner;
 
 public abstract class Event {
 
-    private String description;
-
-    private boolean answered = false;
     private int correctAnswer = -1;
-    int seedReward;
+    private int seedReward;
+    private boolean answered = false;
 
+    private String description;
     private Room room;
 
     public Event(String description, Room room, int seedReward){

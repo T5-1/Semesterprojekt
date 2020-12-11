@@ -4,6 +4,7 @@ import dk.t5.grp1.worldofzuul.graphics.Screen;
 import dk.t5.grp1.worldofzuul.graphics.Sprite;
 
 public class GrassTile extends Tile {
+
     public GrassTile(Sprite sprite) {
         super(sprite);
     }

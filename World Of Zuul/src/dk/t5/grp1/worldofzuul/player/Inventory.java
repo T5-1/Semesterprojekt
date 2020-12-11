@@ -16,6 +16,7 @@ public class Inventory {
         sunCount = waterCount = seedCount = 0;
     }
 
+    //Adding items to the Arraylist
     public void add(Item item) {
         inventory.add(item);
 
@@ -32,6 +33,7 @@ public class Inventory {
         }
     }
 
+    //Removing items from the Arraylist
     public void remove(ItemType itemType) {
         int removeIndex = -1;
         for (int i = 0; i < inventory.size(); i++) {

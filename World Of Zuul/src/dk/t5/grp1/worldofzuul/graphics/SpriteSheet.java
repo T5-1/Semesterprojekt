@@ -25,6 +25,7 @@ public class SpriteSheet {
         load();
     }
 
+    //You can load image and if wanted change color.
     public void load() {
         try {
             BufferedImage image = ImageIO.read(this.getClass().getResource(path));
