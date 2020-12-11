@@ -195,6 +195,7 @@ public class Interaction {
                     for (int i = 0; i < eventManager.getCurrentEvent().getSeedReward(); i++) {
                         player.getInventory().add(new Seed());
                     }
+                    selectedOption = 0;
                     interacting = false;
                     eventStart = true;
                     interactionLine = 0;
@@ -242,6 +243,7 @@ public class Interaction {
                 if (key.interact && interactionLine > 0) {
                     if (selectedOption == 0) {
                         Game.restart = true;
+                        selectedOption = 0;
                     }
                     if (selectedOption == 1) {
                         Game.exit = true;
