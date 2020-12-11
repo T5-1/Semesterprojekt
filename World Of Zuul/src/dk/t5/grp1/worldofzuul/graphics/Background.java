@@ -24,6 +24,7 @@ public class Background {
         load();
     }
 
+    //You can load image and if wanted change color.
     private void load() {
         try {
             image = ImageIO.read(this.getClass().getResource(path));
