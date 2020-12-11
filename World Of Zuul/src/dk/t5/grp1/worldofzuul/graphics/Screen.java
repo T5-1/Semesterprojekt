@@ -32,7 +32,7 @@ public class Screen {
         }
     }
 
-    // renders sprites?
+    // renders sprite at specified coordinate on screen
     public void renderMob(int xp, int yp, Sprite sprite) {
         for (int y = 0; y < sprite.SIZE; y++) {
             for (int x = 0; x < sprite.SIZE; x++) {
