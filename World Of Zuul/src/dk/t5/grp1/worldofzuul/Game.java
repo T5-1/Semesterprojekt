@@ -42,18 +42,18 @@ public class Game extends Application {
     private Room camp, cave, desert, flowerField, lake, mountain, river, savanna, shore, spawn, northernEntrance, southernEntrance;
 
     private void createRooms() {
-        camp = new Camp("at the Camp", "Camp");
-        cave = new Cave("at the Cave", "Cave");
-        desert = new Desert("at the desert", "Desert");
-        flowerField = new FlowerField("at the FlowerField", "Flower Field");
-        lake = new Lake("at the lake", "Lake");
-        mountain = new Mountain("on the Mountain", "Mountain");
-        river = new River("at the River", "River");
-        savanna = new Savanna("at the Savanna", "Savanna");
-        shore = new Shore("at the Shore", "Shore");
-        spawn = new Spawn("at the Spawn", "Spawn");
-        northernEntrance = new NorthernEntrance("at the Northern Entrance", "Northern Entrance");
-        southernEntrance = new SouthernEntrance("at the Southern Entrance", "Southern Entrance");
+        camp = new Camp( "Camp");
+        cave = new Cave( "Cave");
+        desert = new Desert( "Desert");
+        flowerField = new FlowerField( "Flower Field");
+        lake = new Lake( "Lake");
+        mountain = new Mountain( "Mountain");
+        river = new River( "River");
+        savanna = new Savanna( "Savanna");
+        shore = new Shore( "Shore");
+        spawn = new Spawn( "Spawn");
+        northernEntrance = new NorthernEntrance( "Northern Entrance");
+        southernEntrance = new SouthernEntrance( "Southern Entrance");
 
         camp.setExit(0, spawn);
         camp.setExit(1, desert);

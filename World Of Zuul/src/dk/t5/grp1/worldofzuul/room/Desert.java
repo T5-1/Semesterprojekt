@@ -5,7 +5,7 @@ import dk.t5.grp1.worldofzuul.npc.Cactus;
 
 public class Desert extends Room{
 
-    public Desert(String description, String name) {
-        super(description, name, new Sun(1000, 450), new Cactus(1150, 670), "/textures/rooms/desert.png");
+    public Desert(String name) {
+        super(name, new Sun(1000, 450), new Cactus(1150, 670), "/textures/rooms/desert.png");
     }
 }
