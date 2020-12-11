@@ -308,7 +308,9 @@ public class Player {
                 for (int i = 0; i < minVal; i++) {
                     inventory.remove(ItemType.WATER);
                     inventory.remove(ItemType.SUN);
-                    itemsNeededForNextLvl--;
+                    if (itemsNeededForNextLvl < 0) {
+                        itemsNeededForNextLvl--;
+                    }
                     xp++;
                 }
             }
