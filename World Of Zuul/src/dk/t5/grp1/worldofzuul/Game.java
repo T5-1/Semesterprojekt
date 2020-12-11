@@ -156,7 +156,7 @@ public class Game extends Application {
         eventManager.update(player, player.getInteraction());
         player.getInteraction().update(key, player.getInteraction().getType(), player);
     }
-
+        // Renders whole game
     public void render() {
         screen.clear();
         player.getCurrentRoom().render(screen);
