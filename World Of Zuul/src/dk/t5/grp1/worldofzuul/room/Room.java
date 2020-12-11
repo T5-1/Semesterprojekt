@@ -27,28 +27,26 @@ public abstract class Room {
 
     private Item item = new NullItem();
     private NPC npc;
-    private String description;
     private String name;
     private Room[] exits;
     protected List<Assets> assets = new ArrayList<>();
 
-    public Room(String description, String name, Item item, List<Assets> assets, NPC npc, String path) {
-        this(description, name, item, npc, path);
+    public Room(String name, Item item, List<Assets> assets, NPC npc, String path) {
+        this(name, item, npc, path);
         this.assets = assets;
     }
 
-    public Room(String description, String name, List<Assets> assets, NPC npc, String path) {
-        this(description, name, npc, path);
+    public Room(String name, List<Assets> assets, NPC npc, String path) {
+        this(name, npc, path);
         this.assets = assets;
     }
 
-    public Room(String description, String name, Item item, NPC npc, String path) {
-        this(description, name, npc, path);
+    public Room(String name, Item item, NPC npc, String path) {
+        this(name, npc, path);
         this.item = item;
     }
 
-    public Room(String description, String name, NPC npc, String path) {
-        this.description = description;
+    public Room(String name, NPC npc, String path) {
         this.name = name;
         exits = new Room[4];
         this.npc = npc;
