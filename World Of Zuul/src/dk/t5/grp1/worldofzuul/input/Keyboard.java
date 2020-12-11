@@ -13,7 +13,8 @@ public class Keyboard {
         this.scene = scene;
     }
 
-    public void update() {
+    public void update() // Checks whether or not specific keys are being used.
+    {
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (keyEvent -> {
             if (keyEvent.getCode() == KeyCode.W || keyEvent.getCode() == KeyCode.UP) up = true;
             if (keyEvent.getCode() == KeyCode.S || keyEvent.getCode() == KeyCode.DOWN) down = true;
