@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="World of trees.jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/World_of_trees_jar</output-path>
-    <root id="archive" name="World Of Zuul.jar">
-      <element id="module-output" name="World Of Zuul" />
-    </root>
-  </artifact>
-</component>

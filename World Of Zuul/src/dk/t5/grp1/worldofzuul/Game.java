@@ -41,20 +41,22 @@ public class Game extends Application {
     private EventManager eventManager;
     private Room camp, cave, desert, flowerField, lake, mountain, river, savanna, shore, spawn, northernEntrance, southernEntrance;
 
+    // Create all the rooms for the game
     private void createRooms() {
-        camp = new Camp( "Camp");
-        cave = new Cave( "Cave");
-        desert = new Desert( "Desert");
-        flowerField = new FlowerField( "Flower Field");
-        lake = new Lake( "Lake");
-        mountain = new Mountain( "Mountain");
-        river = new River( "River");
-        savanna = new Savanna( "Savanna");
-        shore = new Shore( "Shore");
-        spawn = new Spawn( "Spawn");
-        northernEntrance = new NorthernEntrance( "Northern Entrance");
-        southernEntrance = new SouthernEntrance( "Southern Entrance");
+        camp = new Camp("Camp");
+        cave = new Cave("Cave");
+        desert = new Desert("Desert");
+        flowerField = new FlowerField("Flower Field");
+        lake = new Lake("Lake");
+        mountain = new Mountain("Mountain");
+        river = new River("River");
+        savanna = new Savanna("Savanna");
+        shore = new Shore("Shore");
+        spawn = new Spawn("Spawn");
+        northernEntrance = new NorthernEntrance("Northern Entrance");
+        southernEntrance = new SouthernEntrance("Southern Entrance");
 
+        //set exits of the rooms
         camp.setExit(0, spawn);
         camp.setExit(1, desert);
         camp.setExit(2, southernEntrance);
@@ -100,12 +102,13 @@ public class Game extends Application {
 
     @Override
     public void start(Stage stage) {
+        // Create an image that can be added to scene
         ImageView game = new ImageView(writableImage);
         Group root = new Group(game);
         Scene scene = new Scene(root, width, height);
-        key = new Keyboard(scene);
 
         createRooms();
+        key = new Keyboard(scene);
         eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
         graphicsContext = canvas.getGraphicsContext2D();
         player = new Player(spawn, eventManager, width / 2, height / 2 + 150, graphicsContext);
@@ -113,8 +116,10 @@ public class Game extends Application {
 
         graphicsContext.setFont(Font.font("Verdana", 16));
 
+        //Add canvas to root to be able to draw text on window
         root.getChildren().add(canvas);
 
+        //Setup stage
         stage.setTitle(title);
         stage.setResizable(false);
         stage.setWidth(width);
@@ -124,16 +129,20 @@ public class Game extends Application {
         stage.show();
         stage.requestFocus();
 
+        //Game loop
         AnimationTimer animation = new AnimationTimer() {
 
             @Override
             public void handle(long now) {
+                //clear canvas to not render text on top of other text
                 canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
                 update();
                 render();
+                //If exit is true close game
                 if (exit) {
                     stage.close();
                 }
+                //if restart is true reset rooms, eventManager, player and hud
                 else if (restart) {
                     createRooms();
                     eventManager = new EventManager(spawn, lake, northernEntrance, southernEntrance);
@@ -149,6 +158,7 @@ public class Game extends Application {
         animation.start();
     }
 
+    // Update 60 times per second when possible
     public void update() {
         key.update();
         player.update(key);
@@ -156,11 +166,17 @@ public class Game extends Application {
         eventManager.update(player, player.getInteraction());
         player.getInteraction().update(key, player.getInteraction().getType(), player);
     }
-        // Renders whole game
+
+    // Renders to screen
     public void render() {
+        //clear screen
         screen.clear();
+
+        //render current room
         player.getCurrentRoom().render(screen);
 
+        //Render player in front of npc, if player is closer to bottom of screen than npc
+        //else render npc in front of player
         if ( player.getY() > player.getCurrentRoom().getNpc().getY() + player.getCurrentRoom().getNpc().startInteractionY) {
             player.getCurrentRoom().getNpc().render(screen);
             player.render(screen);
@@ -170,8 +186,10 @@ public class Game extends Application {
             player.getCurrentRoom().getNpc().render(screen);
         }
 
+        //Render HUD
         hud.render(screen);
 
+        //Render backgrounds for start screen, win screen and death screen
         if (player.getInteraction().getType().equals("start")) {
             for (int i = 0; i < screen.getPixels().length; i++) {
                 screen.getPixels()[i] = Background.start.getPixels()[i];
@@ -188,8 +206,10 @@ public class Game extends Application {
             }
         }
 
+        //Render interaction to screen
         player.getInteraction().render(screen, player);
 
+        //Set pixels of screen to integer array from Screen class
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), screen.getPixels(), 0, width);
     }
 
