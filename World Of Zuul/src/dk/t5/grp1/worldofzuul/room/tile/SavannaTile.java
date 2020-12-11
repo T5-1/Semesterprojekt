@@ -8,6 +8,7 @@ public class SavannaTile extends Tile {
     public SavannaTile(Sprite sprite) {
         super(sprite);
     }
+
     @Override
     public void render(int x, int y, Screen screen) {
         screen.renderTile(x << 6, y << 6, this);

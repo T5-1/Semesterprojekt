@@ -8,6 +8,7 @@ public class FlowerTile1 extends Tile{
     public FlowerTile1(Sprite sprite) {
         super(sprite);
     }
+
     @Override
     public void render(int x, int y, Screen screen) {
         screen.renderTile(x << 6, y << 6, this);
