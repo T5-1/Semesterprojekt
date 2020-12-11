@@ -55,7 +55,7 @@ public abstract class Room {
         loadLevel(path);
         createNPCCollision();
     }
-
+        // This method loads the color codes on our rooms, and assigns that code and integer
     public void loadLevel(String path) {
         try {
             BufferedImage image = ImageIO.read(this.getClass().getResource(path));
@@ -109,7 +109,7 @@ public abstract class Room {
             }
         }
     }
-
+        // Renders correct tile on screen
     public void render(Screen screen) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -125,7 +125,7 @@ public abstract class Room {
             screen.renderMob(item.getX(),item.getY(), Sprite.item);
         }
     }
-
+        // Assigns a specific tile, to the integer that loadLevel assigned
     public Tile getTile(int x, int y) {
         if (tiles[x + y * width] == 0) {
             return Tile.grass;
