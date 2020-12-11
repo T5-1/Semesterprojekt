@@ -18,6 +18,7 @@ public abstract class Question {
         answers[2] = loadText(answer3Path);
     }
 
+    //Loads the questions and the answers, and returns a string that either a question or answer
     public String loadText(String path) {
         try {
             InputStream is = getClass().getClassLoader().getResourceAsStream(path);
